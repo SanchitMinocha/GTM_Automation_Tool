@@ -9,14 +9,14 @@
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │  INPUT                                                              │
-│  Lead record: name, email, company, property_address, city, state  │
+│  Lead record: name, email, company, property_address, city, state   │
 └──────────────────────────────┬──────────────────────────────────────┘
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │  GEOCODING  (enrichment.py → _geocode_address)                      │
 │                                                                     │
-│  1. Intellipins /geocode/forward  ─── success → lat/lon + ipins_id │
+│  1. Intellipins /geocode/forward  ─── success → lat/lon + ipins_id  │
 │  2. Nominatim structured search   ─── fallback if Intellipins fails │
 │  3. Nominatim freeform search     ─── fallback if structured fails  │
 │  4. US Census Geocoder            ─── final fallback                │
@@ -29,18 +29,18 @@
 │  PARALLEL ENRICHMENT  (enrichment.py → enrich_lead)                 │
 │  All 10 API calls run concurrently via asyncio.gather()             │
 │                                                                     │
-│  ┌─────────────────┐  ┌────────────────┐  ┌──────────────────────┐ │
-│  │ Census (city)   │  │ FRED (state)   │  │ Wikipedia (company)  │ │
-│  └─────────────────┘  └────────────────┘  └──────────────────────┘ │
-│  ┌─────────────────┐  ┌────────────────┐  ┌──────────────────────┐ │
-│  │ NewsAPI (co.)   │  │ WalkScore (*)  │  │ Intellipins parcel(*) │ │
-│  └─────────────────┘  └────────────────┘  └──────────────────────┘ │
-│  ┌─────────────────┐  ┌────────────────┐  ┌──────────────────────┐ │
-│  │ Google Places   │  │ OSM/Overpass(*)│  │ Open-Meteo (*)       │ │
-│  └─────────────────┘  └────────────────┘  └──────────────────────┘ │
-│  ┌─────────────────┐                                               │
-│  │ FBI CDE (city)  │   (*) requires lat/lon from geocoding step   │
-│  └─────────────────┘                                               │
+│  ┌─────────────────┐  ┌────────────────┐  ┌──────────────────────┐  │
+│  │ Census (city)   │  │ FRED (state)   │  │ Wikipedia (company)  │  │
+│  └─────────────────┘  └────────────────┘  └──────────────────────┘  │
+│  ┌─────────────────┐  ┌────────────────┐  ┌──────────────────────┐  │
+│  │ NewsAPI (co.)   │  │ WalkScore (*)  │  │ Intellipins parcel(*)│  │
+│  └─────────────────┘  └────────────────┘  └──────────────────────┘  │
+│  ┌─────────────────┐  ┌────────────────┐  ┌──────────────────────┐  │
+│  │ Google Places   │  │ OSM/Overpass(*)│  │ Open-Meteo (*)       │  │
+│  └─────────────────┘  └────────────────┘  └──────────────────────┘  │
+│  ┌─────────────────┐                                                │
+│  │ FBI CDE (city)  │   (*) requires lat/lon from geocoding step     │
+│  └─────────────────┘                                                │
 │                                                                     │
 │  Output: enrichment dict with all 10 API results                    │
 └──────────────────────────────┬──────────────────────────────────────┘
@@ -49,14 +49,15 @@
 ┌─────────────────────────────────────────────────────────────────────┐
 │  SCORING ENGINE  (scoring.py → compute_all_scores)                  │
 │                                                                     │
-│  ┌─────────────────┐  ┌──────────────┐  ┌────────────────────────┐ │
-│  │ Demand Score    │  │ Friction     │  │ Scale Score            │ │
-│  │ (0–100)         │  │ Score (0–100)│  │ (0–100)                │ │
-│  └────────┬────────┘  └──────┬───────┘  └──────────┬─────────────┘ │
-│           │                  │                      │               │
-│  ┌────────▼──────────────────▼──────────────────────▼─────────────┐ │
-│  │ Opportunity Score (0–100)  →  Lead Score (0–100, grade A–F)    │ │
-│  └────────────────────────────────────────────────────────────────┘ │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐   │
+│  │   Demand    │ │  Friction   │ │    Scale    │ │ Opportunity │   │
+│  │  (0–100)    │ │  (0–100)    │ │  (0–100)    │ │  (0–100)    │   │
+│  └──────┬──────┘ └──────┬──────┘ └──────┬──────┘ └──────┬──────┘   │
+│         └───────────────┴───────┬───────┴───────────────┘           │
+│                                 │                                   │
+│         ┌───────────────────────▼───────────────────────┐           │
+│         │         Lead Score (0–100, grade A–F)         │           │
+│         └───────────────────────────────────────────────┘           │
 │                                                                     │
 │  Each score: partial-weight formula — missing signals excluded,     │
 │  available_weight logged for transparency                           │
