@@ -11,13 +11,14 @@ You need API keys for the following services. All of them are free to start.
 
 | Service | What it does | Where to get a key | Free tier |
 |---------|-------------|-------------------|-----------|
-| **Anthropic** | Writes the outreach email and pain points | [console.anthropic.com](https://console.anthropic.com) → API Keys | Pay-per-use; ~$0.01–0.05 per lead |
+| **Anthropic** *(or Groq — see below)* | Writes the outreach email and pain points | [console.anthropic.com](https://console.anthropic.com) → API Keys | Pay-per-use; ~$0.01–0.05 per lead |
+| **Groq** *(free alternative to Anthropic)* | Same LLM steps — pain points and email — using open-source models | [console.groq.com](https://console.groq.com) → API Keys | Generous free tier; no credit card required |
 | **WalkScore** | Walk/transit/bike scores | [walkscore.com/professional/api.php](https://www.walkscore.com/professional/api.php) | 5,000 req/day free |
 | **Intellipins** | Property data and building type | [intellipins.com](https://intellipins.com) → Developer | Contact for pricing |
 | **Google Places** | Property ratings and reviews | [console.cloud.google.com](https://console.cloud.google.com) → APIs & Services → Places API | $200 free credit/month |
 | **NewsAPI** | Company news | [newsapi.org/register](https://newsapi.org/register) | 100 req/day free |
 | **FRED (St. Louis Fed)** | Vacancy rates | [fred.stlouisfed.org/docs/api/api_key.html](https://fred.stlouisfed.org/docs/api/api_key.html) | Free |
-| **FBI API** | Crime data | [api.usa.gov/crime/fbi/cde](https://api.usa.gov/crime/fbi/cde) → Request Key | Free |
+| **FBI API** | Crime data | [api.data.gov/signup/](https://api.data.gov/signup/) → Request Key | Free |
 | **Census Bureau** | Population and income | [api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html) | Free (optional but recommended) |
 
 ---
@@ -82,7 +83,7 @@ Wait for everything to finish downloading. This takes 1–3 minutes the first ti
 
 ### Step 6: Add your API keys
 
-In the project folder, find the file called `.env`. Open it in any text editor (Notepad, TextEdit, VS Code). You'll see lines like:
+In the project folder, find the file called `.env` or `.env.example` (and rename `.env.example` to `.env` if it exists). Open it in any text editor (Notepad, TextEdit, VS Code). You'll see lines like:
 
 ```
 ANTHROPIC_API_KEY=your_anthropic_key_here
@@ -95,9 +96,13 @@ FBI_API_KEY=your_fbi_key_here
 CENSUS_API_KEY=your_census_key_here
 ```
 
-Replace each `your_..._key_here` with your actual API key. Save the file.
+Replace each `your_..._key_here` with your actual API key. Save the file. Never share this file or commit it to Git — it is gitignored by default.
 
-> **Important:** Never share your `.env` file or commit it to GitHub. It contains private keys.
+**LLM provider — you only need one of Anthropic or Groq:**
+
+- **Anthropic** (default): best email quality. Set `ANTHROPIC_API_KEY`. Costs ~$0.01–0.05/lead.
+- **Groq** (free tier): open-source models (llama-3.3-70b for email, llama-3.1-8b for pain points). Set `GROQ_API_KEY` and pass `"llm_provider": "groq"` in the pipeline request body.
+- **Local LLM via Ollama** (no cloud cost, advanced): install [Ollama](https://ollama.com), pull a model (`ollama pull llama3`), and add a third provider branch to `backend/llm.py`. Ollama exposes an OpenAI-compatible REST API at `http://localhost:11434/v1` — the code pattern is identical to the Groq integration.
 
 ### Step 7: Start the backend server
 

@@ -49,10 +49,10 @@
 ┌─────────────────────────────────────────────────────────────────────┐
 │  SCORING ENGINE  (scoring.py → compute_all_scores)                  │
 │                                                                     │
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐   │
-│  │   Demand    │ │  Friction   │ │    Scale    │ │ Opportunity │   │
-│  │  (0–100)    │ │  (0–100)    │ │  (0–100)    │ │  (0–100)    │   │
-│  └──────┬──────┘ └──────┬──────┘ └──────┬──────┘ └──────┬──────┘   │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐    │
+│  │   Demand    │ │  Friction   │ │    Scale    │ │ Opportunity │    │
+│  │  (0–100)    │ │  (0–100)    │ │  (0–100)    │ │  (0–100)    │    │
+│  └──────┬──────┘ └──────┬──────┘ └──────┬──────┘ └──────┬──────┘    │
 │         └───────────────┴───────┬───────┴───────────────┘           │
 │                                 │                                   │
 │         ┌───────────────────────▼───────────────────────┐           │
@@ -70,7 +70,7 @@
 │  Step 1: Deterministic rule engine fires on score thresholds        │
 │          + raw enrichment values → generates tagged pain points     │
 │                                                                     │
-│  Step 2: LLM enrichment (Claude Haiku, fast=True)                  │
+│  Step 2: LLM enrichment (Claude Haiku or Groq llama-3.1-8b)         │
 │          Receives rules output → adds ≤2 additional nuanced points  │
 │          grounded in specific data values                           │
 │                                                                     │
@@ -81,7 +81,7 @@
 ┌─────────────────────────────────────────────────────────────────────┐
 │  OUTREACH GENERATION  (outreach.py → generate_outreach)             │
 │                                                                     │
-│  Claude Sonnet (fast=False, max_tokens=900)                         │
+│  Claude Sonnet or Groq llama-3.3-70b (fast=False, max_tokens=900)  │
 │  Prompt includes: lead context, pain points, scores,                │
 │  news, wiki extract, Google rating, building type                   │
 │                                                                     │
@@ -122,6 +122,7 @@
 | **Google Places API** | Property/company rating and reviews | Place name, rating (1–5), review count, up to 5 reviews | $200/month free credit (~11,700 text searches) | Quota-based; default 10 QPS | API key required |
 | **Anthropic API (Claude Haiku)** | Pain point LLM enrichment | JSON array of ≤2 additional pain points | None | Tier-dependent; 50 req/min on Tier 1 | API key required |
 | **Anthropic API (Claude Sonnet)** | Outreach email generation | JSON `{subject, message}` | None | Tier-dependent | Same key as Haiku |
+| **Groq API** *(alternative to Anthropic)* | Same two LLM steps using open-source models | Same output format | Generous free tier | 30 req/min on free tier | API key required; set `llm_provider=groq` |
 
 **Fallback behavior when a key is missing:** Every API check starts with `if not api_key or "your_" in api_key`. Missing keys return a structured `{"error": "Key required"}` dict — the pipeline continues and that signal is excluded from scoring rather than crashing.
 
@@ -183,11 +184,11 @@ All `"N/A"`, `""`, `"Data unavailable"` strings are recursively replaced with `n
 
 ### Step 6: Pain point inference
 
-`_rule_based_pain_points()` runs ~10 if-conditions against scores + enrichment values. Each fires independently. Output is a list of tagged dicts. Claude Haiku then receives this list plus raw data context and appends ≤2 LLM-generated points.
+`_rule_based_pain_points()` runs ~10 if-conditions against scores + enrichment values. Each fires independently. Output is a list of tagged dicts. Claude Haiku (or Groq llama-3.1-8b) then receives this list plus raw data context and appends ≤2 LLM-generated points.
 
 ### Step 7: Outreach generation
 
-Claude Sonnet receives a structured prompt with lead context, top 5 pain points (sorted by severity), and key enrichment numbers. It returns JSON `{subject, message}`. The function wraps it with `generated_at` timestamp and `provider`.
+Claude Sonnet (or Groq llama-3.3-70b) receives a structured prompt with lead context, top 5 pain points (sorted by severity), and key enrichment numbers. It returns JSON `{subject, message}`. The function wraps it with `generated_at` timestamp and `provider`.
 
 ### Step 8: Storage
 
@@ -338,8 +339,9 @@ For batches of leads, rate limits are the primary operational constraint. The ta
 | **NewsAPI** | 100 req/day (free), 1,000/day (developer) | Each lead = 1 NewsAPI call. Free tier: 100 leads/day max. Developer: 1,000 leads/day. |
 | **Google Places** | Quota-based; default 10 QPS | Each lead = 2 calls (Text Search + Place Details). At 10 QPS, effectively unlimited for single-user batch. Watch monthly billing. |
 | **WalkScore** | 5,000 req/day free | Each lead = 1 call. 5,000 leads/day before billing kicks in. |
-| **Anthropic (Haiku)** | Tier 1: 50 req/min | Haiku call per lead for pain points. At 50 leads/min sustained, you'd hit this. In practice, total pipeline time per lead is 5–10 sec, so this won't bind. |
-| **Anthropic (Sonnet)** | Tier 1: 50 req/min | Same — one call per lead. Will not bind at normal processing speeds. |
+| **Anthropic (Haiku)** | Tier 1: 50 req/min | Haiku call per lead for pain points. Won't bind at normal processing speeds (5–10 sec/lead). |
+| **Anthropic (Sonnet)** | Tier 1: 50 req/min | One call per lead for email. Same — won't bind. |
+| **Groq** | Free tier: 30 req/min | Covers both LLM steps. At 1 lead per 5–10 sec, free tier is sufficient for all SDR-scale use. |
 | **Open-Meteo** | 10,000 req/day | 1 call per lead. 10,000 leads/day max at free tier. |
 | **Census, FRED, Wikipedia, FBI** | Generous/none | No material constraint at SDR-scale volumes. |
 
