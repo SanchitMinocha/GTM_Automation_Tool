@@ -1,4 +1,4 @@
-# EliseAI GTM Automation Tool
+# GTM Automation Tool
 
 > Turns a property address into a scored lead, named pain points, and a personalized cold email — in under 60 seconds.
 
