@@ -5,39 +5,39 @@
 
 ---
 
-## 1. Prerequisites — What You Need Before Starting
+## 1. What You Need Before Starting
 
-You need API keys for the following services. All of them are free to start.
+You'll need API keys for a handful of services. Most of them are free. The only one that costs money per use is the LLM provider (Anthropic or Groq) — and Groq has a generous free tier if you want to start without a credit card.
 
 | Service | What it does | Where to get a key | Free tier |
 |---------|-------------|-------------------|-----------|
-| **Anthropic** *(or Groq — see below)* | Writes the outreach email and pain points | [console.anthropic.com](https://console.anthropic.com) → API Keys | Pay-per-use; ~$0.01–0.05 per lead |
-| **Groq** *(free alternative to Anthropic)* | Same LLM steps — pain points and email — using open-source models | [console.groq.com](https://console.groq.com) → API Keys | Generous free tier; no credit card required |
-| **WalkScore** | Walk/transit/bike scores | [walkscore.com/professional/api.php](https://www.walkscore.com/professional/api.php) | 5,000 req/day free |
+| **Anthropic** *(or Groq — pick one)* | Writes the outreach email and pain points | [console.anthropic.com](https://console.anthropic.com) → API Keys | Pay-per-use; ~$0.01–0.05 per lead |
+| **Groq** *(free alternative to Anthropic)* | Same steps, using open-source models | [console.groq.com](https://console.groq.com) → API Keys | Generous free tier; no credit card required |
+| **WalkScore** | Walk/transit/bike scores | [walkscore.com/professional/api.php](https://www.walkscore.com/professional/api.php) | 5,000 requests/day free |
 | **Intellipins** | Property data and building type | [intellipins.com](https://intellipins.com) → Developer | Contact for pricing |
 | **Google Places** | Property ratings and reviews | [console.cloud.google.com](https://console.cloud.google.com) → APIs & Services → Places API | $200 free credit/month |
-| **NewsAPI** | Company news | [newsapi.org/register](https://newsapi.org/register) | 100 req/day free |
+| **NewsAPI** | Company news | [newsapi.org/register](https://newsapi.org/register) | 100 requests/day free |
 | **FRED (St. Louis Fed)** | Vacancy rates | [fred.stlouisfed.org/docs/api/api_key.html](https://fred.stlouisfed.org/docs/api/api_key.html) | Free |
-| **FBI API** | Crime data | [api.data.gov/signup/](https://api.data.gov/signup/) → Request Key | Free |
+| **FBI API** | Crime data | [api.data.gov/signup/](https://api.data.gov/signup/) | Free |
 | **Census Bureau** | Population and income | [api.census.gov/data/key_signup.html](https://api.census.gov/data/key_signup.html) | Free (optional but recommended) |
 
 ---
 
 ## 2. Setup — Step by Step
 
-### Step 1: Install Python
+### Step 1: Check if Python is installed
 
-Check if Python is already installed. Open Terminal (Mac) or Command Prompt (Windows) and type:
+Open Terminal (Mac) or Command Prompt (Windows) and type:
 
 ```
 python3 --version
 ```
 
-If you see something like `Python 3.11.4`, you're good. If you get an error, download Python from **python.org/downloads** and install it. Accept all defaults. Make sure to check "Add Python to PATH" on Windows.
+If you see something like `Python 3.11.4`, you're good. If you get an error, download Python from **python.org/downloads** and install it. On Windows, make sure to check "Add Python to PATH" during installation.
 
 ### Step 2: Download the project
 
-If you received a ZIP file, unzip it. Place the folder somewhere easy to find, like your Desktop. You should see a folder called `GTM_Automation_Tool`.
+If you received a ZIP file, unzip it and place the folder somewhere easy to find, like your Desktop. You should have a folder called `GTM_Automation_Tool`.
 
 ### Step 3: Open Terminal and navigate to the project
 
@@ -47,13 +47,13 @@ If you received a ZIP file, unzip it. Place the folder somewhere easy to find, l
 3. Press Enter
 
 **Windows:**
-1. Open Command Prompt (search "cmd" in Start menu)
+1. Open Command Prompt (search "cmd" in Start)
 2. Type: `cd C:\Users\YourName\Desktop\GTM_Automation_Tool`
 3. Press Enter
 
 ### Step 4: Create a virtual environment
 
-This keeps the tool's dependencies separate from your other software.
+This keeps the tool's dependencies separate from anything else on your machine.
 
 ```
 python3 -m venv venv
@@ -71,7 +71,7 @@ source venv/bin/activate
 venv\Scripts\activate
 ```
 
-You should see `(venv)` appear at the start of your command line. This means it worked.
+You should see `(venv)` appear at the start of your command line. That means it worked.
 
 ### Step 5: Install dependencies
 
@@ -79,40 +79,35 @@ You should see `(venv)` appear at the start of your command line. This means it 
 pip install -r requirements.txt
 ```
 
-Wait for everything to finish downloading. This takes 1–3 minutes the first time.
+This downloads everything the tool needs. It takes 1–3 minutes the first time.
 
 ### Step 6: Add your API keys
 
-In the project folder, find the file called `.env` or `.env.example` (and rename `.env.example` to `.env` if it exists). Open it in any text editor (Notepad, TextEdit, VS Code). You'll see lines like:
+In the project folder, find the file called `.env.example` and rename it to `.env`. Open it in any text editor (Notepad, TextEdit, VS Code). You'll see lines like:
 
 ```
 ANTHROPIC_API_KEY=your_anthropic_key_here
 WALKSCORE_API_KEY=your_walkscore_key_here
-INTELLIPINS_KEY=your_intellipins_key_here
-GOOGLE_PLACES_API_KEY=your_google_places_key_here
-NEWS_API_KEY=your_newsapi_key_here
-FRED_API_KEY=your_fred_key_here
-FBI_API_KEY=your_fbi_key_here
-CENSUS_API_KEY=your_census_key_here
+...
 ```
 
-Replace each `your_..._key_here` with your actual API key. Save the file. Never share this file or commit it to Git — it is gitignored by default.
+Replace each placeholder with your actual API key. Save the file. Never share it — it contains credentials.
 
 **LLM provider — you only need one of Anthropic or Groq:**
 
-- **Anthropic** (default): best email quality. Set `ANTHROPIC_API_KEY`. Costs ~$0.01–0.05/lead.
-- **Groq** (free tier): open-source models (llama-3.3-70b for email, llama-3.1-8b for pain points). Set `GROQ_API_KEY` and pass `"llm_provider": "groq"` in the pipeline request body.
-- **Local LLM via Ollama** (no cloud cost, advanced): install [Ollama](https://ollama.com), pull a model (`ollama pull llama3`), and add a third provider branch to `backend/llm.py`. Ollama exposes an OpenAI-compatible REST API at `http://localhost:11434/v1` — the code pattern is identical to the Groq integration.
+- **Anthropic** (default, best email quality): Set `ANTHROPIC_API_KEY`. Costs ~$0.01–0.05/lead.
+- **Groq** (free tier, open-source models): Set `GROQ_API_KEY` and pass `"llm_provider": "groq"` in the pipeline request. Uses llama-3.3-70b for email and llama-3.1-8b for pain points.
+- **Local LLM via Ollama** (advanced, no cloud cost): Install [Ollama](https://ollama.com), pull a model (`ollama pull llama3`), and point the provider to `http://localhost:11434/v1`. It uses the same OpenAI-compatible API as Groq.
 
 ### Step 7: Start the backend server
 
-Make sure your virtual environment is active (you see `(venv)` in the terminal), then run:
+With your virtual environment active, run:
 
 ```
 uvicorn backend.main:app --reload
 ```
 
-You should see output like:
+You should see:
 
 ```
 INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
@@ -123,50 +118,42 @@ Leave this terminal window open. The backend is now running.
 
 ### Step 8: Open the frontend
 
-Open a file browser and navigate to `GTM_Automation_Tool/frontend/`. Double-click `index.html`. It should open in your web browser.
-
-You're ready to use the tool.
+Open a file browser, navigate to `GTM_Automation_Tool/frontend/`, and double-click `index.html`. It opens in your browser and you're ready to go.
 
 ---
 
-## 3. How to Run the Tool
+## 3. Running the Tool
 
 ### To process a single lead:
 
-1. Fill in the form on the left side of the screen:
+1. Fill in the form on the left:
    - **Contact Name** — the person you're reaching out to
    - **Email** — their work email
    - **Company** — the property management company name
-   - **Property Address** — the specific property address (e.g., `838 NE 66th St`), not the HQ
+   - **Property Address** — the specific property address (e.g., `838 NE 66th St`) — not the HQ
    - **City** — the city where the property is located
    - **State** — two-letter state code (e.g., `WA`, `CA`, `NY`)
 
-2. Click **"Run Full Pipeline"** to get scores, pain points, and a draft email.
+2. Click **"Run Full Pipeline"** for scores, pain points, and a draft email. Or click **"Enrich Lead Data"** if you only want the raw market data without scoring or an email.
 
-   *Or* click **"Enrich Lead Data"** if you only want the raw market data without scoring or an email.
+3. Wait 20–60 seconds. The tool is making ~10 API calls in parallel.
 
-3. Wait 20–60 seconds. The tool is making ~10 API calls in parallel. The loading indicator will spin.
-
-4. Results appear on the right side of the screen. The full pipeline shows:
-   - Score dashboard (color-coded grades)
-   - Pain points list
-   - Draft outreach email
-   - All raw enrichment data below
+4. Results appear on the right: score dashboard, pain points, draft email, and all raw enrichment data below.
 
 ---
 
-## 4. Input Format
+## 4. How to Enter the Lead Information
 
 | Field | Format | Example | What happens if wrong |
 |-------|--------|---------|----------------------|
-| Contact Name | Full name, any capitalization | `Jordan Lee` | Nothing breaks; used in email greeting only |
-| Email | Standard email format | `jlee@greystar.com` | Used for records only; no validation |
-| Company | The company name as it appears publicly | `Greystar` or `Greystar Real Estate Partners` | Affects news search and Wikipedia lookup — be as specific or general as you know |
-| Property Address | Street number + street name only | `1600 Vine St` | **Do not include city/state here.** They have separate fields. Do not include Suite or Unit numbers — they can confuse geocoding. |
-| City | City name | `Los Angeles` | Must match a real US city. Suburbs and neighborhoods may not have Census data (e.g., "Hollywood" should be entered as "Los Angeles"). |
-| State | 2-letter state abbreviation | `CA` | Must be uppercase. Invalid state = Census and FRED calls return errors. |
+| Contact Name | Full name | `Jordan Lee` | Nothing breaks; used in email greeting only |
+| Email | Standard email | `jlee@greystar.com` | Used for records only |
+| Company | Public company name | `Greystar` or `Greystar Real Estate Partners` | Affects news search and Wikipedia — be as specific as you know |
+| Property Address | Street number + name only | `1600 Vine St` | Don't include city/state here. Don't include Suite/Unit numbers — they can break geocoding |
+| City | City name | `Los Angeles` | Must be a real US city. Enter parent city for suburbs (e.g., "Hollywood" → "Los Angeles") |
+| State | 2-letter abbreviation, uppercase | `CA` | Invalid state = Census and FRED calls fail |
 
-**Tip on addresses:** If the property is a large apartment complex, use the main gate address, not a unit address. If the company runs multiple properties, enter the address of the property most relevant to your pitch.
+**Tip:** If the property is a large apartment complex, use the main gate address, not a unit address. For companies managing multiple properties, enter the address most relevant to your pitch.
 
 ---
 
@@ -174,40 +161,31 @@ You're ready to use the tool.
 
 ### Score Dashboard
 
-The score dashboard shows five cards. Each uses a color-coded badge:
+Five cards, each with a color-coded grade:
 
-| Color | Grade | Score | Meaning |
-|-------|-------|-------|---------|
-| 🟢 Green | A | 75–100 | Strong ICP match — prioritize immediately |
-| 🟡 Yellow | B | 60–74 | Good fit — high-priority sequence |
-| 🟠 Orange | C | 45–59 | Qualified — standard sequence |
-| 🔴 Red | D | 30–44 | Weak fit — low touch or hold |
-| ⚫ Gray | F | 0–29 | Not ICP — do not contact |
+| Color | Grade | Score | What it means |
+|-------|-------|-------|---------------|
+| Green | A | 75–100 | Strong ICP match — prioritize immediately |
+| Yellow | B | 60–74 | Good fit — high-priority sequence |
+| Orange | C | 45–59 | Qualified — standard sequence |
+| Red | D | 30–44 | Weak fit — low touch or hold |
+| Gray | F | 0–29 | Not ICP — skip |
 
-**The five scores explained:**
+The five scores:
 
-- **Lead Score** — the overall number (0–100). This is the one to use for prioritization. A and B leads go to outreach today; C leads go into a slower sequence; D and F leads are deprioritized.
+- **Lead Score** — the overall 0–100 number. This is the one to use for prioritization. A and B go to outreach today; C goes into a slower sequence; D and F are deprioritized.
+- **Demand** — how active is the rental market at this location? High demand means the property manager is flooded with inquiries.
+- **Friction** — how hard is this property to operate? High friction (bad weather, high crime) means more maintenance calls, more tenant communication, more automation value. High friction = better lead for us.
+- **Scale** — how big is the property? Large apartment complex scores high. Single-family rental scores low.
+- **Opportunity** — is there a specific reason to reach out now? Driven by news signals, Google rating, and vacancy urgency.
 
-- **Demand** — how intense is the rental market at this location? High demand = property managers are getting flooded with inquiries.
-
-- **Friction** — how operationally difficult is this property to run? High friction (weather, crime) = more maintenance calls, more tenant communication, more automation value.
-
-- **Scale** — how big is the property? Large apartment complex = high score. Small SFR = low score.
-
-- **Opportunity** — is there a specific trigger that makes this company likely to act now? Includes news sentiment, Google rating, vacancy urgency.
-
-Each card also shows component breakdowns. For example, the Demand card might show:
-- Walk Score: 97/100
-- Renter %: 54.8/100
-- Transit: 65/100
-
-These tell you which signals are driving the score.
+Each card also shows the individual signals driving it — so if a score looks wrong, you can see exactly which data point is pulling it up or down.
 
 ### Pain Points
 
-Below the scores, you'll see a list of pain points — specific operational problems this property likely has. Each is labeled with a severity (HIGH, MEDIUM) and sourced either from deterministic rules (`rule`) or from the AI (`llm`).
+Below the scores, you'll see a list of specific operational problems the tool identified for this property. Each has a severity (HIGH or MEDIUM) and a data-backed description.
 
-Use these as your talking points. They're grounded in data from the APIs — the description always includes specific numbers.
+These are your talking points. Use them in the email or call — they're grounded in real data, not generic assumptions.
 
 **Example:**
 > **[HIGH] Tight Market — Speed Wins Leases**
@@ -215,48 +193,42 @@ Use these as your talking points. They're grounded in data from the APIs — the
 
 ### The Outreach Email
 
-Below the pain points, you'll see a draft email with:
-- **Subject line** — specific to this company and location
-- **Body** — references real data points from the enrichment
+Below the pain points, you'll find a draft email with subject line and body. Before you send it:
 
-**Before sending:**
-1. Read the subject line and body end-to-end.
-2. Check that any numbers mentioned (rating, vacancy rate, Walk Score) match what you see in the score dashboard. The AI uses the data, but occasionally formats it differently.
-3. Add any personal context you have about this company (if you know them from a previous conversation, mention it).
+1. Read the whole thing end-to-end.
+2. Check that any numbers (rating, vacancy rate, Walk Score) match what you see in the score dashboard.
+3. Add any personal context you have (previous conversations, mutual connections).
 4. The email is signed from Alex Chen, AE, EliseAI — update this to your actual name.
 
-**Copy the email:** Click into the text, select all, and copy. Paste into Gmail, Outreach, Apollo, or wherever you send.
+Click into the text, select all, copy, and paste into Gmail, Outreach, Apollo, or wherever you send.
 
 ---
 
-## 6. Understanding Data Gaps
+## 6. When Data Is Missing
 
-Sometimes a score will show as `0` or a component will be missing. This is normal — not every API returns data for every city.
-
-**Common gaps and what they mean:**
+Not every API returns data for every city or property. That's normal — the tool handles it gracefully.
 
 | What you see | Why | What to do |
 |-------------|-----|------------|
-| Crime data missing | Small towns often don't have FBI agency data | Ignore — friction score runs on weather only |
-| Walk Score missing | Geocoding failed (address not found) | Try re-running with a slightly different address format |
-| Google rating not shown | Property isn't registered as a business on Google Maps | Skip — opportunity score uses other signals |
-| Vacancy rate is state-level | FRED only has state data | Treat as a market proxy, not property-specific |
-| "No relevant news found" | Company is private or very small | Common — use other signals as your pitch angle |
-| Score shows "available_weight: 0.45" | Only 45% of signals were retrievable | Still valid; the score is honest about what it knows |
+| Crime data missing | Small towns often lack FBI agency data | Ignore — friction score runs on weather only |
+| Walk Score missing | Geocoding failed (address not found) | Try a slightly different address format and re-run |
+| Google rating not shown | Property isn't registered on Google Maps | Skip — opportunity score uses other signals |
+| Vacancy rate is state-level | FRED only publishes state data | Treat as a market proxy, not a property-specific number |
+| "No relevant news found" | Company is private or very small | Common — use market and property signals as your pitch angle |
+| Score shows "available_weight: 0.45" | Only 45% of signals were retrievable | Still valid — the score is built on what it actually knows |
 
 ---
 
-## 7. Setting Up Automated Runs
+## 7. Running Multiple Leads
 
-### Option A: Manual batch (recommended for now)
+### Option A: One at a time (recommended)
 
-Export your lead list as a CSV from Salesforce or HubSpot. Run leads one at a time through the UI. All processed leads are saved automatically to the `data/leads/` folder and appear in the history panel.
+Export your lead list from Salesforce or HubSpot as a CSV. Run leads one at a time through the UI. All processed leads are saved automatically to `data/leads/` and appear in the history panel.
 
-### Option B: Cron job (for technical users)
+### Option B: Direct API calls (for technical users)
 
-If you want to run a batch of leads automatically every morning, you can call the API directly. Each lead needs a POST request to `http://localhost:8000/pipeline`.
+You can call the backend directly with `curl` or any HTTP client:
 
-**Example using curl:**
 ```bash
 curl -X POST http://localhost:8000/pipeline \
   -H "Content-Type: application/json" \
@@ -270,17 +242,17 @@ curl -X POST http://localhost:8000/pipeline \
   }'
 ```
 
-To run this on a schedule, a developer can set up a cron job or GitHub Action that reads from a CSV and posts each row.
+To run this on a schedule, a developer can set up a cron job or GitHub Action that reads from a CSV and posts each row. For batches larger than 50 leads, add a 2-second delay between requests to stay within rate limits.
 
 ### Option C: Google Sheets button (planned)
 
-A future iteration will include a Google Apps Script that adds a "Run Pipeline" button to a Google Sheet. You paste leads into the sheet, click the button, and scored results populate in new columns. This requires no terminal use. See Doc 4 for the rollout plan.
+A future version will include a Google Apps Script that adds a "Run Pipeline" button directly to a Google Sheet. No terminal needed — paste leads in, click the button, get scored results in new columns. See Doc 4 for the rollout plan.
 
 ---
 
-## 8. FAQ and Troubleshooting
+## 8. Troubleshooting
 
-**Q: The tool is loading forever / nothing comes back.**
+**The tool is loading forever / nothing comes back.**
 
 Check the terminal window where you ran `uvicorn`. If you see error messages, the backend crashed. Common causes:
 - Missing API key: look for `Key required` in the terminal output
@@ -289,54 +261,55 @@ Check the terminal window where you ran `uvicorn`. If you see error messages, th
 
 ---
 
-**Q: I get a "Connection refused" error in the browser.**
+**"Connection refused" error in the browser.**
 
-The backend server isn't running. Go to your Terminal, navigate to the project folder, activate the virtual environment, and run `uvicorn backend.main:app --reload` again.
-
----
-
-**Q: The score seems too low for a lead I know is good.**
-
-Check the `available_weight` on each sub-score. If it's below 0.5, fewer than half the signals were available — the score is working with limited data. The most common causes:
-- Geocoding failed (address not found) → all location-based scores (Walk, climate, crime) are missing
-- Small city with no FBI data → Friction score runs on weather only
-- Try re-entering the address with the full street name spelled out.
+The backend isn't running. Navigate to the project folder in your terminal, activate the virtual environment, and run `uvicorn backend.main:app --reload` again.
 
 ---
 
-**Q: The outreach email mentions wrong numbers.**
+**The score seems too low for a lead I know is good.**
 
-The AI uses data from the enrichment run. If the enrichment returned stale or unexpected data (e.g., a cached Walk Score from a different address), the email may reference it. Check the raw enrichment data at the bottom of the results panel. If something looks wrong, re-run with a corrected address.
+Check the `available_weight` on each sub-score. If it's below 0.5, fewer than half the signals were available — the score is working with limited data. Most common causes:
+- Geocoding failed → all location-based scores (Walk, climate, crime) are missing
+- Small city with no FBI data → friction runs on weather only
+
+Try re-entering the address with the full street name spelled out.
 
 ---
 
-**Q: "Walk Score unavailable" even though I provided a correct address.**
+**The outreach email mentions wrong numbers.**
 
-WalkScore requires a valid lat/lon, which comes from geocoding. If geocoding fails, WalkScore can't run. The most common geocoding failure is an address not recognized by any of the four geocoders. Try variations:
+The AI uses data from the enrichment run. If the enrichment returned unexpected data (e.g., a Walk Score from a slightly wrong address), the email may reference it. Check the raw enrichment data at the bottom of the results panel. If something looks off, re-run with a corrected address.
+
+---
+
+**"Walk Score unavailable" even with a correct address.**
+
+WalkScore needs a valid lat/lon, which comes from geocoding. If geocoding failed, WalkScore can't run. Try these address variations:
 - `838 NE 66th St` → `838 Northeast 66th Street`
-- Remove apartment/suite numbers
+- Remove apartment or suite numbers
 - Use the main building address, not a specific unit
 
 ---
 
-**Q: I see an error about the Anthropic API.**
+**Error about the Anthropic API.**
 
-Check that `ANTHROPIC_API_KEY` in your `.env` file is correct and has no extra spaces. Then restart the server. If the error says "insufficient quota," your Anthropic account may need a credit card on file.
-
----
-
-**Q: Can I run this without the Anthropic API key?**
-
-Yes, partially. The enrichment step and scoring will work. The pain point and email generation steps will be skipped (they'll return an empty result). You won't get a draft email, but you'll still get the Lead Score and enrichment data.
+Check that `ANTHROPIC_API_KEY` in your `.env` file is correct with no extra spaces, then restart the server. If it says "insufficient quota," your Anthropic account may need a credit card on file.
 
 ---
 
-**Q: Where are my results saved?**
+**Can I run this without an Anthropic API key?**
 
-All processed leads are saved in `GTM_Automation_Tool/data/leads/` as JSON files. You can open them in any text editor. The summary index is at `data/index.json`. The History panel in the UI also shows all saved leads.
+Yes, partially. Enrichment and scoring still run. Pain point and email generation are skipped (they return empty). You'll still get the Lead Score and all enrichment data — just no draft email. Alternatively, set up a free Groq key and use `"llm_provider": "groq"` to get the full output at no cost.
 
 ---
 
-**Q: How do I clear old leads?**
+**Where are my results saved?**
 
-Delete the `.json` files from `data/leads/` and clear the `data/index.json` file (replace its contents with `[]`). This does not affect any API keys or settings.
+All processed leads are saved in `GTM_Automation_Tool/data/leads/` as JSON files. The summary index is at `data/index.json`. The History panel in the UI shows all saved leads.
+
+---
+
+**How do I clear old leads?**
+
+Delete the `.json` files from `data/leads/` and replace the contents of `data/index.json` with `[]`. This doesn't affect any API keys or settings.

@@ -4,7 +4,11 @@
 
 ---
 
-## 1. System Diagram
+## How It Works — The Short Version
+
+A lead comes in as a name + address. The system geocodes it, fires ~10 API calls in parallel, scores the results deterministically, runs a rule-based pain point engine (then adds ≤2 LLM-generated insights), and finally generates the outreach email with a quality LLM. The whole thing takes 20–60 seconds and saves a full JSON record.
+
+Here's the full picture:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -105,34 +109,36 @@
 
 ---
 
-## 2. API Inventory
+## API Inventory
 
-| API | Purpose | Data Returned | Free Tier | Rate Limit | Auth |
-|-----|---------|---------------|-----------|------------|------|
-| **US Census Bureau ACS 5-Year** | Population, median income, renter % | DP05, DP03, DP04 profile variables | Free, no quota enforced | ~500 req/day recommended | Optional API key (improves reliability) |
-| **FRED (St. Louis Fed)** | State-level rental vacancy rate | Latest observation for `{STATE}RVAC` series | Free | 1,000 req/day | API key required |
-| **WalkScore API** | Walk, transit, bike scores for address | walkscore, transit.score, bike.score (0–100 each) | 5,000 req/day | 5,000/day free; $0.0025/req above | API key required |
-| **Intellipins** | Geocoding, parcel data, building type | lat/lon, ipins_id, parcel area, elevation, owner, APN | No free tier | 429 on burst; ~1 req/sec recommended | API key required (`X-API-KEY` header) |
-| **Nominatim (OSM)** | Geocoding fallback, building footprint lookup | lat/lon, osm_type, osm_class, bounding box | Free (public instance) | **1 req/sec max** — must not burst | No key — User-Agent header required |
-| **Overpass API (OSM)** | Building geometry, amenity counts in 1km radius | Polygon nodes (for area calc), transit/park/retail counts | Free (public instance) | Soft-throttled; avoid >1 req/3 sec | No key — User-Agent header required |
-| **Open-Meteo Archive** | Historical climate (2024) | precip days, snowfall cm, temp max/min by day | Free, 10,000 req/day | 10,000/day | No key required |
-| **FBI Crime Data Explorer (CDE)** | City-level crime rates | Violent + property crime rates per 100k, by agency/year | Free | No documented limit | API key required |
-| **NewsAPI** | Company news, press releases | Article title, snippet, source, date, URL (up to 5) | 100 req/day (developer plan: 1,000/day) | 100/day free | API key required |
-| **Wikipedia REST API** | Company/city summary text | Title, extract (first paragraph), page URL | Free | ~200 req/sec globally; practically unlimited for this use | No key — User-Agent header required |
-| **Google Places API** | Property/company rating and reviews | Place name, rating (1–5), review count, up to 5 reviews | $200/month free credit (~11,700 text searches) | Quota-based; default 10 QPS | API key required |
-| **Anthropic API (Claude Haiku)** | Pain point LLM enrichment | JSON array of ≤2 additional pain points | None | Tier-dependent; 50 req/min on Tier 1 | API key required |
-| **Anthropic API (Claude Sonnet)** | Outreach email generation | JSON `{subject, message}` | None | Tier-dependent | Same key as Haiku |
-| **Groq API** *(alternative to Anthropic)* | Same two LLM steps using open-source models | Same output format | Generous free tier | 30 req/min on free tier | API key required; set `llm_provider=groq` |
+These are the 13 external services the pipeline calls, what each contributes, and what it costs to run them.
 
-**Fallback behavior when a key is missing:** Every API check starts with `if not api_key or "your_" in api_key`. Missing keys return a structured `{"error": "Key required"}` dict — the pipeline continues and that signal is excluded from scoring rather than crashing.
+| API | What it provides | Free tier | Rate limit | Auth |
+|-----|-----------------|-----------|------------|------|
+| **US Census Bureau ACS 5-Year** | Population, median income, renter % by city | Free, no quota enforced | ~500 req/day recommended | Optional API key |
+| **FRED (St. Louis Fed)** | State-level rental vacancy rate | Free | 1,000 req/day | API key required |
+| **WalkScore API** | Walk, transit, bike scores for address | 5,000 req/day free; $0.0025/req above | 5,000/day | API key required |
+| **Intellipins** | Geocoding, parcel data, building type, elevation | No free tier | ~1 req/sec | API key (`X-API-KEY` header) |
+| **Nominatim (OSM)** | Geocoding fallback, building footprint | Free (public instance) | **1 req/sec max — hard limit** | No key; User-Agent header required |
+| **Overpass API (OSM)** | Building geometry, nearby amenity counts | Free (public instance) | Soft-throttled; ~3 sec between queries | No key; User-Agent header required |
+| **Open-Meteo Archive** | Historical climate for 2024 (precip, snow, temp) | Free; 10,000 req/day | 10,000/day | No key required |
+| **FBI Crime Data Explorer** | City-level crime rates per 100k | Free | No documented limit | API key required |
+| **NewsAPI** | Company news and press releases | 100 req/day free; 1,000/day developer plan | 100/day free tier | API key required |
+| **Wikipedia REST API** | Company/city summary text | Free | Practically unlimited | No key; User-Agent header required |
+| **Google Places API** | Property rating and review count | $200/month free credit (~11,700 text searches) | Default 10 QPS | API key required |
+| **Anthropic (Claude Haiku)** | Pain point LLM enrichment | None (pay-per-use) | 50 req/min on Tier 1 | API key required |
+| **Anthropic (Claude Sonnet)** | Outreach email generation | None (pay-per-use) | 50 req/min on Tier 1 | Same key as Haiku |
+| **Groq API** *(alternative)* | Both LLM steps using open-source models | Generous free tier | 30 req/min free tier | API key; set `llm_provider=groq` |
+
+**What happens when a key is missing:** Every API call starts with a check for a valid key. If a key is missing or still set to a placeholder, that API returns a structured error and the pipeline continues — that signal is simply excluded from scoring rather than crashing the whole run.
 
 ---
 
-## 3. Data Flow for a Single Lead
+## What Actually Happens for a Single Lead
 
-Below is a complete trace of what happens to a single lead record from API call to stored JSON.
+Here's a full trace from request to saved file. This is the most useful thing to read if you're debugging or extending the pipeline.
 
-### Step 1: Request arrives at POST /pipeline
+### The request arrives at POST /pipeline
 
 ```json
 {
@@ -147,61 +153,48 @@ Below is a complete trace of what happens to a single lead record from API call 
 }
 ```
 
-`enabled_apis: null` means all 10 APIs run. You can pass a subset (e.g., `["census","walkscore","crime"]`) to restrict scope.
+`enabled_apis: null` runs everything. You can pass a list like `["census", "walkscore", "crime"]` to restrict which APIs run — useful for testing or debugging specific signals.
 
-### Step 2: Geocoding (sequential — all subsequent tasks depend on lat/lon)
+### Step 1: Geocoding (runs first — everything else depends on lat/lon)
 
-`_geocode_address("1600 Vine St", "Los Angeles", "CA")` runs Intellipins first. On success, it returns `(lat, lon, "intellipins", ipins_data_dict)`. The `ipins_data_dict` is passed directly to the parcel lookup — Intellipins is only called once, not twice.
+`_geocode_address("1600 Vine St", "Los Angeles", "CA")` tries Intellipins first. On success, it returns `(lat, lon, "intellipins", ipins_data_dict)`. The Intellipins data dict is passed directly into the parcel lookup — the service is called only once, not twice.
 
-### Step 3: 10 async tasks launched simultaneously
+If Intellipins is rate-limited or unavailable, the chain falls through to Nominatim structured, then Nominatim freeform, then US Census Geocoder. If all four fail, `lat` and `lon` are `None`, and the five coordinate-dependent APIs (WalkScore, OSM, Open-Meteo, Intellipins parcel, FBI) are skipped. The other five (Census, FRED, Wikipedia, News, Google Places) still run.
 
-`asyncio.create_task()` is called for each API. `asyncio.gather()` awaits all of them. No API waits for another — they run in parallel, capped by I/O latency (typically 1–3 seconds total for the slowest API to respond).
+### Step 2: 10 API calls fire in parallel
 
-### Step 4: Enrichment dict assembled
+`asyncio.create_task()` is called for each API, then `asyncio.gather()` awaits all of them. No API waits for any other. Total enrichment time is typically 1–5 seconds, bounded by the slowest API to respond.
 
-After gather completes, results are keyed by API name:
-```python
-{
-  "geocoords": {"lat": 34.097, "lon": -118.326, "source": "intellipins"},
-  "census": {"population": "3,967,000", "median_income": "$65,290", "renter_percentage": "61.5%"},
-  "fred": {"vacancy_rate": "4.2%", "rent_trend": "Stable"},
-  "walkscore": {"walk_score": 95, "transit_score": 88, "bike_score": 72, ...},
-  "intellipins": {"lat": ..., "parcel": {"area_sqm": 4200, "elevation_m": 89, ...}, "building_type": "Apartment Complex"},
-  "osm": {"osm_type": "apartments", "building_details": {"floors": "12", "calculated_area": "48,000 sq ft", ...}, "amenities_1000m": {"transit": 24, "parks": 3, "retail": 18}},
-  "open_meteo": {"annual_precip_days": 34, "annual_snowfall_cm": 0.0, "hottest_day_c": 42.1, "coldest_day_c": 4.2},
-  "crime": {"crime_score": 11.2, "violent_crime_rate_per_100k": 520, "above_national_avg_violent": true, ...},
-  "news": {"latest_news": [{"title": "Greystar acquires...", ...}]},
-  "wikipedia": {"company": {"title": "Greystar Real Estate Partners", "extract": "..."}, "city": {...}},
-  "google": {"rating": 3.1, "review_count": 412, "reviews": [...]}
-}
-```
+### Step 3: Results are assembled into an enrichment dict
 
-All `"N/A"`, `""`, `"Data unavailable"` strings are recursively replaced with `null` via `_nullify()` before scoring.
+After gather completes, results are keyed by API name. The pipeline then runs `_nullify()` on the whole dict — this recursively converts `"N/A"`, `""`, and `"Data unavailable"` strings to `null` before passing to the scorer.
 
-### Step 5: Scoring (pure deterministic functions — no I/O)
+### Step 4: Scoring runs (deterministic, no I/O)
 
-`compute_all_scores(enrichment)` calls four sub-scorers in sequence. Each iterates the enrichment dict, extracts numeric values via `_parse_float()`, normalizes them 0–1, and runs `_weighted_score()`. Missing signals are simply not added to `components` — the denominator shrinks, and the `available_weight` reflects this.
+`compute_all_scores(enrichment)` calls four independent sub-scorers. Each extracts numeric values from the enrichment dict, normalizes them to 0–1 using the formulas below, and runs a partial-weight average. Missing signals shrink the denominator — they don't penalize the score.
 
-### Step 6: Pain point inference
+### Step 5: Pain points
 
-`_rule_based_pain_points()` runs ~10 if-conditions against scores + enrichment values. Each fires independently. Output is a list of tagged dicts. Claude Haiku (or Groq llama-3.1-8b) then receives this list plus raw data context and appends ≤2 LLM-generated points.
+`_rule_based_pain_points()` evaluates ~10 if-conditions against score values and enrichment data. Each fires independently. Then Claude Haiku (or Groq llama-3.1-8b) receives this initial list plus raw enrichment context and appends up to 2 additional insights grounded in specific numbers.
 
-### Step 7: Outreach generation
+### Step 6: Email generation
 
-Claude Sonnet (or Groq llama-3.3-70b) receives a structured prompt with lead context, top 5 pain points (sorted by severity), and key enrichment numbers. It returns JSON `{subject, message}`. The function wraps it with `generated_at` timestamp and `provider`.
+Claude Sonnet (or Groq llama-3.3-70b) receives a structured prompt with the lead context, top 5 pain points sorted by severity, and key enrichment numbers. It returns JSON `{subject, message}`. The function adds a `generated_at` timestamp and `provider` field.
 
-### Step 8: Storage
+### Step 7: Save
 
 `save_lead()` writes the full record to `data/leads/{uuid}.json` and appends a summary row to `data/index.json`.
 
 ---
 
-## 4. Scoring Rubric — Full Reference
+## Scoring Rubric — Full Reference
+
+These are the exact formulas used. If you're tuning weights or adding new signals, this is the spec.
 
 ### Demand Score (final weight: 20%)
 
-| Component | Source API | Weight | Normalization Formula |
-|-----------|------------|--------|-----------------------|
+| Component | Source | Weight | Normalization |
+|-----------|--------|--------|---------------|
 | renter_pct | Census `DP04_0047PE` | 0.25 | `min(renter_pct / 70.0, 1.0)` |
 | low_vacancy | FRED `{STATE}RVAC` | 0.20 | `max(0, 1.0 - vacancy / 15.0)` |
 | walk_score | WalkScore | 0.15 | `walk / 100.0` |
@@ -212,28 +205,28 @@ Claude Sonnet (or Groq llama-3.3-70b) receives a structured prompt with lead con
 
 ### Friction Score (final weight: 35%)
 
-| Component | Source API | Weight | Normalization Formula |
-|-----------|------------|--------|-----------------------|
-| crime | FBI CDE | 0.25 | `(crime_score - 1.0) / 14.0` (score is 1–15 scale) |
-| precip_days | Open-Meteo archive | 0.25 | `min(precip_days / 200.0, 1.0)` |
-| snowfall | Open-Meteo archive | 0.20 | `min(snowfall_cm / 200.0, 1.0)` |
-| temp_range | Open-Meteo archive | 0.20 | `min((hottest_c - coldest_c) / 80.0, 1.0)` |
+| Component | Source | Weight | Normalization |
+|-----------|--------|--------|---------------|
+| crime | FBI CDE | 0.25 | `(crime_score - 1.0) / 14.0` (1–15 scale) |
+| precip_days | Open-Meteo | 0.25 | `min(precip_days / 200.0, 1.0)` |
+| snowfall | Open-Meteo | 0.20 | `min(snowfall_cm / 200.0, 1.0)` |
+| temp_range | Open-Meteo | 0.20 | `min((hottest_c - coldest_c) / 80.0, 1.0)` |
 | elevation | Intellipins parcel | 0.10 | `min(elevation_m / 2000.0, 1.0)` |
 
 ### Scale Score (final weight: 15%)
 
-| Component | Source API | Weight | Normalization Formula |
-|-----------|------------|--------|-----------------------|
+| Component | Source | Weight | Normalization |
+|-----------|--------|--------|---------------|
 | building_type | Intellipins + OSM | 0.30 | Lookup table (see below) |
-| footprint | Overpass (polygon area) | 0.25 | `min(area_sqft / 100000, 1.0)` |
+| footprint | Overpass polygon | 0.25 | `min(area_sqft / 100000, 1.0)` |
 | lot_area | Intellipins parcel | 0.20 | `min(area_sqm * 10.7639 / 200000, 1.0)` |
 | floors | OSM `building:levels` | 0.15 | `min(floors / 30.0, 1.0)` |
 | units | OSM `building:units` | 0.10 | `min(units / 500.0, 1.0)` |
 
-**Building type lookup table:**
+**Building type lookup:**
 
-| Building Type | Normalized Score |
-|---------------|-----------------|
+| Type | Score |
+|------|-------|
 | Apartment Complex | 1.00 |
 | Hotel | 0.80 |
 | Commercial / Industrial | 0.75 |
@@ -244,32 +237,33 @@ Claude Sonnet (or Groq llama-3.3-70b) receives a structured prompt with lead con
 | Single Family Housing | 0.45 |
 | Unknown | 0.20 |
 
-**Building type classification logic** (in priority order):
-1. If OSM type is `apartments`, `residential`, or `dormitory` → Apartment Complex
-2. If OSM type is `commercial`, `retail`, `industrial` → Commercial / Industrial
-3. If OSM type is `office` → Office Building
-4. If OSM type is `hotel` → Hotel
-5. If OSM class is `amenity` → Shopping Complex / Amenity
-6. If OSM class is `shop` → Retail / Shopping
-7. If Intellipins `address_type` is `base` or `supplementary` → Apartment / Shopping Complex
+**Building type classification (priority order):**
+1. OSM type `apartments`, `residential`, or `dormitory` → Apartment Complex
+2. OSM type `commercial`, `retail`, or `industrial` → Commercial / Industrial
+3. OSM type `office` → Office Building
+4. OSM type `hotel` → Hotel
+5. OSM class `amenity` → Shopping Complex / Amenity
+6. OSM class `shop` → Retail / Shopping
+7. Intellipins `address_type` is `base` or `supplementary` → Apartment / Shopping Complex
 8. Default → Single Family Housing
 
 ### Opportunity Score (final weight: 30%)
 
-| Component | Source API | Weight | Normalization Formula |
-|-----------|------------|--------|-----------------------|
+| Component | Source | Weight | Normalization |
+|-----------|--------|--------|---------------|
 | news_signal | NewsAPI keyword match | 0.30 | growth→0.85, cost_pressure→0.75, trouble→0.65, mixed→0.55, neutral→0.40, none→0.30 |
 | low_rating | Google Places | 0.20 | `max(0, 0.90 - (rating - 1.0) / 4.0 * 0.70)` |
 | renter_market | Census | 0.15 | `min(renter_pct / 65.0, 1.0)` |
 | vacancy_urgency | FRED | 0.15 | `min(0.30 + vacancy / 10.0 * 0.60, 0.90)` |
 | walkability | WalkScore | 0.10 | `walk / 100.0` |
-| wiki_presence | Wikipedia REST | 0.10 | `0.80` if company page found, else skipped |
+| wiki_presence | Wikipedia REST | 0.10 | `0.80` if company page found, else excluded |
 
 **News sentiment keyword matching:**
-- Growth keywords: `expand, acquir, growth, new market, scale, portfolio, launch, partner, open, hire, invest`
-- Cost pressure keywords: `layoff, restructur, downsize, cost-cut, job cut, budget, deficit, closure, reduce staff`
-- Trouble keywords: `lawsuit, fine, penalty, complaint, eviction, fraud, investigation`
-- ≥2 growth hits → `growth`; ≥2 cost hits → `cost_pressure`; ≥2 trouble hits → `trouble`; ≥1 any → `mixed`; else `neutral`
+- Growth: `expand, acquir, growth, new market, scale, portfolio, launch, partner, open, hire, invest`
+- Cost pressure: `layoff, restructur, downsize, cost-cut, job cut, budget, deficit, closure, reduce staff`
+- Trouble: `lawsuit, fine, penalty, complaint, eviction, fraud, investigation`
+
+Logic: ≥2 growth hits → `growth`; ≥2 cost hits → `cost_pressure`; ≥2 trouble hits → `trouble`; ≥1 any → `mixed`; else `neutral`.
 
 ### Lead Score Composite
 
@@ -277,29 +271,31 @@ Claude Sonnet (or Groq llama-3.3-70b) receives a structured prompt with lead con
 weights = {"demand": 0.20, "friction": 0.35, "scale": 0.15, "opportunity": 0.30}
 ```
 
-A sub-score is only included if its `available_weight >= 0.30` (i.e., at least 30% of its max-weight signals were available). The denominator is the sum of weights of included sub-scores, not 1.0 — so a lead missing half its signals still gets a fair score, not a penalized one.
+A sub-score is only included in the composite if its `available_weight >= 0.30` — meaning at least 30% of its signals had data. The denominator is the sum of included sub-score weights, not a fixed 1.0. A lead that's missing half its signals still gets a fair score, not a penalized one.
 
 ---
 
-## 5. Error Handling
+## When Things Go Wrong
 
-| Scenario | Behavior |
-|----------|----------|
+The pipeline is designed to degrade gracefully — any single API failing should produce a slightly less informed score, not an error page.
+
+| What fails | What happens |
+|-----------|-------------|
 | API key missing or placeholder | Returns `{"error": "Key required"}` for that source; pipeline continues |
-| HTTP non-200 response | Returns `{}` or `{"error": "...status code..."}` for that source |
-| Network timeout | `httpx.AsyncClient` has per-API timeouts (10–30s); timeout raises exception caught by `asyncio.gather` |
-| `asyncio.gather` exception | Returns the exception object; pipeline checks `isinstance(result, Exception)` and falls back to `{}` |
-| Geocoding fails completely | `lat=None, lon=None` — WalkScore, OSM, Open-Meteo, Intellipins parcel are all skipped; Census, FRED, Wikipedia, News, FBI still run |
-| Intellipins rate limited (429) | `_geocode_address` catches `RuntimeError("rate_limited")`; falls back to Nominatim; downstream Intellipins parcel is set to `{"error": "Rate limited..."}` |
-| LLM (Haiku) error | `_llm_enrich` catches all exceptions; returns rule-based points only |
-| LLM (Sonnet) error | `generate_outreach` catches all exceptions; returns `{"error": ..., "subject": "", "message": ""}` — pipeline still saves |
-| FBI ORI not found for city | Returns `{"error": "No ORI found for {city}, {state}"}` — crime signal excluded from scoring |
-| OSM building not found | `building_details: {}` — footprint and floors signals excluded from scale score |
-| News returns no results | Returns `{"latest_news": "No relevant news found..."}` — scored as `"none"` sentiment (0.30) |
+| HTTP non-200 response | Returns `{}` or `{"error": "..."}` for that source; signal excluded from scoring |
+| Network timeout | `httpx.AsyncClient` per-API timeouts (10–30s); exception caught by `asyncio.gather` |
+| `asyncio.gather` exception | Exception object returned; pipeline checks `isinstance(result, Exception)` and falls back to `{}` |
+| Geocoding fails completely | `lat=None, lon=None` — coordinate-dependent APIs skipped; Census, FRED, Wikipedia, News, FBI still run |
+| Intellipins rate limited (429) | Falls back to Nominatim; downstream parcel call returns `{"error": "Rate limited..."}` |
+| LLM (Haiku) error | Returns rule-based pain points only; no LLM augmentation |
+| LLM (Sonnet) error | Returns `{"error": ..., "subject": "", "message": ""}` — pipeline still saves the full record |
+| FBI ORI not found for city | `{"error": "No ORI found for {city}, {state}"}` — crime excluded from friction score |
+| OSM building not found | `building_details: {}` — footprint and floors excluded from scale score |
+| No news results | Scored as `"none"` sentiment (0.30); pipeline continues normally |
 
 ---
 
-## 6. Fallback Chain — Geocoding
+## Geocoding Fallback Chain
 
 ```
 Primary:   Intellipins /geocode/forward
@@ -315,43 +311,38 @@ Fallback 2: Nominatim freeform search (single q= param)
 Fallback 3: US Census Geocoder (free, no key)
               ↓ fails: lat=None, lon=None
 
-Result when all fail: coordinate-dependent APIs are skipped; non-coordinate
-APIs (Census, FRED, Wikipedia, News, FBI) still run.
+When all fail: coordinate-dependent APIs are skipped;
+non-coordinate APIs (Census, FRED, Wikipedia, News, FBI) still run.
 ```
 
-**Fallback chain — Intellipins building type:**
-If Intellipins returns no result or an error, `building_type` is classified from OSM signals only (osm_class + osm_type). If OSM is also missing, building type defaults to "Single Family Housing" with normalized score 0.20.
-
-**Fallback chain — news enrichment:**
-If NewsAPI returns no articles matching the company name, news sentiment is scored as `"none"` (0.30). If NewsAPI key is missing, news is excluded from scoring entirely (component not added to opportunity dict).
+If Intellipins returns no result, building type is classified from OSM signals only. If OSM is also missing, building type defaults to "Single Family Housing" with score 0.20.
 
 ---
 
-## 7. Rate Limit Management
+## Rate Limits at Volume
 
-For batches of leads, rate limits are the primary operational constraint. The table below describes behavior per API at volume.
+For single leads this doesn't matter much. For batches, rate limits become the binding constraint. Here's what to know before running 50+ leads.
 
-| API | Constraint | Mitigation |
-|-----|-----------|------------|
-| **Nominatim** | 1 req/sec hard limit | Each lead makes 1–2 Nominatim calls (forward + optional reverse). At 1 req/sec, 50 leads ≈ 100 seconds of Nominatim time minimum. Do not parallelize Nominatim across leads. |
-| **Overpass** | Soft throttle; ~3–5 sec between heavy queries | Runs two queries per lead (building geometry + amenity radius). For batches >20 leads, add 2–3 sec sleep between leads. |
-| **Intellipins** | Rate limited at burst; no published req/sec | Returns 429 on burst. Current code detects 429, flags, and falls back. For batch processing, add 1 sec delay between leads. |
-| **NewsAPI** | 100 req/day (free), 1,000/day (developer) | Each lead = 1 NewsAPI call. Free tier: 100 leads/day max. Developer: 1,000 leads/day. |
-| **Google Places** | Quota-based; default 10 QPS | Each lead = 2 calls (Text Search + Place Details). At 10 QPS, effectively unlimited for single-user batch. Watch monthly billing. |
-| **WalkScore** | 5,000 req/day free | Each lead = 1 call. 5,000 leads/day before billing kicks in. |
-| **Anthropic (Haiku)** | Tier 1: 50 req/min | Haiku call per lead for pain points. Won't bind at normal processing speeds (5–10 sec/lead). |
-| **Anthropic (Sonnet)** | Tier 1: 50 req/min | One call per lead for email. Same — won't bind. |
-| **Groq** | Free tier: 30 req/min | Covers both LLM steps. At 1 lead per 5–10 sec, free tier is sufficient for all SDR-scale use. |
-| **Open-Meteo** | 10,000 req/day | 1 call per lead. 10,000 leads/day max at free tier. |
-| **Census, FRED, Wikipedia, FBI** | Generous/none | No material constraint at SDR-scale volumes. |
+| API | The constraint | What to do |
+|-----|---------------|------------|
+| **Nominatim** | 1 req/sec hard limit; violations can get you blocked | Do not parallelize Nominatim across leads. 50 leads ≈ 100 seconds minimum |
+| **Overpass** | Soft-throttled; ~3–5 sec between heavy queries | Add 2–3 sec sleep between leads for batches >20 |
+| **Intellipins** | Returns 429 on burst | Add 1 sec delay between leads for batch processing |
+| **NewsAPI** | 100 req/day free; 1,000/day developer plan | Free tier: hard cap at 100 leads/day |
+| **Google Places** | Default 10 QPS; watch monthly billing | Each lead = 2 calls; effectively unlimited for single-user use, but track monthly spend |
+| **WalkScore** | 5,000 req/day free | Well above any SDR-scale volume |
+| **Anthropic Haiku / Sonnet** | 50 req/min Tier 1 | Won't bind at normal processing speeds (5–10 sec/lead) |
+| **Groq free tier** | 30 req/min | Covers both LLM steps comfortably at SDR-scale volumes |
+| **Open-Meteo** | 10,000 req/day | Not a realistic constraint |
+| **Census, FRED, Wikipedia, FBI** | Generous or undocumented | No material constraint at SDR-scale |
 
-**Recommended batch strategy for >50 leads:** run the pipeline sequentially per lead with a 2-second inter-lead delay. Total throughput ≈ 25–30 leads/hour, bounded by the slowest API per lead (~5–10 sec) plus the 2-sec buffer.
+**Recommended batch strategy for >50 leads:** run leads sequentially with a 2-second delay between each. Total throughput ≈ 25–30 leads/hour. Each lead takes 5–10 seconds for the pipeline; the 2-second buffer keeps Nominatim and Overpass within their limits.
 
 ---
 
-## 8. Output Schema
+## Output Schema
 
-Every pipeline run produces a record in `data/leads/{id}.json` with this structure:
+Every pipeline run saves a full record to `data/leads/{id}.json`.
 
 ```json
 {
@@ -371,19 +362,19 @@ Every pipeline run produces a record in `data/leads/{id}.json` with this structu
     "fred": {"vacancy_rate": "string", "rent_trend": "string"},
     "wikipedia": {"company": null | {"title", "extract", "url"}, "city": {"title", "extract"}},
     "news": {"latest_news": [] | "No relevant news..."},
-    "walkscore": {"walk_score": int, "transit_score": int, "bike_score": int, ...},
+    "walkscore": {"walk_score": int, "transit_score": int, "bike_score": int},
     "intellipins": {"lat", "lon", "ipins_id", "building_type", "parcel": {...}},
     "google": {"rating": float, "review_count": int, "reviews": [...]},
-    "osm": {"osm_type", "building_details": {"floors", "calculated_area", ...}, "amenities_1000m": {...}},
-    "open_meteo": {"annual_precip_days": int, "annual_snowfall_cm": float, "hottest_day_c": float, ...},
-    "crime": {"crime_score": float, "violent_crime_rate_per_100k": float, "above_national_avg_violent": bool, ...}
+    "osm": {"osm_type", "building_details": {"floors", "calculated_area"}, "amenities_1000m": {...}},
+    "open_meteo": {"annual_precip_days": int, "annual_snowfall_cm": float, "hottest_day_c": float},
+    "crime": {"crime_score": float, "violent_crime_rate_per_100k": float, "above_national_avg_violent": bool}
   },
   "scores": {
-    "demand":      {"score": float, "available_weight": float, "max_weight": 1.0, "components": {...}},
-    "friction":    {"score": float, "available_weight": float, "max_weight": 1.0, "components": {...}},
-    "scale":       {"score": float, "available_weight": float, "max_weight": 1.0, "components": {...}},
-    "opportunity": {"score": float, "available_weight": float, "max_weight": 1.0, "news_sentiment": "string", "components": {...}},
-    "lead_score":  {"score": float, "grade": "A|B|C|D|F", "available_weight": float, "weights": {...}, "components": {...}}
+    "demand":      {"score": float, "available_weight": float, "components": {...}},
+    "friction":    {"score": float, "available_weight": float, "components": {...}},
+    "scale":       {"score": float, "available_weight": float, "components": {...}},
+    "opportunity": {"score": float, "available_weight": float, "news_sentiment": "string", "components": {...}},
+    "lead_score":  {"score": float, "grade": "A|B|C|D|F", "available_weight": float, "weights": {...}}
   },
   "pain_points": [
     {"tag": "string", "label": "string", "severity": "high|medium|low", "description": "string", "source": "rule|llm"}
@@ -397,4 +388,4 @@ Every pipeline run produces a record in `data/leads/{id}.json` with this structu
 }
 ```
 
-The `index.json` file is a lightweight summary array with only `{id, created_at, name, company, city, state, lead_score, grade}` — used to populate the leads list without loading full records.
+The `index.json` file stores only `{id, created_at, name, company, city, state, lead_score, grade}` for each lead — used to populate the history list without loading full records.
