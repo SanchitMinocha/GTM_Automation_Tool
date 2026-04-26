@@ -1,0 +1,79 @@
+"""
+Unified async LLM completion — Anthropic Claude or Groq Cloud (OpenAI-compatible).
+
+Usage:
+    text = await chat_complete(prompt, provider="anthropic", max_tokens=600, fast=True)
+
+provider:  "anthropic" | "groq"
+fast=True: cheap/quick model (pain point enrichment, Haiku / llama-3.1-8b)
+fast=False: quality model   (outreach copy, Sonnet / llama-3.3-70b)
+"""
+from __future__ import annotations
+import os
+import httpx
+
+_ANTHROPIC_FAST_MODEL    = "claude-haiku-4-5-20251001"
+_ANTHROPIC_QUALITY_MODEL = "claude-sonnet-4-6"
+_GROQ_FAST_MODEL         = "llama-3.1-8b-instant"
+_GROQ_QUALITY_MODEL      = "llama-3.3-70b-versatile"
+
+
+async def chat_complete(
+    prompt: str,
+    provider: str = "anthropic",
+    max_tokens: int = 600,
+    fast: bool = False,
+) -> str:
+    """Run a single-turn completion. Returns the raw text string."""
+    if provider == "groq":
+        return await _groq(prompt, max_tokens, fast)
+    return await _anthropic(prompt, max_tokens, fast)
+
+
+# ---------------------------------------------------------------------------
+# Anthropic
+# ---------------------------------------------------------------------------
+
+async def _anthropic(prompt: str, max_tokens: int, fast: bool) -> str:
+    try:
+        import anthropic
+    except ImportError:
+        raise RuntimeError("anthropic package not installed — run: pip install anthropic")
+
+    api_key = os.getenv("ANTHROPIC_API_KEY", "")
+    if not api_key or "your_" in api_key:
+        raise RuntimeError("ANTHROPIC_API_KEY not configured in .env")
+
+    model = _ANTHROPIC_FAST_MODEL if fast else _ANTHROPIC_QUALITY_MODEL
+    client = anthropic.AsyncAnthropic(api_key=api_key)
+    response = await client.messages.create(
+        model=model,
+        max_tokens=max_tokens,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return response.content[0].text.strip()
+
+
+# ---------------------------------------------------------------------------
+# Groq (OpenAI-compatible REST — no extra package needed)
+# ---------------------------------------------------------------------------
+
+async def _groq(prompt: str, max_tokens: int, fast: bool) -> str:
+    api_key = os.getenv("GROQ_API_KEY", "")
+    if not api_key or "your_" in api_key:
+        raise RuntimeError("GROQ_API_KEY not configured in .env")
+
+    model = _GROQ_FAST_MODEL if fast else _GROQ_QUALITY_MODEL
+    async with httpx.AsyncClient(timeout=30.0) as client:
+        r = await client.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+            json={
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+                "max_tokens": max_tokens,
+            },
+        )
+        if r.status_code != 200:
+            raise RuntimeError(f"Groq API {r.status_code}: {r.text[:200]}")
+        return r.json()["choices"][0]["message"]["content"].strip()

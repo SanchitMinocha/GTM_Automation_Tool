@@ -1,0 +1,48 @@
+# ── Secrets & environment ────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Python ───────────────────────────────────────────────────────────
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+*.egg
+
+# ── Lead data (PII — generated at runtime, not for source control) ───
+data/leads/*
+!data/leads/.gitkeep
+data/index.json
+
+# ── Frontend dependencies & build output ─────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+
+# ── Dev scratch & generated artifacts ────────────────────────────────
+scratch.py
+swagger.json
+walkscore_tile.html
+
+# ── OS & editor ───────────────────────────────────────────────────────
+.DS_Store
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ── Logs ──────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

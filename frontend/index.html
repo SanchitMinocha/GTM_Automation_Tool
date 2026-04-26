@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EliseAI GTM | Market Enrichment</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">ELISE AI // GTM</div>
+            <nav>
+                <span id="system-status" class="status-badge">System Online</span>
+            </nav>
+        </header>
+
+        <!-- Developer Panel -->
+        <div class="dev-panel">
+            <span class="dev-badge">DEV</span>
+            <span class="dev-label">API Controls</span>
+            <div class="api-toggles">
+                <button class="api-toggle" data-api="census"    title="US Census Bureau ACS">Census</button>
+                <button class="api-toggle" data-api="fred"      title="FRED — Federal Reserve">FRED</button>
+                <button class="api-toggle" data-api="wikipedia" title="Wikipedia REST API">Wikipedia</button>
+                <button class="api-toggle" data-api="news"      title="NewsAPI.org">News</button>
+                <button class="api-toggle" data-api="walkscore" title="Walk Score API">WalkScore</button>
+                <button class="api-toggle" data-api="intellipins" title="Intellipins Address Geocode + Parcel Lookup">Intellipins</button>
+                <button class="api-toggle" data-api="google"    title="Google Places API — rating & reviews">Google</button>
+                <button class="api-toggle" data-api="osm"       title="OpenStreetMap Nominatim">OSM</button>
+                <button class="api-toggle" data-api="open_meteo" title="Open-Meteo Archive">Climate</button>
+                <button class="api-toggle" data-api="crime"     title="FBI CDE Crime Data">Crime</button>
+            </div>
+            <span class="dev-hint">Disabled APIs skip server-side — no quota used.</span>
+            <span class="dev-divider">|</span>
+            <span class="dev-label">LLM</span>
+            <div class="api-toggles">
+                <button class="api-toggle on"  data-llm="anthropic" title="Anthropic Claude (Haiku for analysis, Sonnet for outreach)">Anthropic</button>
+                <button class="api-toggle off" data-llm="groq"      title="Groq Cloud — free tier, fast (Llama models)">Groq</button>
+            </div>
+        </div>
+
+        <section class="hero">
+            <h1>Lead Enrichment <span>Platform</span></h1>
+            <p>Automate the discovery of market potential. Enrich inbound leads with census, economic, and news data instantly.</p>
+        </section>
+
+        <main class="main-grid">
+            <div class="card">
+                <h2>Inbound Lead Details</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Enter the prospect information to begin enrichment.</p>
+
+                <!-- Test profile dropdown -->
+                <div class="form-group" style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--glass-border);">
+                    <label for="test-profile">Load Test Profile</label>
+                    <select id="test-profile">
+                        <option value="">— manual entry —</option>
+                    </select>
+                </div>
+
+                <form id="lead-form">
+                    <div class="form-group">
+                        <label for="name">Lead Name</label>
+                        <input type="text" id="name" placeholder="e.g. John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company Name</label>
+                        <input type="text" id="company" placeholder="e.g. Skyline Property Mgmt" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="property_address">Property Address</label>
+                        <input type="text" id="property_address" placeholder="e.g. 123 Main St" required>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" placeholder="e.g. Austin" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" id="state" placeholder="e.g. TX" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="e.g. john@skyline.com" required>
+                    </div>
+                    <div class="btn-group">
+                        <button type="submit" id="submit-btn">Enrich Lead Data</button>
+                        <button type="button" id="pipeline-btn" class="btn-pipeline">Run Full Pipeline</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="results-card" class="card results-section">
+                <h2>Enrichment Insights</h2>
+                <div id="loading-indicator" style="display: none; margin-top: 2rem; text-align: center;">
+                    <p>Enriching data from APIs...</p>
+                </div>
+                <div id="results-content">
+                    <p style="color: var(--text-muted); margin-top: 1rem;">Submit a lead to see market demographics, vacancy rates, and walkability scores.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
