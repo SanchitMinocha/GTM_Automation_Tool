@@ -17,12 +17,23 @@ This tool replaces all of that lookup work.
 ## How It Works
 
 ```mermaid
-flowchart LR
-    A["Name + Company\n+ Address"] --> B["Geocode\n4-level fallback"] --> C["9 APIs\nin parallel"]
-    C --> D["Building Type\nClassification"]
-    D --> E["Google Places\n(targeted search)"] --> F["Score\nDemand · Friction\nScale · Opportunity"]
-    F --> G["Pain Points\nrules + LLM"]
-    G --> H["Cold Email\narc + LLM"]
+flowchart TD
+    subgraph row1[" "]
+        direction LR
+        A["Name + Company<br/>+ Address"] --> B["Geocode<br/>4-level fallback"] --> C["9 APIs<br/>in parallel"]
+    end
+    
+    subgraph row2[" "]
+        direction LR
+        D["Building Type<br/>Classification"] --> E["Google Places<br/>(targeted search)"] --> F["Score<br/>Demand · Friction<br/>Scale · Opportunity"]
+    end
+    
+    subgraph row3[" "]
+        direction LR
+        G["Pain Points<br/>rules + LLM"] --> H["Cold Email<br/>arc + LLM"]
+    end
+    
+    row1 --> row2 --> row3
 ```
 
 1. The address gets geocoded (Intellipins → Nominatim → US Census as fallbacks).
