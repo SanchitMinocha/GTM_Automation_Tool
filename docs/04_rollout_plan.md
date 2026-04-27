@@ -21,6 +21,22 @@ An SDR sending a bad cold email because the tool hallucinated a rating is worse 
 
 ---
 
+## Phase Progression Timeline
+
+```mermaid
+graph TD
+    A["🔍 Phase 1: Validate<br/>Week 1<br/>30-40 test leads<br/>✓ VP sign-off<br/>✓ No crashes"] -->|VP approval| B["👥 Phase 2: Pilot<br/>Weeks 2-4<br/>2-3 SDRs, 60/day<br/>✓ ≥60% unedited<br/>✓ Time saved"]
+    B -->|Pilot success| C["🚀 Phase 3: Full Team<br/>Weeks 5-6<br/>All SDRs, 60/day<br/>✓ ≥70% unedited<br/>✓ Clean deliverability"]
+    C -->|Quality gate| D["⚡ Phase 4: Auto-Send<br/>Week 7+<br/>Full CRM automation<br/>✓ ≥75% unedited<br/>✓ Zero factual errors"]
+    
+    style A fill:#e1f5ff
+    style B fill:#f3e5f5
+    style C fill:#e8f5e9
+    style D fill:#fff3e0
+```
+
+---
+
 ## Phase 1 — Internal Validation 🔍
 
 **Timeline:** Week 1  
@@ -123,22 +139,6 @@ Wire up automated sending via **CRM API** (Outreach.io, Apollo, or HubSpot seque
 - Tool pushes pre-scored emails into send queue
 - Scheduler fires at optimal intervals
 - SDRs shift to **reply management & meeting booking** (not queue management)
-
----
-
-## Phase Progression Timeline
-
-```mermaid
-graph TD
-    A["🔍 Phase 1: Validate<br/>Week 1<br/>30-40 test leads<br/>✓ VP sign-off<br/>✓ No crashes"] -->|VP approval| B["👥 Phase 2: Pilot<br/>Weeks 2-4<br/>2-3 SDRs, 60/day<br/>✓ ≥60% unedited<br/>✓ Time saved"]
-    B -->|Pilot success| C["🚀 Phase 3: Full Team<br/>Weeks 5-6<br/>All SDRs, 60/day<br/>✓ ≥70% unedited<br/>✓ Clean deliverability"]
-    C -->|Quality gate| D["⚡ Phase 4: Auto-Send<br/>Week 7+<br/>Full CRM automation<br/>✓ ≥75% unedited<br/>✓ Zero factual errors"]
-    
-    style A fill:#e1f5ff
-    style B fill:#f3e5f5
-    style C fill:#e8f5e9
-    style D fill:#fff3e0
-```
 
 ---
 
