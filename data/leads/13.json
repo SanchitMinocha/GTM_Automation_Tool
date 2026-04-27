@@ -1,0 +1,309 @@
+{
+  "id": "13",
+  "created_at": "2026-04-27T17:40:34.639022Z",
+  "lead_info": {
+    "name": "George Ross",
+    "email": "george.ross@namcorp.com",
+    "company": "National Apartment Management",
+    "address": "400 Boren Avenue N",
+    "city": "Seattle",
+    "state": "WA"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 47.622535,
+      "lon": -122.335578,
+      "source": "intellipins"
+    },
+    "census": {
+      "population": "726,054",
+      "median_income": "$105,391",
+      "renter_percentage": "54.8%"
+    },
+    "fred": {
+      "vacancy_rate": "6.6%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": null,
+      "city": {
+        "title": "Seattle",
+        "extract": "Seattle is the most populous city in the U.S. state of Washington and the Pacific Northwest region of North America. It is the 18th-most populous city in the United States with a population of 780,995 in 2024, while the Seattle metropolitan area at over 4.15 million residents is the 15th-most populous metropolitan area in the nation. The city is the county seat of King County, the most populous county in Washington. Seattle's growth rate of 21.1% between 2010 and 2020 made it one of the country's fastest-growing large cities."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"National Apartment Management\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 99,
+      "description": "Walker's Paradise",
+      "transit_score": 91,
+      "transit_description": "Rider's Paradise",
+      "bike_score": 81,
+      "bike_description": "Very Bikeable"
+    },
+    "intellipins": {
+      "lat": 47.622535,
+      "lon": -122.335578,
+      "ipins_id": "iUS00043642846",
+      "address_type": null,
+      "formatted_address": "400 Boren Avenue N, Seattle WA 98109, United States",
+      "geocode_score": 0.888,
+      "parcel": {
+        "area_sqm": 7133,
+        "area_sqft": "76,778 sq ft",
+        "elevation_m": 71,
+        "parcel_owner": "DEPASQUALE KELLEY & COMPANY",
+        "apn": "1983200635",
+        "iparcel_id": "iUSP000053607589",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  -122.335711,
+                  47.622286
+                ],
+                [
+                  -122.335228,
+                  47.622284
+                ],
+                [
+                  -122.335229,
+                  47.62212
+                ],
+                [
+                  -122.335713,
+                  47.622122
+                ],
+                [
+                  -122.335711,
+                  47.622286
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "building_type": "Apartment Complex"
+    },
+    "google": {
+      "place_name": "Radius",
+      "matched_via": "address",
+      "place_types": [
+        "establishment",
+        "point_of_interest",
+        "real_estate_agency"
+      ],
+      "rating": 3.7,
+      "review_count": 190,
+      "editorial_summary": null,
+      "reviews": [
+        {
+          "author": "Aniket Sanap",
+          "rating": 1,
+          "time": "2 months ago",
+          "text": "\"I strongly advise anyone looking at this building to keep searching. My experience here has been a nightmare of broken promises and management incompetence.\n1. Breach of Lease & 'Ghost' Rules:\nThe primary reason I moved here was the flexibility to transfer units after 3 months\u2014a clause clearly stat"
+        },
+        {
+          "author": "Nora Wai",
+          "rating": 1,
+          "time": "4 months ago",
+          "text": "I moved out months ago and honestly wish I had left even sooner. This place caused me unbelievable stress, and almost all of it came from the leasing office\u2014especially the leasing manager, Valeria, who is consistently rude, condescending, and unprofessional. The ONLY reason this place even gets 1 st"
+        },
+        {
+          "author": "Yashesha Kothari",
+          "rating": 5,
+          "time": "6 months ago",
+          "text": "This rating is for Ashley at the leasing office. We toured with her and she was extremely professional, kind, and answered all of our questions really comprehensively.\n\nI recently also had an issue with another rental agency working with the apartments, and throughout it all she remained extremely p"
+        },
+        {
+          "author": "James Austin",
+          "rating": 5,
+          "time": "3 months ago",
+          "text": "Josh was kind enough to give me a tour of the property and explained everything in depth. He was able to accommodate my schedule and was very willing to work with me throughout the process. It\u2019s a beautiful place, and while it didn\u2019t quite meet my needs at this time, I had a great experience overall"
+        },
+        {
+          "author": "Derek Yin",
+          "rating": 1,
+          "time": "2 months ago",
+          "text": "2026 UPDATE: Utterly incompetent leasing team sent duplicate utility charges to collections even after I provided proof of duplication. Scummy leasing team, grand larceny within building premises with no security improvements. Guys. Please do yourselves a favor and avoid this place at all costs.\n---"
+        }
+      ]
+    },
+    "osm": {
+      "osm_type": "property_management",
+      "osm_class": "office",
+      "display_name": "Radius, 400, Boren Avenue North, South Lake Union, Cascade, Belltown, Seattle, King County, Washington, 98109, United States",
+      "lat": "47.6224181",
+      "lon": "-122.3356417",
+      "boundingbox": [
+        "47.6223681",
+        "47.6224681",
+        "-122.3356917",
+        "-122.3355917"
+      ],
+      "osm_id": "way/174333391",
+      "building_details": {
+        "building_type": "apartments",
+        "floors": "7",
+        "units": null,
+        "name": null,
+        "operator": null,
+        "height": null,
+        "calculated_area": "39,618 sq ft",
+        "geometry_wkt": "POLYGON ((-122.335235 47.6223344, -122.3352393 47.6221361, -122.3357183 47.6221376, -122.3357184 47.6223358, -122.3356289 47.6223365, -122.3356279 47.6223749, -122.3356684 47.622375, -122.3356691 47.6225114, -122.3356994 47.6225114, -122.335709 47.6225655, -122.335683 47.6225655, -122.3356833 47.6226001, -122.3356937 47.6226001, -122.3357053 47.6226632, -122.3356838 47.6226631, -122.3356839 47.622698, -122.3356918 47.622698, -122.3357047 47.6227608, -122.3356827 47.6227609, -122.335683 47.6227955, -122.335692 47.6227956, -122.3357024 47.6228588, -122.3356795 47.6228588, -122.3356792 47.622893, -122.3356899 47.6228931, -122.3356999 47.6229565, -122.3356786 47.6229565, -122.33568 47.6230005, -122.3356889 47.6230005, -122.3356901 47.6230394, -122.3357004 47.6231065, -122.3352274 47.6231028, -122.3352276 47.6230833, -122.3352344 47.6228867, -122.3352362 47.6226951, -122.3352371 47.6224939, -122.335235 47.6223344))"
+      },
+      "amenities_1000m": {}
+    },
+    "open_meteo": {
+      "annual_precip_days": 213,
+      "annual_snowfall_cm": 14.6,
+      "annual_precipitation_mm": 1162.1,
+      "hottest_day_c": 32.6,
+      "coldest_day_c": -10.1
+    },
+    "crime": {
+      "city": "Seattle",
+      "state": "WA",
+      "ori": "WASPD0000",
+      "violent_crime_rate_per_100k": 696.8,
+      "national_avg_violent_per_100k": 380,
+      "above_national_avg_violent": true,
+      "crime_score": 11.8,
+      "data_year": 2025,
+      "source": "FBI CDE",
+      "violent_crime_score": 11.5,
+      "property_crime_rate_per_100k": 4423.9,
+      "national_avg_property_per_100k": 2110,
+      "above_national_avg_property": true,
+      "property_data_year": 2025,
+      "property_crime_score": 12.4
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 88.0,
+      "available_weight": 0.88,
+      "max_weight": 1.0,
+      "components": {
+        "renter_pct": 100.0,
+        "low_vacancy": 47.0,
+        "walk_score": 100.0,
+        "transit_score": 100.0,
+        "income": 100.0,
+        "population": 100.0
+      }
+    },
+    "friction": {
+      "score": 58.1,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "crime": 59.5,
+        "precip_days": 100.0,
+        "snowfall": 30.4,
+        "temp_range": 60.3,
+        "elevation": 0.8
+      }
+    },
+    "scale": {
+      "score": 82.7,
+      "available_weight": 0.9,
+      "max_weight": 1.0,
+      "building_type": "Apartment Complex",
+      "components": {
+        "building_type": 100.0,
+        "footprint": 98.1,
+        "lot_area": 83.1,
+        "floors": 21.8
+      }
+    },
+    "opportunity": {
+      "score": 35.6,
+      "available_weight": 0.35,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {
+        "low_rating": 35.6
+      }
+    },
+    "lead_score": {
+      "score": 71.4,
+      "grade": "B",
+      "available_weight": 0.749,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 88.0,
+        "friction": 58.1,
+        "scale": 82.7,
+        "opportunity": 35.6
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "core_icp",
+      "label": "Core ICP \u2014 Multifamily Property",
+      "severity": "high",
+      "description": "This is an apartment complex \u2014 EliseAI's primary ICP. Multifamily operators gain the most from AI-powered leasing (instant lead response, tour scheduling, renewal reminders) and maintenance coordination at scale.",
+      "source": "rule"
+    },
+    {
+      "tag": "volume_overload",
+      "label": "High Lead Volume Overload",
+      "severity": "high",
+      "description": "High rental demand combined with a large property footprint likely floods property managers with inquiries. Manual handling causes slow response times and lost leases \u2014 precisely where EliseAI's automated engagement wins.",
+      "source": "rule"
+    },
+    {
+      "tag": "premium_market",
+      "label": "Premium Market \u2014 Instant Response Required",
+      "severity": "high",
+      "description": "Walk Score 99 and median household income $105,391 signal a quality renter base with high service expectations. Delayed responses directly cost leases; EliseAI provides 24/7 instant engagement.",
+      "source": "rule"
+    },
+    {
+      "tag": "retention_risk",
+      "label": "High Crime \u2014 Tenant Retention Risk",
+      "severity": "medium",
+      "description": "Above-average crime with elevated vacancy suggests higher tenant turnover. Proactive automated communication (maintenance updates, community alerts) can improve retention and reduce costly vacancy cycles.",
+      "source": "rule"
+    },
+    {
+      "tag": "high_mobility",
+      "label": "High Tenant Mobility",
+      "severity": "medium",
+      "description": "Excellent transit access (Transit Score 91) in a renter-majority area (55% renters) drives high turnover and a constant stream of new leads. Automating inquiry handling ensures none slip through.",
+      "source": "rule"
+    },
+    {
+      "tag": "crime_risk",
+      "label": "Crime Risk",
+      "severity": "medium",
+      "description": "With a crime score of 11.8 (above national avg), National Apartment Management may struggle to attract and retain tenants, negatively impacting the resident experience and business operations.",
+      "source": "llm"
+    },
+    {
+      "tag": "maintenance_overheads",
+      "label": "Maintenance Overhead",
+      "severity": "high",
+      "description": "Given the high precipitation (213 days) and temperature fluctuations (-10.1\u201332.6 \u00b0C), the building's maintenance needs may be particularly high, posing a significant operational burden on National Apartment Management and increasing costs.",
+      "source": "llm"
+    }
+  ],
+  "outreach": {
+    "subject": "Units sitting empty this week",
+    "greeting": "Hi George,",
+    "message": "Your building is in a walker's paradise with a Walk Score of 99, attracting renters with a median household income of $105,391 who expect instant responses. This means your team needs to be highly responsive to meet their expectations. Your residents have high standards, and slow service can lose leases and renewals. \n\n At National Apartment Management, when a tour request sits unanswered for a day, it can lose a potential lease. EliseAI provides instant response for leasing, maintenance, and renewals, 24/7. \n\n Worth a call?",
+    "arc": "premium_expectations",
+    "generated_at": "2026-04-27T17:40:34.638831Z",
+    "provider": "groq"
+  }
+}

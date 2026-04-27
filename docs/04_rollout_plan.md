@@ -205,7 +205,7 @@ Assuming full automation on 60 sends/day, 5 days/week:
 | Anthropic (Haiku + Sonnet) | ~$0.02–0.05/lead | Haiku for pain points (~$0.003), Sonnet for email (~$0.015) |
 | **Alternative: Groq** | **$0.00** | Free tier covers both steps; quality slightly below Sonnet |
 | NewsAPI developer plan | $449/mo | Only needed if running >100 leads/day on news |
-| Intellipins | $100–$500/mo | Scales with volume |
+| Intellipins | $100–$500/mo | 5000-150000 calls. Free tier covers 1000 calls/mo |
 | Google Places | ~$0.017/lead | 2 calls × $0.0085; $200 free credit covers ~11,700 leads |
 | All other APIs | $0 | Free tiers more than sufficient at SDR-scale |
 | **Total at 60 leads/day (Anthropic)** | **~$1.20–3.00/day** | ~$30–75/month |

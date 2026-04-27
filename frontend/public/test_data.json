@@ -121,13 +121,13 @@
   },
   {
     "id": 13,
-    "label": "National Apartment Management \u2014 Gardner, MA",
+    "label": "National Apartment Management \u2014 Seattle, WA",
     "name": "George Ross",
     "email": "george.ross@namcorp.com",
     "company": "National Apartment Management",
-    "property_address": "677 Timpany Blvd",
-    "city": "Gardner",
-    "state": "MA"
+    "property_address": "400 Boren Avenue N",
+    "city": "Seattle",
+    "state": "WA"
   },
   {
     "id": 14,

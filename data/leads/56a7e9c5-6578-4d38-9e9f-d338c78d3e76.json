@@ -1,0 +1,311 @@
+{
+  "id": "56a7e9c5-6578-4d38-9e9f-d338c78d3e76",
+  "created_at": "2026-04-27T18:50:08.284303Z",
+  "lead_info": {
+    "name": "John",
+    "email": "john@moonlight.com",
+    "company": "Moonlight",
+    "address": "4514 18th Ave NE",
+    "city": "Seattle",
+    "state": "WA"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 47.661732,
+      "lon": -122.308054,
+      "source": "intellipins"
+    },
+    "census": {
+      "population": "726,054",
+      "median_income": "$105,391",
+      "renter_percentage": "54.8%"
+    },
+    "fred": {
+      "vacancy_rate": "6.6%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": {
+        "title": "Moonlight",
+        "extract": "Moonlight is light from the surface of the Moon, consisting mostly of reflected sunlight, and some earthlight.",
+        "url": "https://en.wikipedia.org/wiki/Moonlight"
+      },
+      "city": {
+        "title": "Seattle",
+        "extract": "Seattle is the most populous city in the U.S. state of Washington and the Pacific Northwest region of North America. It is the 18th-most populous city in the United States with a population of 780,995 in 2024, while the Seattle metropolitan area at over 4.15 million residents is the 15th-most populous metropolitan area in the nation. The city is the county seat of King County, the most populous county in Washington. Seattle's growth rate of 21.1% between 2010 and 2020 made it one of the country's fastest-growing large cities."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"Moonlight\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 96,
+      "description": "Walker's Paradise",
+      "transit_score": 82,
+      "transit_description": "Excellent Transit",
+      "bike_score": 90,
+      "bike_description": "Biker's Paradise"
+    },
+    "intellipins": {
+      "lat": 47.661732,
+      "lon": -122.308054,
+      "ipins_id": "iUS00043612926",
+      "address_type": null,
+      "formatted_address": "4514 18th Avenue Ne, Seattle WA 98105, United States",
+      "geocode_score": 0.888,
+      "parcel": {
+        "area_sqm": 4257,
+        "area_sqft": "45,821 sq ft",
+        "elevation_m": 222,
+        "parcel_owner": "CAMPUS CORP OF THETA XI",
+        "apn": "8823902775",
+        "iparcel_id": "iUSP000124015527",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  -122.308272,
+                  47.661787
+                ],
+                [
+                  -122.307833,
+                  47.661786
+                ],
+                [
+                  -122.307835,
+                  47.661678
+                ],
+                [
+                  -122.308273,
+                  47.661679
+                ],
+                [
+                  -122.308272,
+                  47.661787
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "building_type": "Apartment / Shopping Complex"
+    },
+    "google": {
+      "place_name": "Moonlight Cafe",
+      "matched_via": "company",
+      "place_types": [
+        "establishment",
+        "food",
+        "point_of_interest",
+        "restaurant"
+      ],
+      "rating": 4.3,
+      "review_count": 682,
+      "editorial_summary": "A variety of classic Vietnamese fare, including vegetarian & vegan options, in a no-frills setting.",
+      "reviews": [
+        {
+          "author": "Liz Nanney",
+          "rating": 5,
+          "time": "a month ago",
+          "text": "I\u2019m in here almost once a week since 2022, never disappointed. Their menu is extensive and has many options I can safely eat as a person with celiac disease, and they have a whole separate vegan menu. You see a lot of first dates here because of the variety of menu options, which can count as live e"
+        },
+        {
+          "author": "Laurence Do",
+          "rating": 5,
+          "time": "2 months ago",
+          "text": "I love their expansive vegan menu with plant-based versions of so many traditional Vietnamese dishes. Bun Mam is a noodle soup with fermented fish, and it\u2019s hard to find even the regular version in Vietnamese restaurants here. So I was very pleasantly surprised and excited to see a vegan version. It"
+        },
+        {
+          "author": "Ryan LaPlante",
+          "rating": 5,
+          "time": "3 months ago",
+          "text": "This is real real good Vietnamese food. We tried a couple of things and everything was delicious, I had the beef king pao and it was phenomenal."
+        },
+        {
+          "author": "G 3956",
+          "rating": 4,
+          "time": "7 months ago",
+          "text": "The food here is authentic Vietnamese cuisine and truly delicious. The egg rolls are unique, made with rice paper that gives them a crisp texture unlike other Vietnamese restaurants. The pancake is also excellent, with fresh ingredients that make it stand out. While the prices are on the higher side"
+        },
+        {
+          "author": "bitter X",
+          "rating": 5,
+          "time": "3 months ago",
+          "text": "cool place and looks like a cool event space also. great for diverse crowds with dual menus vegan and omnivore."
+        }
+      ]
+    },
+    "osm": {
+      "osm_type": "yes",
+      "osm_class": "building",
+      "display_name": "4514, 18th Avenue Northeast, Greek Row, University Heights, University District, Seattle, King County, Washington, 98105, United States",
+      "lat": "47.6617506",
+      "lon": "-122.3080827",
+      "boundingbox": [
+        "47.6616985",
+        "47.6617943",
+        "-122.3081953",
+        "-122.3079703"
+      ],
+      "osm_id": "way/223482593",
+      "building_details": {
+        "building_type": "yes",
+        "floors": null,
+        "units": null,
+        "name": null,
+        "operator": null,
+        "height": null,
+        "calculated_area": "1,811 sq ft",
+        "geometry_wkt": "POLYGON ((-122.3081947 47.6617943, -122.3079977 47.6617937, -122.3079978 47.6617739, -122.3079703 47.6617738, -122.3079706 47.6617272, -122.3079879 47.6617273, -122.307988 47.661715, -122.307995 47.661715, -122.3079951 47.6616985, -122.3081953 47.661699, -122.3081947 47.6617943))"
+      },
+      "amenities_1000m": {
+        "transit": "194",
+        "parks": "13",
+        "retail": "250"
+      }
+    },
+    "open_meteo": {
+      "annual_precip_days": 213,
+      "annual_snowfall_cm": 14.6,
+      "annual_precipitation_mm": 1162.1,
+      "hottest_day_c": 32.6,
+      "coldest_day_c": -10.1
+    },
+    "crime": {
+      "city": "Seattle",
+      "state": "WA",
+      "ori": "WASPD0000",
+      "violent_crime_rate_per_100k": 696.8,
+      "national_avg_violent_per_100k": 380,
+      "above_national_avg_violent": true,
+      "crime_score": 11.8,
+      "data_year": 2025,
+      "source": "FBI CDE",
+      "violent_crime_score": 11.5,
+      "property_crime_rate_per_100k": 4423.9,
+      "national_avg_property_per_100k": 2110,
+      "above_national_avg_property": true,
+      "property_data_year": 2025,
+      "property_crime_score": 12.4
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 89.4,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "renter_pct": 100.0,
+        "low_vacancy": 47.0,
+        "walk_score": 100.0,
+        "transit_score": 100.0,
+        "income": 100.0,
+        "nearby_amenities": 100.0,
+        "population": 100.0
+      }
+    },
+    "friction": {
+      "score": 58.8,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "crime": 59.5,
+        "precip_days": 100.0,
+        "snowfall": 30.4,
+        "temp_range": 60.3,
+        "elevation": 7.7
+      }
+    },
+    "scale": {
+      "score": 62.2,
+      "available_weight": 0.5,
+      "max_weight": 1.0,
+      "building_type": "Apartment / Shopping Complex",
+      "components": {
+        "building_type": 65.0,
+        "lot_area": 57.9
+      }
+    },
+    "opportunity": {
+      "score": 36.4,
+      "available_weight": 0.5,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {
+        "low_rating": 13.5,
+        "wiki_presence": 90.0
+      }
+    },
+    "lead_score": {
+      "score": 67.0,
+      "grade": "B",
+      "available_weight": 0.75,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 89.4,
+        "friction": 58.8,
+        "scale": 62.2,
+        "opportunity": 36.4
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "volume_overload",
+      "label": "High Lead Volume Overload",
+      "severity": "high",
+      "description": "High rental demand combined with a large property footprint likely floods property managers with inquiries. Manual handling causes slow response times and lost leases \u2014 precisely where EliseAI's automated engagement wins.",
+      "source": "rule"
+    },
+    {
+      "tag": "premium_market",
+      "label": "Premium Market \u2014 Instant Response Required",
+      "severity": "high",
+      "description": "Walk Score 96 and median household income $105,391 signal a quality renter base with high service expectations. Delayed responses directly cost leases; EliseAI provides 24/7 instant engagement.",
+      "source": "rule"
+    },
+    {
+      "tag": "retention_risk",
+      "label": "High Crime \u2014 Tenant Retention Risk",
+      "severity": "medium",
+      "description": "Above-average crime with elevated vacancy suggests higher tenant turnover. Proactive automated communication (maintenance updates, community alerts) can improve retention and reduce costly vacancy cycles.",
+      "source": "rule"
+    },
+    {
+      "tag": "high_mobility",
+      "label": "High Tenant Mobility",
+      "severity": "medium",
+      "description": "Excellent transit access (Transit Score 82) in a renter-majority area (55% renters) drives high turnover and a constant stream of new leads. Automating inquiry handling ensures none slip through.",
+      "source": "rule"
+    },
+    {
+      "tag": "crime_risk",
+      "label": "Crime Risks",
+      "severity": "medium",
+      "description": "The building is located in an area with a crime score of 11.8, above the national average, potentially affecting property management and security.",
+      "source": "llm"
+    },
+    {
+      "tag": "seasonal_operation",
+      "label": "Seasonal Operations",
+      "severity": "low",
+      "description": "The region experiences 213 precipitation days, 14.6 cm of snowfall, and temperatures ranging from -10.1 to 32.6 \u00b0C, requiring flexible property management strategies to accommodate seasonal fluctuations in tenant needs and visitor traffic from nearby residents.",
+      "source": "llm"
+    }
+  ],
+  "outreach": {
+    "subject": "Units sitting empty",
+    "greeting": "Hi John,",
+    "message": "Your building in Seattle's Walker's Paradise neighborhood attracts renters with high incomes, around $105,391, who expect top-notch service. High walkability, with a Walk Score of 96, means you're catering to residents who value convenience and timely responses. This demographic demands quick attention to their needs, which your team must deliver to stay competitive.\n\n At Moonlight, when a tour request goes unanswered for a day or a maintenance ticket is left unattended, it can lead to frustrated residents and lost leases. EliseAI provides instant response for leasing, maintenance, and renewals, 24/7. \n\n Worth a 15-minute call?",
+    "arc": "premium_expectations",
+    "generated_at": "2026-04-27T18:50:08.284219Z",
+    "provider": "groq"
+  }
+}

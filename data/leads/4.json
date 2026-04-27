@@ -1,6 +1,6 @@
 {
   "id": "4",
-  "created_at": "2026-04-27T15:18:48.764552Z",
+  "created_at": "2026-04-27T18:35:29.547254Z",
   "lead_info": {
     "name": "Anna Miller",
     "email": "anna.miller@kairoiresidential.com",
@@ -227,26 +227,26 @@
       "source": "rule"
     },
     {
-      "tag": "complex_scheduling",
-      "label": "Tour Scheduling",
-      "severity": "high",
-      "description": "With a vacancy rate of 5.3%, efficient tour scheduling is crucial to fill vacant units, and EliseAI's tour scheduling feature can automate and streamline the process",
+      "tag": "incomplete_information",
+      "label": "Missing Reviews",
+      "severity": "medium",
+      "description": "Kairoi Residential lacks a Wikipedia company page, which may contribute to a limited understanding of their services. A detailed Wikipedia page can increase transparency and attract potential customers.",
       "source": "llm"
     },
     {
-      "tag": "weather_resilience",
-      "label": "Weather-Related Maintenance",
-      "severity": "medium",
-      "description": "In areas with high precipitation (184 days) and snowfall (37.8 cm), EliseAI's maintenance coordination feature can help manage weather-related work orders and minimize disruptions to residents",
+      "tag": "high_vacancy_rate",
+      "label": "High Vacancy Rate",
+      "severity": "high",
+      "description": "The apartment/ shopping complex has a 5.3% vacancy rate, which is relatively low. EliseAI could help manage leasing and optimize occupancy, potentially reducing the risk of missed revenue opportunities.",
       "source": "llm"
     }
   ],
   "outreach": {
-    "subject": "Reputation Gap",
+    "subject": "Reputation at Risk",
     "greeting": "Hi Anna,",
-    "message": "Your Google rating is 3 out of 5, which signals to prospective renters that your team may be slow to respond to maintenance requests before they ever call. This can deter potential tenants and harm your building's reputation. Your online reputation is the first thing people see when searching for a place to live.\n\nAt Kairoi Residential, a resident's frustrated review about an unaddressed emergency alarm at 2:00am highlights the breakdown in communication and slow maintenance response. EliseAI automates instant ticket acknowledgment and provides 24/7 automated tenant updates.\n\nWorth a call?",
+    "message": "Your Google rating is 3 out of 5, which signals to prospective renters that your team may be slow to respond to maintenance requests before they even call. This can deter potential residents and harm your building's reputation. Your online reviews are the first thing people see, making it crucial to address these concerns.\n\nAt Kairoi Residential, a maintenance request can go unacknowledged for days, leading to frustrated residents posting negative reviews before anyone responds. EliseAI automates property management, providing instant ticket acknowledgment and 24/7 automated tenant updates.\n\nWorth a call?",
     "arc": "reputation_gap",
-    "generated_at": "2026-04-27T15:18:48.764517Z",
+    "generated_at": "2026-04-27T18:35:29.547138Z",
     "provider": "groq"
   }
 }

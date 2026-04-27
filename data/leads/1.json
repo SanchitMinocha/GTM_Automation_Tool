@@ -1,6 +1,6 @@
 {
   "id": "1",
-  "created_at": "2026-04-27T15:21:52.568066Z",
+  "created_at": "2026-04-27T18:24:54.790243Z",
   "lead_info": {
     "name": "San Min",
     "email": "san.min@rpa.com",
@@ -104,7 +104,7 @@
         "point_of_interest"
       ],
       "rating": 4.6,
-      "review_count": 1136,
+      "review_count": 1138,
       "editorial_summary": null,
       "reviews": [
         {
@@ -279,14 +279,28 @@
       "severity": "medium",
       "description": "Excellent transit access (Transit Score 70) in a renter-majority area (55% renters) drives high turnover and a constant stream of new leads. Automating inquiry handling ensures none slip through.",
       "source": "rule"
+    },
+    {
+      "tag": "high_rental_market",
+      "label": "High Rental Demand",
+      "severity": "high",
+      "description": "With a median income of $105,391 and a renter percentage of 54.8%, this market is highly competitive, potentially making it challenging for single-family housing operators to secure and retain tenants.",
+      "source": "llm"
+    },
+    {
+      "tag": "inadequate_maintenance_services",
+      "label": "Inadequate Maintenance Coordination",
+      "severity": "medium",
+      "description": "EliseAI's maintenance coordination features could help address the 6.6% vacancy rate by ensuring prompt and reliable maintenance services, improving overall resident satisfaction and retention.",
+      "source": "llm"
     }
   ],
   "outreach": {
     "subject": "Units sitting empty",
     "greeting": "Hi San,",
-    "message": "Your building is in a Walker's Paradise neighborhood, where residents have a median household income of $105,391 and expect quick service. This area has a high Walk Score of 92, indicating residents can easily access amenities without needing a car, which means they have options and high expectations. Your team needs to be highly responsive to meet these demands.\n\nAt Real Property Associates, when a potential renter requests a tour, they expect a prompt response, but if that request sits unanswered for a day, it can lose you a lease. EliseAI provides instant response for leasing, maintenance, and renewals, 24/7.\n\nWorth a 15-minute call?",
+    "message": "Your building is in a Walker's Paradise, with a Walk Score of 92 and a median household income of $105,391, meaning your renters expect quick responses to their needs. In this premium market, slow service loses leases and renewals. You're managing a high-demand property where every minute counts. \n\n At Real Property Associates, a tour request that sits unanswered for a day can lose a potential renter, and EliseAI provides instant response for leasing, maintenance, and renewals, 24/7. \n\n Worth a call?",
     "arc": "premium_expectations",
-    "generated_at": "2026-04-27T15:21:52.567996Z",
+    "generated_at": "2026-04-27T18:24:54.790194Z",
     "provider": "groq"
   }
 }

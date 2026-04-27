@@ -265,7 +265,17 @@
       transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
       transform-style: preserve-3d;
     }
-    .flip-container:hover .flip-inner { transform: rotateY(180deg); }
+    .flip-container.flipped .flip-inner { transform: rotateY(180deg); }
+    .flip-toggle-btn {
+      position: absolute; top: 0.5rem; right: 0.5rem; z-index: 10;
+      width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border);
+      background: #fff; color: var(--text-muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 0.7rem;
+      transition: all 0.2s; padding: 0;
+    }
+    .flip-toggle-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(245,158,11,0.05); }
+    .flip-toggle-btn svg { width: 14px; height: 14px; transition: transform 0.3s; }
+    .flip-container.flipped .flip-toggle-btn svg { transform: rotateY(180deg); }
     .flip-front, .flip-back {
       position: absolute; inset: 0;
       backface-visibility: hidden; -webkit-backface-visibility: hidden;
@@ -377,7 +387,7 @@
     </div>
     <div class="card">
       <h3>What It Does</h3>
-      <p>Give it a name, company, and address. In 30–60 seconds it pulls 9 data sources, scores the lead across four dimensions, identifies specific pain points, and writes a cold email grounded in real data.</p>
+      <p>Give it a name, company, and address. In 30–60 seconds it pulls 10 data sources, scores the lead across four dimensions, identifies specific pain points, and writes a cold email grounded in real data.</p>
       <pre style="margin-top:0.75rem;">Score = (Demand×0.30) + (Opportunity×0.30)
       + (Scale×0.20) + (Friction×0.20)</pre>
     </div>
@@ -402,7 +412,7 @@
             <div class="legend-name">Opportunity <span class="tag tag-opp">30%</span> <span style="font-weight:400;color:var(--text-muted);">— Is there a specific reason to act now?</span></div>
           </div>
           <div class="legend-pct">▾</div>
-          <div class="legend-detail">Driven by news signals (acquisition/growth = 0.95 floor), Google rating pain, and Wikipedia presence. Renter %, vacancy, and walkability are excluded here — they already appear in Demand — so Opportunity only fires when there's a behavioral or reputational signal unique to the company.</div>
+          <div class="legend-detail">Driven by news signals (acquisition/growth), Google rating pain, and Wikipedia presence. Renter %, vacancy, and walkability are excluded here — they already appear in Demand — so Opportunity only fires when there's a behavioral or reputational signal unique to the company.</div>
         </div>
         <div class="legend-item">
           <div class="legend-dot" style="background:#3b82f6;"></div>
@@ -439,7 +449,7 @@
 
   <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem;">
     <h3 style="margin-bottom:0;">Real Pipeline Runs</h3>
-    <span style="font-size:0.72rem;color:var(--text-muted);">Hover a card to flip — enriched data &amp; grade-colored sub-scores · click button below for pain points &amp; email</span>
+    <span style="font-size:0.72rem;color:var(--text-muted);">Click arrow to flip — enriched data &amp; grade-colored sub-scores · click button below for pain points &amp; email</span>
   </div>
   <div class="case-grid" id="caseGrid"></div>
 
@@ -656,7 +666,7 @@
   </div>
 
   <!-- Proposed: A/B Testing -->
-  <div class="card">
+  <div class="card" style="margin-bottom:2rem;">
     <h3 style="margin-bottom:0.75rem;">Proposed: A/B Testing by Story Arc</h3>
     <p style="margin-bottom:1rem;">Every email is tagged with its arc. After 200–300 sends, compare reply rates and feed signal back into the selection logic. Since arc selection is deterministic (no LLM), this is straightforward to track and tune.</p>
     <div class="arc-pills">
@@ -665,6 +675,52 @@
       <div class="arc-pill" style="background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.2);color:#2563eb;">growth_strain</div>
       <div class="arc-pill" style="background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2);color:#d97706;">premium_expectations</div>
       <div class="arc-pill" style="background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.08);color:var(--text-muted);">lead_speed</div>
+    </div>
+  </div>
+
+  <!-- Who Owns What -->
+  <div class="card">
+    <h3 style="margin-bottom:1rem;">Who Owns What</h3>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin-bottom:1.5rem;">
+      <div style="padding:1rem;border-radius:10px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);">
+        <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.5rem;color:#059669;">👤 SDR Manager</div>
+        <ul style="font-size:0.78rem;color:var(--text-muted);line-height:1.6;margin:0;padding-left:1.2rem;">
+          <li>Pilot selection</li>
+          <li>Weekly check-ins</li>
+          <li>Phase go/no-go</li>
+          <li>Team enablement</li>
+        </ul>
+      </div>
+      <div style="padding:1rem;border-radius:10px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);">
+        <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.5rem;color:#2563eb;">🔧 RevOps</div>
+        <ul style="font-size:0.78rem;color:var(--text-muted);line-height:1.6;margin:0;padding-left:1.2rem;">
+          <li>API keys setup</li>
+          <li>Budget monitoring</li>
+          <li>CRM integration</li>
+          <li>Tracking sheets</li>
+        </ul>
+      </div>
+      <div style="padding:1rem;border-radius:10px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);">
+        <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.5rem;color:#d97706;">⚙️ Engineering</div>
+        <ul style="font-size:0.78rem;color:var(--text-muted);line-height:1.6;margin:0;padding-left:1.2rem;">
+          <li>Fix geocoding</li>
+          <li>Scoring tuning</li>
+          <li>LLM iteration</li>
+          <li>Debugging</li>
+        </ul>
+      </div>
+      <div style="padding:1rem;border-radius:10px;background:rgba(236,72,153,0.08);border:1px solid rgba(236,72,153,0.2);">
+        <div style="font-weight:700;font-size:0.95rem;margin-bottom:0.5rem;color:#ec4899;">🎯 Pilot SDRs (2–3)</div>
+        <ul style="font-size:0.78rem;color:var(--text-muted);line-height:1.6;margin:0;padding-left:1.2rem;">
+          <li>Daily tool usage</li>
+          <li>Flag anomalies</li>
+          <li>Weekly feedback</li>
+          <li>Reply tracking</li>
+        </ul>
+      </div>
+    </div>
+    <div style="padding:0.75rem 1rem;background:rgba(0,0,0,0.03);border-radius:8px;border:1px solid var(--border);font-size:0.78rem;color:var(--text-muted);">
+      <strong style="color:var(--text-main);">Key Decision Gate:</strong> Pilot success (≥60% unedited sends) → SDR Manager + Engineering approval → Phase 3 full team rollout
     </div>
   </div>
 
@@ -1034,6 +1090,12 @@ realCases.forEach((c) => {
   item.className = 'lead-item';
   item.innerHTML = `
     <div class="flip-container">
+      <button class="flip-toggle-btn" title="Flip card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 4v6h6M23 20v-6h-6"></path>
+          <path d="M20.49 9A9 9 0 0 0 5.64 5.64M3.51 15A9 9 0 0 0 18.36 18.36"></path>
+        </svg>
+      </button>
       <div class="flip-inner">
         <div class="flip-front" style="border-color:${c.cardBorder};">
           <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.55rem;">
@@ -1044,7 +1106,6 @@ realCases.forEach((c) => {
           <div style="font-size:0.93rem;font-weight:600;color:var(--text-main);margin-bottom:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.company}</div>
           <div style="font-size:0.84rem;color:var(--text-muted);margin-bottom:0.15rem;">${c.contact}</div>
           <div style="font-size:0.8rem;color:var(--text-muted);">${c.location}</div>
-          <div style="position:absolute;bottom:0.85rem;right:1rem;font-size:0.65rem;color:var(--text-muted);opacity:0.45;letter-spacing:0.02em;">hover for data ↻</div>
         </div>
         <div class="flip-back" style="border-color:${c.cardBorder};">
           <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:0.45rem;">Enriched Signals</div>
@@ -1066,6 +1127,10 @@ realCases.forEach((c) => {
     </div>`;
 
   caseGridEl.appendChild(item);
+  item.querySelector('.flip-toggle-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    item.querySelector('.flip-container').classList.toggle('flipped');
+  });
   item.querySelector('.lead-expand-btn').addEventListener('click', () => {
     item.classList.toggle('drawer-open');
   });

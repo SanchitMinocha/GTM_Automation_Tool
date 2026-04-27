@@ -1,0 +1,194 @@
+{
+  "id": "8dfa69f5-05c4-4caf-a75f-b9f40e5e0be8",
+  "created_at": "2026-04-27T18:44:03.814783Z",
+  "lead_info": {
+    "name": "Axel",
+    "email": "axel@moonlight.com",
+    "company": "Moonlight Properties",
+    "address": "19 Munjoy St ",
+    "city": "Portland",
+    "state": "ME"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 43.6650793,
+      "lon": -70.2434062,
+      "source": "nominatim_structured"
+    },
+    "census": {
+      "population": "68,063",
+      "median_income": "$66,109",
+      "renter_percentage": "53.3%"
+    },
+    "fred": {
+      "vacancy_rate": "2.2%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": null,
+      "city": {
+        "title": "Portland, Maine",
+        "extract": "Portland is the most populous city in the U.S. state of Maine. Its population was 68,408 at the 2020 census. The Greater Portland metropolitan area has a population of approximately 550,000 people, the most populous metropolitan area in Maine. It is the county seat of Cumberland County. Historically tied to commercial shipping, the marine economy, and light industry, Portland's economy in the 21st century relies mostly on the service sector. The Port of Portland is the second-largest tonnage seaport in the New England area as of 2019."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"Moonlight Properties\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 74,
+      "description": "Very Walkable",
+      "transit_score": 45,
+      "transit_description": "Some Transit",
+      "bike_score": 72,
+      "bike_description": "Very Bikeable"
+    },
+    "intellipins": {
+      "error": "Geocode unavailable \u2014 check address"
+    },
+    "google": {
+      "place_name": null,
+      "matched_via": null,
+      "place_types": [],
+      "rating": null,
+      "review_count": null,
+      "editorial_summary": null,
+      "reviews": [],
+      "note": "No matching place found in nearby area"
+    },
+    "osm": {
+      "osm_type": "apartments",
+      "osm_class": "building",
+      "display_name": "19, Munjoy Street, Munjoy Hill, East End, Portland, Cumberland County, Maine, 04101, United States",
+      "lat": "43.6650793",
+      "lon": "-70.2434062",
+      "boundingbox": [
+        "43.6650294",
+        "43.6651421",
+        "-70.2434745",
+        "-70.2433376"
+      ],
+      "osm_id": "way/855199825",
+      "building_details": {
+        "building_type": "apartments",
+        "floors": null,
+        "units": null,
+        "name": null,
+        "operator": null,
+        "height": null,
+        "calculated_area": "750 sq ft",
+        "geometry_wkt": "POLYGON ((-70.2433376 43.6651115, -70.2433543 43.6650984, -70.243338 43.6650875, -70.2434126 43.6650294, -70.2434745 43.6650711, -70.2433832 43.6651421, -70.2433376 43.6651115))"
+      },
+      "amenities_1000m": {
+        "transit": "3",
+        "parks": "13",
+        "retail": "49"
+      }
+    },
+    "open_meteo": {
+      "annual_precip_days": 185,
+      "annual_snowfall_cm": 114.2,
+      "annual_precipitation_mm": 1141.7,
+      "hottest_day_c": 36.0,
+      "coldest_day_c": -13.3
+    },
+    "crime": {
+      "city": "Portland",
+      "state": "ME",
+      "ori": "ME0030500",
+      "violent_crime_rate_per_100k": 240.6,
+      "national_avg_violent_per_100k": 380,
+      "above_national_avg_violent": false,
+      "crime_score": 4.0,
+      "data_year": 2025,
+      "source": "FBI CDE",
+      "violent_crime_score": 3.5,
+      "property_crime_rate_per_100k": 1920.1,
+      "national_avg_property_per_100k": 2110,
+      "above_national_avg_property": false,
+      "property_data_year": 2025,
+      "property_crime_score": 4.6
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 79.2,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "renter_pct": 100.0,
+        "low_vacancy": 84.0,
+        "walk_score": 85.6,
+        "transit_score": 36.0,
+        "income": 83.9,
+        "nearby_amenities": 100.0,
+        "population": 7.4
+      }
+    },
+    "friction": {
+      "score": 69.1,
+      "available_weight": 0.9,
+      "max_weight": 1.0,
+      "components": {
+        "crime": 4.6,
+        "precip_days": 100.0,
+        "snowfall": 100.0,
+        "temp_range": 80.3
+      }
+    },
+    "scale": {
+      "score": 0.0,
+      "available_weight": 0.25,
+      "max_weight": 1.0,
+      "building_type": null,
+      "components": {
+        "footprint": 0.0
+      }
+    },
+    "opportunity": {
+      "score": 0.0,
+      "available_weight": 0.0,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {}
+    },
+    "lead_score": {
+      "score": 68.3,
+      "grade": "B",
+      "available_weight": 0.53,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 79.2,
+        "friction": 69.1,
+        "scale": 0.0
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "tight_market",
+      "label": "Tight Market \u2014 Speed Wins Leases",
+      "severity": "high",
+      "description": "A 2.2% vacancy rate with 53% renters means fierce competition for units. The first team to respond wins the lease. EliseAI's instant AI engagement converts leads before competitors do.",
+      "source": "rule"
+    },
+    {
+      "tag": "harsh_conditions",
+      "label": "Harsh Operating Conditions",
+      "severity": "medium",
+      "description": "Challenging conditions (heavy snowfall (114 cm/yr), frequent precipitation (185 days/yr)) increase maintenance coordination load and incident management. Automated tenant communication keeps residents informed without burdening staff.",
+      "source": "rule"
+    }
+  ],
+  "outreach": {
+    "error": "ANTHROPIC_API_KEY not configured in .env",
+    "subject": "",
+    "message": "",
+    "arc": "operational_friction",
+    "provider": "anthropic"
+  }
+}

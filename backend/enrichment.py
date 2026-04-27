@@ -1052,6 +1052,23 @@ async def get_osm_data(address: str, city: str, state: str, lat: float, lon: flo
         # ── Step 2b: Radius fallback — nearest way/relation tagged building=* ──
         # Runs when the osm_id has no polygon (it's a node or untagged way),
         # or when no osm_id was found at all.
+        def _closest_element(els: list, lat: float, lon: float) -> dict | None:
+            def _element_center(el: dict) -> tuple[float, float] | None:
+                geom = el.get("geometry", [])
+                if geom and len(geom) > 0:
+                    first = geom[0]
+                    return float(first.get("lat", 0)), float(first.get("lon", 0))
+                return None
+            closest, min_dist = None, float("inf")
+            for el in els:
+                center = _element_center(el)
+                if center:
+                    dlat, dlon = center[0] - lat, center[1] - lon
+                    dist_m = (dlat ** 2 + dlon ** 2) ** 0.5 * 111139
+                    if dist_m < min_dist:
+                        min_dist, closest = dist_m, el
+            return closest
+
         if not building_el:
             for radius in (30, 80, 200):
                 q = (
@@ -1068,13 +1085,14 @@ async def get_osm_data(address: str, city: str, state: str, lat: float, lon: flo
                     if op.status_code == 200:
                         els = op.json().get("elements", [])
                         if els:
-                            building_el = els[0]
-                            b_type = building_el.get("type", "way")
-                            b_id   = building_el.get("id")
-                            if b_id:
-                                result["osm_id"] = f"{b_type}/{b_id}"
-                            print(f"Nearest building found at radius={radius}m: {result['osm_id']}")
-                            break
+                            building_el = _closest_element(els, query_lat, query_lon)
+                            if building_el:
+                                b_type = building_el.get("type", "way")
+                                b_id   = building_el.get("id")
+                                if b_id:
+                                    result["osm_id"] = f"{b_type}/{b_id}"
+                                print(f"Nearest building found at radius={radius}m: {result['osm_id']}")
+                                break
                 except Exception as e:
                     print(f"Overpass radius building error (r={radius}m): {e}")
                     break
