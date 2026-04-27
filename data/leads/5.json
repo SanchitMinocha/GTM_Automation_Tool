@@ -1,0 +1,302 @@
+{
+  "id": "5",
+  "created_at": "2026-04-27T15:18:24.498404Z",
+  "lead_info": {
+    "name": "Christopher Gonzalez",
+    "email": "christopher.gonzalez@equityapartments.com",
+    "company": "Inland American Real Estate",
+    "address": "40 E Oak St",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 41.900979,
+      "lon": -87.62678,
+      "source": "intellipins"
+    },
+    "census": {
+      "population": "2,742,119",
+      "median_income": "$65,781",
+      "renter_percentage": "54.4%"
+    },
+    "fred": {
+      "vacancy_rate": "5.7%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": null,
+      "city": {
+        "title": "Chicago",
+        "extract": "Chicago is the most populous city in the U.S. state of Illinois and in the Midwestern United States. Located on the western shore of Lake Michigan, it is the third-most populous city in the United States, with a population of 2.74 million at the 2020 census. The Chicago metropolitan area has 9.41 million residents and is the third-largest metropolitan area in the country. Chicago is the seat of Cook County, the second-most populous county in the U.S."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"Inland American Real Estate\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 99,
+      "description": "Walker's Paradise",
+      "transit_score": 92,
+      "transit_description": "Rider's Paradise",
+      "bike_score": 84,
+      "bike_description": "Very Bikeable"
+    },
+    "intellipins": {
+      "lat": 41.900979,
+      "lon": -87.62678,
+      "ipins_id": "iUS00071733412",
+      "address_type": "Base",
+      "formatted_address": "40 E Oak St, Chicago IL 60611, United States",
+      "geocode_score": 0.888,
+      "parcel": {
+        "area_sqm": 9526,
+        "area_sqft": "102,536 sq ft",
+        "elevation_m": 589,
+        "parcel_owner": "ROBERT BERGER",
+        "apn": "17032040590000",
+        "iparcel_id": "iUSP000149758214",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  -87.62695,
+                  41.900873
+                ],
+                [
+                  -87.626959,
+                  41.901158
+                ],
+                [
+                  -87.626849,
+                  41.90116
+                ],
+                [
+                  -87.626621,
+                  41.901164
+                ],
+                [
+                  -87.626613,
+                  41.900879
+                ],
+                [
+                  -87.626723,
+                  41.900878
+                ],
+                [
+                  -87.62684,
+                  41.900876
+                ],
+                [
+                  -87.62695,
+                  41.900873
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "building_type": "Apartment Complex"
+    },
+    "google": {
+      "place_name": "40 E Oak Vintage Apartments",
+      "matched_via": "address",
+      "place_types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "rating": 4.1,
+      "review_count": 24,
+      "editorial_summary": null,
+      "reviews": [
+        {
+          "author": "Vanessa",
+          "rating": 5,
+          "time": "10 months ago",
+          "text": "The dreamiest Gold Coast apartment any girl could ask for. If you want to live somewhere central to all neighborhoods, the lake, and Le Labo, this is your spot. I\u2019ve had the pleasure to live here for the last two years (right when I graduated college), and I could only wish apartment living anywhere"
+        },
+        {
+          "author": "Sabrina Pinto",
+          "rating": 5,
+          "time": "11 months ago",
+          "text": "I have nothing but amazing things to say about 40 E Oak. This was the best apartment I\u2019ve had in the city and the management/ leasing office/ door people/ maintenance were absolutely phenomenal. They were accommodating and helpful with move in/ move out, I\u2019ve never lost a package and the maintenance"
+        },
+        {
+          "author": "Allie Myers",
+          "rating": 5,
+          "time": "a year ago",
+          "text": "I\u2019ve lived here for almost two years and absolutely love it! The building has so much charm, and the management team is fantastic\u2014 proactive in their communication, quick to respond to any issues, and always looking for ways to improve the building. Plus, it\u2019s in a prime location on beautiful Oak St"
+        },
+        {
+          "author": "Jenny M",
+          "rating": 5,
+          "time": "2 years ago",
+          "text": "I lived at 40 E Oak for 3 years and loved every second! Management is great, friendly and communicates efficiently. My 1 bedroom was spacious and soundproof!! I never heard my neighbors or people above me. Location is wonderful, I always felt very safe walking around the area. Elevators were being m"
+        },
+        {
+          "author": "Greg Stefanek",
+          "rating": 5,
+          "time": "a year ago",
+          "text": "This building Management at 40 East Oak is seriously the best! The General Manager and engineers are  very fast responding team. Always on time and easy to communicate.  Hard working people. This review is rare in its nature because I do provide services for this location as a Vendor/Contractor and "
+        }
+      ]
+    },
+    "osm": {
+      "osm_type": "apartments",
+      "osm_class": "building",
+      "display_name": "40 East Oak, 40, East Oak Street, Gold Coast, Near North Side, Chicago, North Chicago Township, Cook County, Illinois, 60611, United States",
+      "lat": "41.9010218",
+      "lon": "-87.6268065",
+      "boundingbox": [
+        "41.9008823",
+        "41.9011599",
+        "-87.6269765",
+        "-87.6266363"
+      ],
+      "osm_id": "way/210680702",
+      "building_details": {
+        "building_type": "apartments",
+        "floors": "20",
+        "units": null,
+        "name": "40 East Oak",
+        "operator": null,
+        "height": null,
+        "calculated_area": "9,095 sq ft",
+        "geometry_wkt": "POLYGON ((-87.6269765 41.9011541, -87.6266399 41.9011599, -87.6266365 41.9008894, -87.6266363 41.9008857, -87.6269731 41.9008823, -87.6269765 41.9011541))"
+      },
+      "amenities_1000m": {
+        "transit": "321",
+        "parks": "16",
+        "retail": "403"
+      }
+    },
+    "open_meteo": {
+      "annual_precip_days": 178,
+      "annual_snowfall_cm": 62.7,
+      "annual_precipitation_mm": 953.9,
+      "hottest_day_c": 35.7,
+      "coldest_day_c": -24.3
+    },
+    "crime": {
+      "error": "FBI API returned 503: upstream connect error or disconnect/reset before headers. retried and the latest reset reason: remote connection failure"
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 89.4,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "renter_pct": 100.0,
+        "low_vacancy": 55.4,
+        "walk_score": 100.0,
+        "transit_score": 100.0,
+        "income": 83.6,
+        "nearby_amenities": 100.0,
+        "population": 100.0
+      }
+    },
+    "friction": {
+      "score": 89.7,
+      "available_weight": 0.75,
+      "max_weight": 1.0,
+      "components": {
+        "precip_days": 100.0,
+        "snowfall": 84.3,
+        "temp_range": 100.0,
+        "elevation": 54.2
+      }
+    },
+    "scale": {
+      "score": 100.0,
+      "available_weight": 0.65,
+      "max_weight": 1.0,
+      "building_type": "Apartment Complex",
+      "components": {
+        "building_type": 100.0,
+        "lot_area": 100.0,
+        "floors": 100.0
+      }
+    },
+    "opportunity": {
+      "score": 21.9,
+      "available_weight": 0.35,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {
+        "low_rating": 21.9
+      }
+    },
+    "lead_score": {
+      "score": 81.1,
+      "grade": "A",
+      "available_weight": 0.685,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 89.4,
+        "friction": 89.7,
+        "scale": 100.0,
+        "opportunity": 21.9
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "core_icp",
+      "label": "Core ICP \u2014 Multifamily Property",
+      "severity": "high",
+      "description": "This is an apartment complex \u2014 EliseAI's primary ICP. Multifamily operators gain the most from AI-powered leasing (instant lead response, tour scheduling, renewal reminders) and maintenance coordination at scale.",
+      "source": "rule"
+    },
+    {
+      "tag": "volume_overload",
+      "label": "High Lead Volume Overload",
+      "severity": "high",
+      "description": "High rental demand combined with a large property footprint likely floods property managers with inquiries. Manual handling causes slow response times and lost leases \u2014 precisely where EliseAI's automated engagement wins.",
+      "source": "rule"
+    },
+    {
+      "tag": "harsh_conditions",
+      "label": "Harsh Operating Conditions",
+      "severity": "high",
+      "description": "Challenging conditions (heavy snowfall (63 cm/yr), frequent precipitation (178 days/yr)) increase maintenance coordination load and incident management. Automated tenant communication keeps residents informed without burdening staff.",
+      "source": "rule"
+    },
+    {
+      "tag": "high_mobility",
+      "label": "High Tenant Mobility",
+      "severity": "medium",
+      "description": "Excellent transit access (Transit Score 92) in a renter-majority area (54% renters) drives high turnover and a constant stream of new leads. Automating inquiry handling ensures none slip through.",
+      "source": "rule"
+    },
+    {
+      "tag": "high_mobility_score",
+      "label": "Poor Mobility Scores",
+      "severity": "high",
+      "description": "Mobility scores of 99 (Walk), 92 (Transit), and 84 (Bike) suggest limited walkability and bikeability, potentially influencing rental demand.",
+      "source": "llm"
+    },
+    {
+      "tag": "high_precipitation",
+      "label": "Harsh Weather Conditions",
+      "severity": "high",
+      "description": "Precipitation days reaching 178 and snowfall of 62.7 cm may lead to maintenance and repair demands, which EliseAI can help tackle effectively with its AI-powered maintenance coordination feature.",
+      "source": "llm"
+    }
+  ],
+  "outreach": {
+    "subject": "Frozen Pipes Tonight",
+    "greeting": "Hi Christopher,",
+    "message": "Your team deals with around 2 feet of snow every year, which means constant maintenance issues to address. This snowfall creates a significant load on your maintenance team day-to-day, as they react to problems rather than prevent them. Your building's maintenance team spends more time fixing issues than preventing them.\n\nAt Inland American Real Estate, a burst pipe during a cold snap can lead to a flooded lobby and residents calling repeatedly because they haven't heard back on a work order. EliseAI keeps residents informed automatically so your team can focus on the fix, not the calls.\n\nWorth a call?",
+    "arc": "operational_friction",
+    "generated_at": "2026-04-27T15:18:24.498266Z",
+    "provider": "groq"
+  }
+}

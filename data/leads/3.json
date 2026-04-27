@@ -1,0 +1,248 @@
+{
+  "id": "3",
+  "created_at": "2026-04-27T15:18:38.536864Z",
+  "lead_info": {
+    "name": "Joyce Reyes",
+    "email": "joyce.reyes@maac.com",
+    "company": "MAA",
+    "address": "1633 S Main St",
+    "city": "Orem",
+    "state": "UT"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 40.2673,
+      "lon": -111.694767,
+      "source": "intellipins"
+    },
+    "census": {
+      "population": "96,734",
+      "median_income": "$70,412",
+      "renter_percentage": "39.5%"
+    },
+    "fred": {
+      "vacancy_rate": "7.6%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": null,
+      "city": {
+        "title": "Orem, Utah",
+        "extract": "Orem is a city in Utah County, Utah, United States, in the north central part of the state. It is adjacent to Provo, Lindon, and Vineyard and is approximately 45 miles (72\u00a0km) south of Salt Lake City."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"MAA\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 45,
+      "description": "Car-Dependent",
+      "transit_score": 43,
+      "transit_description": "Some Transit",
+      "bike_score": 60,
+      "bike_description": "Bikeable"
+    },
+    "intellipins": {
+      "lat": 40.2673,
+      "lon": -111.694767,
+      "ipins_id": "iUS00203393893",
+      "address_type": null,
+      "formatted_address": "1633 S Main St, Orem UT 84058, United States",
+      "geocode_score": 0.888,
+      "parcel": {
+        "area_sqm": 9608,
+        "area_sqft": "103,419 sq ft",
+        "elevation_m": 4732,
+        "parcel_owner": "COSSEY, MALLORY",
+        "apn": "550440004",
+        "iparcel_id": "iUSP000004536212",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  -111.694925,
+                  40.267218
+                ],
+                [
+                  -111.694929,
+                  40.267397
+                ],
+                [
+                  -111.694398,
+                  40.267393
+                ],
+                [
+                  -111.694397,
+                  40.267215
+                ],
+                [
+                  -111.694925,
+                  40.267218
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "building_type": "Single Family Housing"
+    },
+    "google": {
+      "place_name": null,
+      "matched_via": null,
+      "place_types": [],
+      "rating": null,
+      "review_count": null,
+      "editorial_summary": null,
+      "reviews": [],
+      "note": "No matching place found in nearby area"
+    },
+    "osm": {
+      "osm_type": "yes",
+      "osm_class": "building",
+      "display_name": "1633, South Main Street, Curtis, Orem, Utah County, Utah, 84058, United States",
+      "lat": "40.2672998",
+      "lon": "-111.6947671",
+      "boundingbox": [
+        "40.2672255",
+        "40.2673740",
+        "-111.6948189",
+        "-111.6947153"
+      ],
+      "osm_id": "way/1370091288",
+      "building_details": {
+        "building_type": "yes",
+        "floors": null,
+        "units": null,
+        "name": null,
+        "operator": null,
+        "height": null,
+        "calculated_area": "1,503 sq ft",
+        "geometry_wkt": "POLYGON ((-111.6947153 40.2672267, -111.6947183 40.267374, -111.6948189 40.2673728, -111.6948159 40.2672255, -111.6947153 40.2672267))"
+      },
+      "amenities_1000m": {
+        "transit": "19",
+        "parks": "5",
+        "retail": "35"
+      }
+    },
+    "open_meteo": {
+      "annual_precip_days": 149,
+      "annual_snowfall_cm": 251.0,
+      "annual_precipitation_mm": 547.0,
+      "hottest_day_c": 37.3,
+      "coldest_day_c": -14.4
+    },
+    "crime": {
+      "city": "Orem",
+      "state": "UT",
+      "ori": "UT0250300",
+      "violent_crime_rate_per_100k": 133.1,
+      "national_avg_violent_per_100k": 380,
+      "above_national_avg_violent": false,
+      "crime_score": 2.8,
+      "data_year": 2025,
+      "source": "FBI CDE",
+      "violent_crime_score": 2.4,
+      "property_crime_rate_per_100k": 1235.9,
+      "national_avg_property_per_100k": 2110,
+      "above_national_avg_property": false,
+      "property_data_year": 2025,
+      "property_crime_score": 3.3
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 58.6,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "renter_pct": 84.8,
+        "low_vacancy": 36.8,
+        "walk_score": 31.6,
+        "transit_score": 32.9,
+        "income": 87.7,
+        "nearby_amenities": 100.0,
+        "population": 15.0
+      }
+    },
+    "friction": {
+      "score": 73.1,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "crime": 1.7,
+        "precip_days": 100.0,
+        "snowfall": 100.0,
+        "temp_range": 88.4,
+        "elevation": 100.0
+      }
+    },
+    "scale": {
+      "score": 34.7,
+      "available_weight": 0.75,
+      "max_weight": 1.0,
+      "building_type": "Single Family Housing",
+      "components": {
+        "building_type": 20.0,
+        "footprint": 0.1,
+        "lot_area": 100.0
+      }
+    },
+    "opportunity": {
+      "score": 0.0,
+      "available_weight": 0.0,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {}
+    },
+    "lead_score": {
+      "score": 57.5,
+      "grade": "C",
+      "available_weight": 0.65,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 58.6,
+        "friction": 73.1,
+        "scale": 34.7
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "harsh_conditions",
+      "label": "Harsh Operating Conditions",
+      "severity": "medium",
+      "description": "Challenging conditions (heavy snowfall (251 cm/yr), frequent precipitation (149 days/yr)) increase maintenance coordination load and incident management. Automated tenant communication keeps residents informed without burdening staff.",
+      "source": "rule"
+    },
+    {
+      "tag": "harsh_cold_weather",
+      "label": "Cold Weather",
+      "severity": "medium",
+      "description": "Orem's cold weather with an average temperature range of -14.4\u201337.3 \u00b0C and significant snowfall of 251.0 cm requires multifamily housing operators to invest in additional heating infrastructure, affecting maintenance costs, which EliseAI's maintenance coordination and work order management can help streamline.",
+      "source": "llm"
+    },
+    {
+      "tag": "high_rental_demand_seasonality",
+      "label": "Seasonality",
+      "severity": "medium",
+      "description": "The high population of 96,734 and renter percentage of 39.5% in Orem creates demand fluctuations due to seasonal changes, which EliseAI's leasing AI and tour scheduling capabilities can help optimize to match peak demand periods and minimize vacancy rates.",
+      "source": "llm"
+    }
+  ],
+  "outreach": {
+    "subject": "Maintenance Calls Piling Up",
+    "greeting": "Hi Joyce,",
+    "message": "Your team faces around 149 rainy days per year, which means maintenance issues are a constant concern. This climate creates a reactive maintenance environment, where your team is always on the defensive. Your building requires frequent repairs, from burst pipes to flooded areas, due to the temperature range of 6\u00b0F to 99\u00b0F.\n\nAt MAA, a burst pipe during a cold snap can lead to a flooded lobby, and residents calling repeatedly because they haven't heard back on a work order. EliseAI keeps residents informed automatically so the team can focus on the fix, not the calls.\n\nWorth a call?",
+    "arc": "operational_friction",
+    "generated_at": "2026-04-27T15:18:38.536833Z",
+    "provider": "groq"
+  }
+}

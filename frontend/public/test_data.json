@@ -11,53 +11,53 @@
   },
   {
     "id": 2,
-    "label": "Essex Property Trust \u2014 Abington, MA",
+    "label": "Essex Property Trust \u2014 Bronx, NY",
     "name": "Betty Torres",
     "email": "betty.torres@essexapartmenthomes.com",
     "company": "Essex Property Trust",
-    "property_address": "777 Brockton Avenue",
-    "city": "Abington",
-    "state": "MA"
+    "property_address": "5959 Broadway",
+    "city": "Bronx",
+    "state": "NY"
   },
   {
     "id": 3,
-    "label": "MAA \u2014 Avon, MA",
+    "label": "MAA \u2014 Orem, UT",
     "name": "Joyce Reyes",
     "email": "joyce.reyes@maac.com",
     "company": "MAA",
-    "property_address": "30 Memorial Drive",
-    "city": "Avon",
-    "state": "MA"
+    "property_address": "1633 S Main St",
+    "city": "Orem",
+    "state": "UT"
   },
   {
     "id": 4,
-    "label": "Kairoi Residential \u2014 Bellingham, MA",
+    "label": "Kairoi Residential \u2014 New York, NY",
     "name": "Anna Miller",
     "email": "anna.miller@kairoiresidential.com",
     "company": "Kairoi Residential",
-    "property_address": "250 Hartford Avenue",
-    "city": "Bellingham",
-    "state": "MA"
+    "property_address": "152 E 81st St",
+    "city": "New York",
+    "state": "NY"
   },
   {
     "id": 5,
-    "label": "Equity Residential \u2014 Brockton, MA",
+    "label": "Inland American Real Estate \u2014 Chicago, IL",
     "name": "Christopher Gonzalez",
     "email": "christopher.gonzalez@equityapartments.com",
-    "company": "Equity Residential",
-    "property_address": "700 Oak Street",
-    "city": "Brockton",
-    "state": "MA"
+    "company": "Inland American Real Estate",
+    "property_address": "40 E Oak St",
+    "city": "Chicago",
+    "state": "IL"
   },
   {
     "id": 6,
-    "label": "Lincoln Property Company \u2014 Chelmsford, MA",
+    "label": "Scottsdale Property Group \u2014 Scottsdale, AZ",
     "name": "Tyler Morales",
-    "email": "tyler.morales@lincolnapts.com",
-    "company": "Lincoln Property Company",
-    "property_address": "66-4 Parkhurst Rd",
-    "city": "Chelmsford",
-    "state": "MA"
+    "email": "tyler.morales@li.com",
+    "company": "Scottsdale Property Group",
+    "property_address": "6839 E Montecito Ave",
+    "city": "Scottsdale",
+    "state": "AZ"
   },
   {
     "id": 7,
@@ -2825,7 +2825,7 @@
     "name": "Helen Richardson",
     "email": "helen.richardson@bozzuto.com",
     "company": "Bozzuto",
-    "property_address": "330 Michell Court",
+    "property_address": "1700 Paseo Laguna Seco",
     "city": "Livermore",
     "state": "CA"
   },

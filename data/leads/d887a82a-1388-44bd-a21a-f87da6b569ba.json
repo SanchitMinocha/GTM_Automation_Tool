@@ -1,0 +1,197 @@
+{
+  "id": "d887a82a-1388-44bd-a21a-f87da6b569ba",
+  "created_at": "2026-04-27T15:20:21.231540Z",
+  "lead_info": {
+    "name": "Tyler Morales",
+    "email": "tyler.morales@lincolnapts.com",
+    "company": "Lincoln Property Company",
+    "address": "66-4 Parkhurst Rd",
+    "city": "Chelmsford",
+    "state": "MA"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 42.6231736,
+      "lon": -71.3609688,
+      "source": "nominatim_structured"
+    },
+    "census": {
+      "population": "Data unavailable",
+      "median_income": "Data unavailable",
+      "renter_percentage": "Data unavailable"
+    },
+    "fred": {
+      "vacancy_rate": "3.4%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": null,
+      "city": {
+        "title": "Chelmsford, Massachusetts",
+        "extract": "Chelmsford is a town in Middlesex County, Massachusetts, United States."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"Lincoln Property Company\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 68,
+      "description": "Somewhat Walkable",
+      "bike_score": 36,
+      "bike_description": "Somewhat Bikeable"
+    },
+    "intellipins": {
+      "building_type": "Shopping Complex / Amenity"
+    },
+    "google": {
+      "error": "Key required"
+    },
+    "osm": {
+      "osm_type": "fast_food",
+      "osm_class": "amenity",
+      "display_name": "Subway, 66-4, Parkhurst Road, Chelmsford, Middlesex County, Massachusetts, 01824, United States",
+      "lat": "42.6231736",
+      "lon": "-71.3609688",
+      "boundingbox": [
+        "42.6231236",
+        "42.6232236",
+        "-71.3610188",
+        "-71.3609188"
+      ],
+      "osm_id": "way/139040013",
+      "building_details": {
+        "building_type": "retail",
+        "floors": "N/A",
+        "units": "N/A",
+        "name": "Walmart",
+        "operator": "Walmart",
+        "height": "N/A",
+        "calculated_area": "97,815 sq ft",
+        "geometry_wkt": "POLYGON ((-71.3602186 42.623338, -71.360192 42.6223199, -71.3605862 42.6223144, -71.3605825 42.6221744, -71.3610347 42.622168, -71.3610384 42.6223079, -71.3610924 42.6223072, -71.3611024 42.6226892, -71.3611822 42.6226881, -71.3611853 42.6228068, -71.3611881 42.6229115, -71.3611082 42.6229127, -71.3611191 42.623329, -71.3602186 42.623338))"
+      },
+      "amenities_1000m": {
+        "transit": "3",
+        "parks": "0",
+        "retail": "24"
+      }
+    },
+    "open_meteo": {
+      "annual_precip_days": 189,
+      "annual_snowfall_cm": 79.2,
+      "annual_precipitation_mm": 1114.1,
+      "hottest_day_c": 35.9,
+      "coldest_day_c": -13.7
+    },
+    "crime": {
+      "city": "Chelmsford",
+      "state": "MA",
+      "ori": "MA0091300",
+      "violent_crime_rate_per_100k": 132.4,
+      "national_avg_violent_per_100k": 380,
+      "above_national_avg_violent": false,
+      "crime_score": 2.6,
+      "data_year": 2025,
+      "source": "FBI CDE",
+      "violent_crime_score": 2.4,
+      "property_crime_rate_per_100k": 964.8,
+      "national_avg_property_per_100k": 2110,
+      "above_national_avg_property": false,
+      "property_data_year": 2025,
+      "property_crime_score": 2.8
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 74.3,
+      "available_weight": 0.47,
+      "max_weight": 1.0,
+      "components": {
+        "low_vacancy": 74.8,
+        "walk_score": 72.2,
+        "nearby_amenities": 75.9
+      }
+    },
+    "friction": {
+      "score": 68.3,
+      "available_weight": 0.9,
+      "max_weight": 1.0,
+      "components": {
+        "crime": 1.3,
+        "precip_days": 100.0,
+        "snowfall": 99.3,
+        "temp_range": 81.3
+      }
+    },
+    "scale": {
+      "score": 75.5,
+      "available_weight": 0.55,
+      "max_weight": 1.0,
+      "building_type": "Shopping Complex / Amenity",
+      "components": {
+        "building_type": 55.0,
+        "footprint": 100.0
+      }
+    },
+    "opportunity": {
+      "score": 0.0,
+      "available_weight": 0.0,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {}
+    },
+    "lead_score": {
+      "score": 72.1,
+      "grade": "B",
+      "available_weight": 0.431,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 74.3,
+        "friction": 68.3,
+        "scale": 75.5
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "volume_overload",
+      "label": "High Lead Volume Overload",
+      "severity": "high",
+      "description": "High rental demand combined with a large property footprint likely floods property managers with inquiries. Manual handling causes slow response times and lost leases \u2014 precisely where EliseAI's automated engagement wins.",
+      "source": "rule"
+    },
+    {
+      "tag": "harsh_conditions",
+      "label": "Harsh Operating Conditions",
+      "severity": "medium",
+      "description": "Challenging conditions (heavy snowfall (79 cm/yr), frequent precipitation (189 days/yr)) increase maintenance coordination load and incident management. Automated tenant communication keeps residents informed without burdening staff.",
+      "source": "rule"
+    },
+    {
+      "tag": "volume_management",
+      "label": "High Vacancy Rate",
+      "severity": "high",
+      "description": "The 3.4% vacancy rate may result in lost revenue, but EliseAI's automation can help optimize leasing and touring processes.",
+      "source": "llm"
+    },
+    {
+      "tag": "winterization",
+      "label": "Harsh Weather Conditions",
+      "severity": "high",
+      "description": "The average temperature of -13.7\u00b0C and 79.2 cm of snowfall require Lincoln Property Company to invest in equipment and labor to clear sidewalks, which EliseAI's maintenance coordination can help manage.",
+      "source": "llm"
+    }
+  ],
+  "outreach": {
+    "subject": "Maintenance Calls",
+    "greeting": "Hi Tyler,",
+    "message": "Your team deals with around 3 feet of snow and ~189 rainy days per year, meaning maintenance is a constant, reactive battle. This winter low of 7\u00b0F doesn't help, putting your building's pipes at risk. Your maintenance crew is always on their toes. \n\n At Lincoln Property Company, when a pipe bursts during a cold snap, residents call repeatedly because they haven't heard back on a work order, taking your team away from the actual fix. EliseAI keeps residents informed automatically so the team can focus on the fix, not the calls. \n\n Worth a 15-minute call?",
+    "arc": "operational_friction",
+    "generated_at": "2026-04-27T15:20:21.231509Z",
+    "provider": "groq"
+  }
+}

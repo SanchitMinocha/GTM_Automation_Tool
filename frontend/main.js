@@ -1,3 +1,28 @@
+// ── Dev panel toggle ──────────────────────────────────────────────────────────
+window.toggleDevPanel = function () {
+    const wrap = document.getElementById('dev-panel-wrap');
+    const btn  = document.getElementById('dev-main-toggle');
+    const isOpen = wrap.style.display !== 'none';
+    wrap.style.display = isOpen ? 'none' : 'block';
+    btn.textContent = isOpen ? 'DEV TOOLS ▾' : 'DEV TOOLS ▲';
+};
+
+// ── Accordion toggle ──────────────────────────────────────────────────────────
+window.toggleAccordion = function (btn) {
+    const body  = btn.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    const arrow = btn.querySelector('.accordion-arrow');
+    if (arrow) arrow.textContent = isOpen ? '▾' : '▲';
+};
+
+// ── SDR signature config ─────────────────────────────────────────────────────
+let sdrConfig = { name: 'Alex Chen', title: 'Account Executive', company: 'EliseAI' };
+fetch('/sdr_config.json')
+    .then(r => r.json())
+    .then(cfg => { sdrConfig = cfg; })
+    .catch(() => {/* use defaults */});
+
 const leadForm        = document.getElementById('lead-form');
 const resultsCard     = document.getElementById('results-card');
 const resultsContent  = document.getElementById('results-content');
@@ -122,6 +147,51 @@ function disabledMetric(label) {
         </div>`;
 }
 
+function renderKeySignals(enrichment) {
+    const census = enrichment.census || {};
+    const fred   = enrichment.fred   || {};
+    const ws     = enrichment.walkscore || {};
+    const google = enrichment.google  || {};
+
+    const signals = [];
+
+    if (ws.walk_score != null && !ws._disabled) {
+        const sc = ws.walk_score;
+        const c  = typeof sc === 'number' ? (sc >= 70 ? '#4ade80' : sc >= 50 ? '#f59e0b' : '#f87171') : '#a8906e';
+        signals.push({ label: 'Walk Score', value: sc, color: c, src: 'WalkScore' });
+    }
+    if (ws.transit_score != null && !ws._disabled) {
+        signals.push({ label: 'Transit', value: ws.transit_score, color: '#60a5fa', src: 'WalkScore' });
+    }
+    if (census.renter_percentage && !census._disabled) {
+        signals.push({ label: 'Renter %', value: census.renter_percentage, color: '#fbbf24', src: 'US Census' });
+    }
+    if (fred.vacancy_rate && !fred._disabled) {
+        const vc = parseFloat(fred.vacancy_rate) > 7 ? '#f87171' : '#4ade80';
+        signals.push({ label: 'Vacancy Rate', value: fred.vacancy_rate, color: vc, src: 'FRED' });
+    }
+    if (census.median_income && !census._disabled) {
+        signals.push({ label: 'Med. Income', value: census.median_income, color: '#fbbf24', src: 'US Census' });
+    }
+    if (census.population && !census._disabled) {
+        signals.push({ label: 'Population', value: census.population, color: '#a8906e', src: 'US Census' });
+    }
+    if (google.rating != null && !google._disabled && !google.error) {
+        const gc = google.rating >= 4 ? '#4ade80' : google.rating >= 3 ? '#f59e0b' : '#f87171';
+        signals.push({ label: 'Google Rating', value: `${google.rating}★`, color: gc, src: 'Google Places' });
+    }
+
+    if (signals.length === 0) return '';
+
+    return `<div class="key-signals-strip">
+        ${signals.map(s => `
+            <div class="key-signal" title="via ${s.src}">
+                <span class="key-signal-value" style="color:${s.color}">${s.value}</span>
+                <span class="key-signal-label">${s.label}</span>
+            </div>`).join('')}
+    </div>`;
+}
+
 function renderWikiSection(wikipedia) {
     if (wikipedia?._disabled) {
         return `<div style="margin-top:1.5rem;">
@@ -131,7 +201,7 @@ function renderWikiSection(wikipedia) {
     }
     if (!wikipedia) return '';
 
-    const wikiTag = `<span style="font-size:0.65rem;font-weight:400;background:rgba(99,102,241,0.15);color:#818cf8;padding:0.1rem 0.4rem;border-radius:999px;margin-left:0.4rem;vertical-align:middle;">Wikipedia</span>`;
+    const wikiTag = `<span style="font-size:0.65rem;font-weight:400;background:rgba(245,158,11,0.15);color:#fbbf24;padding:0.1rem 0.4rem;border-radius:999px;margin-left:0.4rem;vertical-align:middle;">Wikipedia</span>`;
 
     let html = '';
 
@@ -144,7 +214,7 @@ function renderWikiSection(wikipedia) {
             </h3>
             <p style="font-size:0.875rem;line-height:1.6;color:var(--text-muted);">${extract}</p>
             ${url ? `<a href="${safeHref(url)}" target="_blank" rel="noopener noreferrer"
-                style="font-size:0.72rem;color:#818cf8;text-decoration:none;display:inline-block;margin-top:0.4rem;">
+                style="font-size:0.72rem;color:#fbbf24;text-decoration:none;display:inline-block;margin-top:0.4rem;">
                 Read more on Wikipedia →
             </a>` : ''}
         </div>`;
@@ -217,101 +287,39 @@ function renderWalkScore(ws) {
 function renderIntelliPins(ipins) {
     const tag = `<span style="font-size:0.65rem;font-weight:400;background:rgba(251,191,36,0.15);color:#fbbf24;padding:0.1rem 0.4rem;border-radius:999px;margin-left:0.4rem;vertical-align:middle;">Intellipins</span>`;
     const src = 'Intellipins';
-    const sectionStyle = 'border-top:1px solid var(--glass-border);padding-top:1.5rem;margin-top:1.5rem;';
-    const subheadStyle = 'font-size:0.75rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px dashed var(--glass-border);padding-bottom:0.3rem;margin:0 0 0.6rem;';
 
-    if (ipins?._disabled) {
-        return `<div style="${sectionStyle}">
-            <h3 style="font-size:0.9rem;margin-bottom:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Property Intelligence ${tag}</h3>
-            <div class="metric-grid">
-                ${disabledMetric('Building Type')}${disabledMetric('Address Type')}${disabledMetric('Match Score')}
-                ${disabledMetric('Lot Area')}${disabledMetric('Elevation')}${disabledMetric('Owner')}
-            </div>
-        </div>`;
-    }
-
-    if (!ipins || ipins.error) {
-        return `<div style="${sectionStyle}">
-            <h3 style="font-size:0.9rem;margin-bottom:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Property Intelligence ${tag}</h3>
-            <p style="font-size:0.8rem;color:var(--text-muted);font-style:italic;">${ipins?.error || 'No data'}</p>
-        </div>`;
-    }
+    if (ipins?._disabled || !ipins || ipins.error) return '';
 
     const val = v => (v != null && v !== 'N/A' && v !== '') ? v : 'N/A';
 
-    const scoreColor = ipins.geocode_score >= 0.9 ? '#10b981' : ipins.geocode_score >= 0.7 ? '#f59e0b' : '#ef4444';
+    const scoreColor = ipins.geocode_score >= 0.9 ? '#4ade80' : ipins.geocode_score >= 0.7 ? '#f59e0b' : '#f87171';
     const scoreVal   = ipins.geocode_score != null
         ? `<span style="color:${scoreColor};font-weight:700;">${(ipins.geocode_score * 100).toFixed(0)}%</span>`
         : 'N/A';
 
-    const coords = (ipins.lat != null && ipins.lon != null)
-        ? `${parseFloat(ipins.lat).toFixed(5)}, ${parseFloat(ipins.lon).toFixed(5)}`
-        : 'N/A';
+    const parcel = ipins.parcel || {};
+    const buildingTypeColor = ipins.building_type === 'Single Family Housing' ? '#4ade80' : '#f59e0b';
 
-    const parcel  = ipins.parcel || {};
-    const hasParcel = Object.keys(parcel).length > 0;
-
-    const buildingTypeColor = ipins.building_type === 'Single Family Housing' ? '#34d399' : '#f59e0b';
-
-    return `<div style="${sectionStyle}">
-        <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Property Intelligence ${tag}</h3>
-
-        <h4 style="${subheadStyle}">Address Verification</h4>
-        <div class="metric-grid" style="margin-bottom:1.25rem;">
+    return `<div style="margin-top:1.25rem;">
+        <h3 style="font-size:0.9rem;margin-bottom:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Property Intelligence ${tag}</h3>
+        <div class="metric-grid">
             ${metric('Building Type', `<span style="color:${buildingTypeColor};font-weight:600;">${val(ipins.building_type)}</span>`, src)}
             ${metric('Address Type',  val(ipins.address_type),  src)}
             ${metric('Match Score',   scoreVal,                  src)}
-            <div class="metric" style="grid-column:span 3;" data-source="${src}">
-                <span class="metric-label">Verified Address</span>
-                <span class="metric-value" style="font-size:0.8rem;">${val(ipins.formatted_address)}</span>
-            </div>
         </div>
-
-        <h4 style="${subheadStyle}">Geolocation <small style="font-size:0.65rem;color:#fbbf24;text-transform:none;font-weight:400;">(source: Intellipins)</small></h4>
-        <div class="metric-grid" style="margin-bottom:1.25rem;">
-            ${metric('Lat / Lon', coords,              src)}
-            ${metric('IPINS ID',  val(ipins.ipins_id), src)}
-        </div>
-
-        ${hasParcel ? `
-        <h4 style="${subheadStyle}">Parcel Data</h4>
-        <div class="metric-grid">
-            ${metric('Lot Area',    val(parcel.area_sqft),   'Intellipins Parcel')}
-            ${metric('Lot Area m²', val(parcel.area_sqm),    'Intellipins Parcel')}
-            ${metric('Elevation',   parcel.elevation_m !== 'N/A' ? parcel.elevation_m + ' m' : 'N/A', 'Intellipins Parcel')}
-            ${metric('Owner',       val(parcel.parcel_owner), 'Intellipins Parcel')}
-            ${metric('APN',         val(parcel.apn),          'Intellipins Parcel')}
-            ${metric('Parcel ID',   val(parcel.iparcel_id),   'Intellipins Parcel')}
-        </div>
-        ` : '<p style="font-size:0.75rem;color:var(--text-muted);font-style:italic;">Parcel data unavailable for this address.</p>'}
+        ${val(ipins.formatted_address) !== 'N/A' ? `<p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.75rem;">📍 ${val(ipins.formatted_address)}</p>` : ''}
+        ${parcel.area_sqft ? `<div class="metric-grid" style="margin-top:1rem;">
+            ${metric('Lot Area', val(parcel.area_sqft), 'Intellipins Parcel')}
+            ${parcel.parcel_owner && parcel.parcel_owner !== 'N/A' ? metric('Owner', val(parcel.parcel_owner), 'Intellipins Parcel') : ''}
+        </div>` : ''}
     </div>`;
 }
 
 function renderOSM(osm, parcel = null) {
     const osmTag = `<span style="font-size:0.65rem;font-weight:400;background:rgba(34,197,94,0.15);color:#22c55e;padding:0.1rem 0.4rem;border-radius:999px;margin-left:0.4rem;vertical-align:middle;">OSM</span>`;
-    const src = 'OpenStreetMap & Overpass';
 
-    if (osm?._disabled) {
-        return `<div style="border-top:1px solid var(--glass-border);padding-top:1.5rem;margin-top:1.5rem;">
-            <h3 style="font-size:0.9rem;margin-bottom:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">
-                OSM Property Info ${osmTag}
-            </h3>
-            <div class="metric-grid">
-                ${disabledMetric('Type')}${disabledMetric('Class')}
-            </div>
-        </div>`;
-    }
-    
-    if (!osm || osm.osm_type === "N/A") {
-        return `<div style="border-top:1px solid var(--glass-border);padding-top:1.5rem;margin-top:1.5rem;">
-            <h3 style="font-size:0.9rem;margin-bottom:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">
-                OSM Property Info ${osmTag}
-            </h3>
-            <p style="font-size:0.8rem;color:var(--text-muted);font-style:italic;">No data</p>
-        </div>`;
-    }
+    if (osm?._disabled || !osm || osm.osm_type === "N/A") return '';
 
-    const coords = osm.lat !== "N/A" ? `${parseFloat(osm.lat).toFixed(4)}, ${parseFloat(osm.lon).toFixed(4)}` : "N/A";
     const bd = osm.building_details || {};
     
     const val = (v) => (v && v !== "N/A") ? v : "N/A";
@@ -414,51 +422,34 @@ function renderOSM(osm, parcel = null) {
 
     const geomStr = renderFootprintSvg(bd.geometry_wkt || null, parcel);
 
-    return `<div style="border-top:1px solid var(--glass-border);padding-top:1.5rem;margin-top:1.5rem;">
-        <h3 style="font-size:0.9rem;margin-bottom:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">
-            OSM Property Info ${osmTag}
-        </h3>
-        <div class="metric-grid">
-            ${metric('Type', osm.osm_type, src)}
-            ${metric('Class', osm.osm_class, src)}
-            ${metric('Coords', coords, src)}
-            <div class="metric" style="grid-column: span 2;" data-source="${src}">
-                <span class="metric-label">Display Name</span>
-                <span class="metric-value" style="font-size: 0.8rem;">${osm.display_name}</span>
-            </div>
-        </div>
+    const hasBuildingDetails = val(bd.building_type) || val(bd.floors) || val(bd.units);
+    const hasAmenities = Object.keys(osm.amenities_1000m || {}).length > 0;
+    if (!hasBuildingDetails && !hasAmenities && geomStr === 'N/A') return '';
 
-        ${Object.keys(bd).length > 0 ? `
-        <h4 style="font-size:0.8rem;margin:1.25rem 0 0.5rem;color:var(--text-muted);text-transform:uppercase;border-bottom:1px dashed var(--glass-border);padding-bottom:0.25rem;">Building Details</h4>
-        <div class="metric-grid">
-            ${metric('Building Use', val(bd.building_type), 'Overpass')}
-            ${metric('Levels', val(bd.floors), 'Overpass')}
-            ${metric('Units', val(bd.units), 'Overpass')}
-            ${metric('Name', val(bd.name), 'Overpass')}
-            ${metric('Operator', val(bd.operator), 'Overpass')}
-            ${metric('Height', val(bd.height), 'Overpass')}
-            ${metric('Building Footprint Area', val(bd.calculated_area), 'Overpass')}
-        </div>
-        ` : ''}
+    return `<div style="margin-top:1.25rem;">
+        <h3 style="font-size:0.9rem;margin-bottom:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">
+            Building Data ${osmTag}
+        </h3>
+
+        ${hasBuildingDetails ? `<div class="metric-grid">
+            ${val(bd.building_type) ? metric('Building Use', val(bd.building_type), 'Overpass') : ''}
+            ${val(bd.floors) ? metric('Levels', val(bd.floors), 'Overpass') : ''}
+            ${val(bd.units) ? metric('Units', val(bd.units), 'Overpass') : ''}
+        </div>` : ''}
 
         ${geomStr !== 'N/A' ? `
-        <div class="metric" style="margin-top: 1rem; width: 100%;" data-source="Overpass">
+        <div style="margin-top:1rem;">
             <span class="metric-label">Building Footprint &amp; Lot Boundary</span>
-            <div class="metric-value" style="margin-top: 0.5rem;">
-                ${geomStr}
-            </div>
-        </div>
-        ` : ''}
-        
-        ${Object.keys(osm.amenities_1000m || {}).length > 0 ? `
-        <h4 style="font-size:0.8rem;margin:1.25rem 0 0.5rem;color:var(--text-muted);text-transform:uppercase;border-bottom:1px dashed var(--glass-border);padding-bottom:0.25rem;">Amenities (1000m Radius)</h4>
+            <div style="margin-top:0.5rem;">${geomStr}</div>
+        </div>` : ''}
+
+        ${hasAmenities ? `
+        <h4 style="font-size:0.75rem;margin:1.25rem 0 0.5rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Nearby Amenities (1 km)</h4>
         <div class="metric-grid">
-            ${metric('Transit Stops', osm.amenities_1000m.transit || '0', 'Overpass')}
-            ${metric('Parks & Leisure', osm.amenities_1000m.parks || '0', 'Overpass')}
-            ${metric('Retail & Dining', osm.amenities_1000m.retail || '0', 'Overpass')}
-        </div>
-        ` : ''}
-        
+            ${osm.amenities_1000m.transit ? metric('Transit Stops',  osm.amenities_1000m.transit || '0', 'Overpass') : ''}
+            ${osm.amenities_1000m.parks   ? metric('Parks & Leisure', osm.amenities_1000m.parks   || '0', 'Overpass') : ''}
+            ${osm.amenities_1000m.retail  ? metric('Retail & Dining', osm.amenities_1000m.retail  || '0', 'Overpass') : ''}
+        </div>` : ''}
     </div>`;
 }
 
@@ -504,84 +495,22 @@ function renderCrime(crime) {
     const tag = `<span style="font-size:0.65rem;font-weight:400;background:rgba(239,68,68,0.15);color:#ef4444;padding:0.1rem 0.4rem;border-radius:999px;margin-left:0.4rem;vertical-align:middle;">FBI CDE</span>`;
     const src = 'FBI Crime Data Explorer';
 
-    if (crime?._disabled) {
-        return `<div style="border-top:1px solid var(--glass-border);padding-top:1.5rem;margin-top:1.5rem;">
-            <h3 style="font-size:0.9rem;margin-bottom:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">
-                Crime Data ${tag}
-            </h3>
-            <div class="metric-grid">
-                ${disabledMetric('Violent Crime Rate')}${disabledMetric('vs. National Avg')}${disabledMetric('Crime Score')}
-            </div>
-        </div>`;
-    }
+    if (crime?._disabled || !crime || Object.keys(crime).length === 0 || crime.error) return '';
 
-    if (!crime || Object.keys(crime).length === 0 || crime.error) {
-        return `<div style="border-top:1px solid var(--glass-border);padding-top:1.5rem;margin-top:1.5rem;">
-            <h3 style="font-size:0.9rem;margin-bottom:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">
-                Crime Data ${tag}
-            </h3>
-            <p style="font-size:0.8rem;color:var(--text-muted);font-style:italic;">${crime?.error || 'No data available.'}</p>
-        </div>`;
-    }
-
-    const vRate      = crime.violent_crime_rate_per_100k;
-    const vAvg       = crime.national_avg_violent_per_100k ?? 380;
-    const vAbove     = crime.above_national_avg_violent;
-    const vDiff      = Math.abs(vRate - vAvg).toFixed(1);
-
-    const vColor     = vAbove ? '#ef4444' : '#4ade80';
-    const vVal       = `<span style="color:${vColor}">${vRate}</span> <small style="font-size:0.6rem;color:var(--text-muted)">per 100k</small>`;
-
-    const vDiffColor = vAbove ? '#ef4444' : '#4ade80';
-    const vDiffVal   = `<span style="color:${vDiffColor}">${vAbove ? '▲' : '▼'} ${vDiff}</span> <small style="font-size:0.6rem;color:var(--text-muted)">${vAbove ? 'above' : 'below'} avg (${vAvg})</small>`;
-
-    const scoreColor = crime.crime_score > 10 ? '#ef4444' : crime.crime_score > 5 ? '#f59e0b' : '#4ade80';
-    const scoreVal   = `<span style="color:${scoreColor}">${crime.crime_score}</span> <small style="font-size:0.6rem;color:var(--text-muted)">/ 15</small>`;
-
-    const pRate  = crime.property_crime_rate_per_100k;
-    const pAvg   = crime.national_avg_property_per_100k ?? 2110;
-    const pAbove = crime.above_national_avg_property;
-    const pDiff  = pRate != null ? Math.abs(pRate - pAvg).toFixed(1) : null;
-
-    const pColor    = pAbove ? '#ef4444' : '#4ade80';
-    const pRateVal  = pRate != null
-        ? `<span style="color:${pColor}">${pRate}</span> <small style="font-size:0.6rem;color:var(--text-muted)">per 100k</small>`
-        : `<span style="color:var(--text-muted)">N/A</span>`;
-    const pDiffVal  = pDiff != null
-        ? `<span style="color:${pColor}">${pAbove ? '▲' : '▼'} ${pDiff}</span> <small style="font-size:0.6rem;color:var(--text-muted)">${pAbove ? 'above' : 'below'} avg (${pAvg})</small>`
-        : `<span style="color:var(--text-muted)">N/A</span>`;
-
-    const vScoreVal = crime.violent_crime_score != null 
-        ? `<span style="color:${crime.violent_crime_score > 10 ? '#ef4444' : crime.violent_crime_score > 5 ? '#f59e0b' : '#4ade80'}">${crime.violent_crime_score}</span> <small style="font-size:0.6rem;color:var(--text-muted)">/ 15</small>` 
-        : `<span style="color:var(--text-muted)">N/A</span>`;
-
-    const pScoreVal = crime.property_crime_score != null
-        ? `<span style="color:${crime.property_crime_score > 10 ? '#ef4444' : crime.property_crime_score > 5 ? '#f59e0b' : '#4ade80'}">${crime.property_crime_score}</span> <small style="font-size:0.6rem;color:var(--text-muted)">/ 15</small>`
-        : `<span style="color:var(--text-muted)">N/A</span>`;
+    const sc = crime.crime_score;
+    const scoreColor = sc > 10 ? '#f87171' : sc > 5 ? '#f59e0b' : '#4ade80';
+    const scoreDesc  = sc > 10 ? 'Above average' : sc > 5 ? 'Moderate' : 'Below average';
+    const scoreVal   = `<span style="color:${scoreColor}">${sc}</span> <small style="font-size:0.6rem;color:var(--text-muted)">/ 15 · ${scoreDesc}</small>`;
+    const context    = crime.above_national_avg_violent ? 'Violent crime above national average' : 'Crime rates below national average';
 
     return `<div style="border-top:1px solid var(--glass-border);padding-top:1.5rem;margin-top:1.5rem;">
         <h3 style="font-size:0.9rem;margin-bottom:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">
-            Crime Data ${tag}
+            Crime Score ${tag}
         </h3>
-        <p style="font-size:0.7rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;margin:0 0 0.4rem;">Violent Crime</p>
-        <div class="metric-grid" style="margin-bottom:1rem;">
-            ${metric('Violent Crime Rate', vVal,      src)}
-            ${metric('vs. National Avg',   vDiffVal,  src)}
-            ${metric('Violent Score',      vScoreVal, src)}
-        </div>
-        <p style="font-size:0.7rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;margin:0 0 0.4rem;">Property Crime</p>
-        <div class="metric-grid" style="margin-bottom:1rem;">
-            ${metric('Property Crime Rate', pRateVal, src)}
-            ${metric('vs. National Avg',    pDiffVal, src)}
-            ${metric('Property Score',      pScoreVal, src)}
-        </div>
-        <p style="font-size:0.7rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;margin:0 0 0.4rem;">Combined</p>
         <div class="metric-grid">
             ${metric('Overall Crime Score', scoreVal, src)}
         </div>
-        <p style="font-size:0.7rem;color:var(--text-muted);margin-top:0.75rem;">
-            ${crime.city}, ${crime.state} · ${crime.data_year} · ${crime.source}
-        </p>
+        <p style="font-size:0.72rem;color:var(--text-muted);margin-top:0.6rem;">${crime.city}, ${crime.state} · ${context} · ${crime.data_year}</p>
     </div>`;
 }
 
@@ -617,7 +546,7 @@ function renderGooglePlaces(g) {
                 <span style="font-size:0.78rem;font-weight:600;color:var(--text-main);">${rv.author}</span>
                 <div style="display:flex;align-items:center;gap:0.5rem;flex-shrink:0;">
                     <span style="font-size:0.8rem;">${stars(rv.rating)}</span>
-                    ${rv.time ? `<span style="font-size:0.65rem;color:#818cf8;white-space:nowrap;">${rv.time}</span>` : ''}
+                    ${rv.time ? `<span style="font-size:0.65rem;color:#fbbf24;white-space:nowrap;">${rv.time}</span>` : ''}
                 </div>
             </div>
             ${rv.text ? `<p style="font-size:0.75rem;color:var(--text-muted);line-height:1.55;margin:0;">${rv.text}</p>` : ''}
@@ -638,6 +567,7 @@ function renderGooglePlaces(g) {
                 ${g.matched_via ? `<div style="font-size:0.62rem;color:#475569;margin-top:0.2rem;">matched via ${g.matched_via === 'address' ? 'property address' : 'company name'}</div>` : ''}
             </div>
         </div>
+        ${g.editorial_summary ? `<p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;margin:0 0 1rem;padding:0.6rem 0.85rem;background:rgba(66,133,244,0.04);border-left:3px solid rgba(116,168,248,0.4);border-radius:0 0.4rem 0.4rem 0;">${g.editorial_summary}</p>` : ''}
         ${reviewsHtml || '<p style="font-size:0.8rem;color:var(--text-muted);font-style:italic;">No written reviews available.</p>'}
     </div>`;
 }
@@ -669,7 +599,7 @@ function renderNews(news) {
                     ${title}
                 </a>
                 <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.25rem;flex-shrink:0;">
-                    ${date ? `<span style="font-size:0.68rem;color:#818cf8;white-space:nowrap;font-weight:600;">${date}</span>` : ''}
+                    ${date ? `<span style="font-size:0.68rem;color:#fbbf24;white-space:nowrap;font-weight:600;">${date}</span>` : ''}
                     ${city_match ? `<span style="font-size:0.6rem;background:rgba(16,185,129,0.1);color:#10b981;padding:0.1rem 0.4rem;border-radius:999px;white-space:nowrap;">local</span>` : ''}
                 </div>
             </div>
@@ -682,56 +612,50 @@ function renderNews(news) {
 // ── Main display ────────────────────────────────────────────────────────────
 function displayResults(data) {
     const { enrichment } = data;
-    const census    = enrichment.census;
-    const geocoords = enrichment.geocoords || {};
 
-    const geoSourceMap = {
-        intellipins: 'Intellipins',
-        nominatim:   'OSM Nominatim',
-        census:      'US Census Geocoder',
-        none:        'unavailable',
-    };
-    const geoLabel = geoSourceMap[geocoords.source] || geocoords.source || 'unknown';
-    const geoNote  = geocoords.lat != null
-        ? `<div style="font-size:0.7rem;color:var(--text-muted);margin-top:0.5rem;text-align:right;">
-               Geocoded via <strong style="color:#fbbf24;">${geoLabel}</strong>
-               &nbsp;&middot;&nbsp;${parseFloat(geocoords.lat).toFixed(5)}, ${parseFloat(geocoords.lon).toFixed(5)}
-           </div>`
-        : '';
+    const newsTag = `<span style="font-size:0.65rem;font-weight:400;background:rgba(245,158,11,0.15);color:#fbbf24;padding:0.1rem 0.4rem;border-radius:999px;margin-left:0.4rem;vertical-align:middle;">NewsAPI</span>`;
 
     resultsContent.innerHTML = `
-        <div class="status-badge" style="background:rgba(99,102,241,0.1);color:#818cf8;margin-top:1rem;">
+        <div class="status-badge" style="background:rgba(245,158,11,0.1);color:#fbbf24;margin-top:1rem;">
             Market Context: ${data.lead_info.city}, ${data.lead_info.state}
         </div>
-        ${geoNote}
+
+        ${renderKeySignals(enrichment)}
 
         ${renderWikiSection(enrichment.wikipedia)}
-        ${renderIntelliPins(enrichment.intellipins)}
-        ${renderOSM(enrichment.osm, enrichment.intellipins?.parcel)}
-        ${renderClimate(enrichment.open_meteo)}
-        ${renderCrime(enrichment.crime)}
-        ${renderCensusMetrics(enrichment.census)}
-        ${renderFredMetrics(enrichment.fred)}
-        ${renderWalkScore(enrichment.walkscore)}
 
         ${renderGooglePlaces(enrichment.google)}
 
         <div style="margin-top:1.5rem;border-top:1px solid var(--glass-border);padding-top:1.5rem;">
             <h3 style="font-size:0.9rem;margin-bottom:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">
-                Company News
-                <span style="font-size:0.65rem;font-weight:400;background:rgba(99,102,241,0.15);color:#818cf8;padding:0.1rem 0.4rem;border-radius:999px;margin-left:0.4rem;">NewsAPI</span>
+                Company News ${newsTag}
             </h3>
             ${renderNews(enrichment.news)}
         </div>
 
-        <div style="margin-top:1.5rem;padding:1rem;background:rgba(16,185,129,0.05);border-radius:1rem;border:1px dashed var(--accent);">
-            <h3 style="font-size:0.875rem;color:var(--accent);margin-bottom:0.5rem;">GTM Insight</h3>
-            <p style="font-size:0.75rem;color:var(--text-muted);">
-                ${data.lead_info.company} is located in ${data.lead_info.city}.
-                ${census && !census._disabled && census.renter_percentage
-                    ? `A renter percentage of ${census.renter_percentage} indicates a strong fit for EliseAI's multifamily solutions.`
-                    : 'Further verification needed for market density.'}
-            </p>
+        <div class="accordion-section">
+            <button class="accordion-toggle" onclick="toggleAccordion(this)">
+                <span>Full Market Data</span>
+                <span class="accordion-arrow">▾</span>
+            </button>
+            <div class="accordion-body">
+                ${renderCensusMetrics(enrichment.census)}
+                ${renderFredMetrics(enrichment.fred)}
+                ${renderWalkScore(enrichment.walkscore)}
+                ${renderClimate(enrichment.open_meteo)}
+                ${renderCrime(enrichment.crime)}
+            </div>
+        </div>
+
+        <div class="accordion-section">
+            <button class="accordion-toggle" onclick="toggleAccordion(this)">
+                <span>Property Details</span>
+                <span class="accordion-arrow">▾</span>
+            </button>
+            <div class="accordion-body">
+                ${renderIntelliPins(enrichment.intellipins)}
+                ${renderOSM(enrichment.osm, enrichment.intellipins?.parcel)}
+            </div>
         </div>
     `;
 }
@@ -778,7 +702,7 @@ function renderScoreDashboard(scores) {
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.75rem;">
             <div>
                 <h3 class="section-heading" style="margin-bottom:0.25rem;">GTM Score Analysis</h3>
-                <span style="font-size:0.68rem;color:${nColor};background:${nColor}1a;padding:0.15rem 0.5rem;border-radius:999px;font-weight:600;">News: ${nLabel}</span>
+                <span style="font-size:0.68rem;color:${nColor};background:${nColor}22;padding:0.15rem 0.5rem;border-radius:999px;font-weight:600;border:1px solid ${nColor}33;">News: ${nLabel}</span>
             </div>
             <div class="lead-score-bubble" style="color:${leadColor};border-color:${leadColor};">
                 <span class="lead-score-grade">${leadGrade}</span>
@@ -802,7 +726,7 @@ function renderPainPoints(painPoints) {
     const items = painPoints.map(pp => {
         const color = sevColor[pp.severity] || '#94a3b8';
         const srcBadge = pp.source === 'llm'
-            ? `<span style="font-size:0.55rem;background:rgba(99,102,241,0.15);color:#818cf8;padding:0.1rem 0.35rem;border-radius:999px;font-weight:700;">AI</span>`
+            ? `<span style="font-size:0.55rem;background:rgba(245,158,11,0.15);color:#fbbf24;padding:0.1rem 0.35rem;border-radius:999px;font-weight:700;">AI</span>`
             : `<span style="font-size:0.55rem;background:rgba(16,185,129,0.1);color:#10b981;padding:0.1rem 0.35rem;border-radius:999px;font-weight:700;">rule</span>`;
         return `
         <div class="pain-point-card">
@@ -822,6 +746,10 @@ function renderPainPoints(painPoints) {
 }
 
 // ── Pipeline: outreach email ─────────────────────────────────────────────────
+function sigBlock() {
+    return `Best,\n${sdrConfig.name}\n${sdrConfig.title}, ${sdrConfig.company}`;
+}
+
 function renderOutreach(outreach) {
     if (!outreach) return '';
     if (outreach.error && !outreach.message) {
@@ -830,8 +758,15 @@ function renderOutreach(outreach) {
             <p style="font-size:0.8rem;color:#ef4444;margin-top:0.5rem;">${outreach.error}</p>
         </div>`;
     }
-    const subject = outreach.subject || '';
-    const msgHtml = (outreach.message || '').replace(/\n/g, '<br>');
+
+    const subject   = outreach.subject  || '';
+    const greeting  = outreach.greeting || '';
+    const bodyHtml  = (outreach.message || '').replace(/\n/g, '<br>');
+    const sigLines  = sigBlock().split('\n');
+    const sigHtml   = `${sigLines[0]}<br><strong>${sigLines[1]}</strong><br><span style="color:var(--text-muted)">${sigLines[2]}</span>`;
+
+    const dividerStyle = 'border-top:1px dashed var(--glass-border);margin:0.9rem 0;';
+
     return `
     <div class="pipeline-section">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;gap:0.5rem;flex-wrap:wrap;">
@@ -843,22 +778,26 @@ function renderOutreach(outreach) {
                 <span style="font-size:0.62rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;font-weight:700;">Subject</span>
                 <p style="font-size:0.85rem;color:var(--text-main);margin-top:0.2rem;font-weight:600;line-height:1.4;">${subject}</p>
             </div>
-            <div style="padding:1rem 1.1rem;font-size:0.82rem;line-height:1.75;color:var(--text-main);">${msgHtml}</div>
+            <div style="padding:1rem 1.1rem;font-size:0.82rem;line-height:1.75;color:var(--text-main);">
+                <p style="margin:0 0 0.75rem;font-weight:600;">${greeting}</p>
+                <div style="margin:0;">${bodyHtml}</div>
+                <div style="${dividerStyle}"></div>
+                <p style="margin:0;color:var(--text-muted);font-size:0.8rem;">${sigHtml}</p>
+            </div>
         </div>
         ${outreach.generated_at ? `<p style="font-size:0.62rem;color:var(--text-muted);margin-top:0.4rem;text-align:right;">Generated ${new Date(outreach.generated_at).toLocaleString()}</p>` : ''}
     </div>`;
 }
 
 window.copyOutreach = function () {
-    const el = document.getElementById('outreach-content');
-    if (!el) return;
-    // Build plain-text copy (subject + message)
-    const lines = [];
-    const subjEl = el.querySelector('p');
-    if (subjEl) lines.push('Subject: ' + subjEl.innerText, '');
-    const bodyEl = el.querySelector('div:last-child');
-    if (bodyEl) lines.push(bodyEl.innerText);
-    navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const outreachData = window._lastOutreach;
+    if (!outreachData) return;
+    const subject  = outreachData.subject  || '';
+    const greeting = outreachData.greeting || '';
+    const body     = outreachData.message  || '';
+    const sig      = sigBlock();
+    const text = `Subject: ${subject}\n\n${greeting}\n\n${body}\n\n${sig}`;
+    navigator.clipboard.writeText(text).then(() => {
         const btn = document.getElementById('copy-outreach-btn');
         if (btn) { btn.textContent = 'Copied!'; setTimeout(() => { btn.textContent = 'Copy'; }, 2000); }
     });
@@ -866,11 +805,12 @@ window.copyOutreach = function () {
 
 // ── Pipeline: full display ───────────────────────────────────────────────────
 function displayPipelineResults(data) {
+    window._lastOutreach = data.outreach || null;
     displayResults(data);   // render enrichment sections first
 
     const pipelineHtml = `
         <div class="pipeline-header">
-            <span class="status-badge" style="background:rgba(99,102,241,0.1);color:#818cf8;">
+            <span class="status-badge" style="background:rgba(74,222,128,0.1);color:#4ade80;">
                 Full Pipeline — ${data.lead_info.company}, ${data.lead_info.city}, ${data.lead_info.state}
             </span>
             ${data.id ? `<p style="font-size:0.62rem;color:var(--text-muted);margin-top:0.25rem;">Lead ID: ${data.id}</p>` : ''}
@@ -878,8 +818,8 @@ function displayPipelineResults(data) {
         ${renderScoreDashboard(data.scores)}
         ${renderPainPoints(data.pain_points)}
         ${renderOutreach(data.outreach)}
-        <div style="border-top:2px dashed var(--glass-border);padding-top:1.25rem;margin-top:0.5rem;">
-            <h3 style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;">Raw Enrichment Data</h3>
+        <div class="market-intelligence-header">
+            <h3>Market Intelligence</h3>
         </div>
     `;
     resultsContent.innerHTML = pipelineHtml + resultsContent.innerHTML;
@@ -936,3 +876,118 @@ pipelineBtn.addEventListener('click', async () => {
         pipelineBtn.textContent = 'Run Full Pipeline';
     }
 });
+
+// ── Dev Tools: Saved Leads panel ────────────────────────────────────────────
+const devToolsToggle = document.getElementById('dev-tools-toggle');
+const devToolsBody   = document.getElementById('dev-tools-body');
+const devLeadsList   = document.getElementById('dev-leads-list');
+
+let devToolsOpen = false;
+
+devToolsToggle.addEventListener('click', () => {
+    devToolsOpen = !devToolsOpen;
+    devToolsBody.style.display = devToolsOpen ? 'block' : 'none';
+    devToolsToggle.textContent = devToolsOpen ? '▲ Hide' : '▼ Show';
+    if (devToolsOpen) loadDevLeads();
+});
+
+async function loadDevLeads() {
+    devLeadsList.innerHTML = '<span style="font-style:italic;color:var(--text-muted);">Loading…</span>';
+    try {
+        const res = await fetch('http://localhost:8000/leads');
+        if (!res.ok) throw new Error('Could not load leads');
+        const leads = await res.json();
+        renderDevLeads(leads);
+    } catch (e) {
+        devLeadsList.innerHTML = `<span style="color:#ef4444;">${e.message}. Is the backend running?</span>`;
+    }
+}
+
+function gradeColor(g) {
+    return g === 'A' ? '#10b981' : g === 'B' ? '#60a5fa' : g === 'C' ? '#f59e0b' : '#ef4444';
+}
+
+function renderDevLeads(leads) {
+    if (!leads.length) {
+        devLeadsList.innerHTML = '<span style="color:var(--text-muted);font-style:italic;">No saved leads found.</span>';
+        return;
+    }
+    devLeadsList.innerHTML = leads.map(l => {
+        const score = l.lead_score != null ? l.lead_score.toFixed(1) : '—';
+        const grade = l.grade || '—';
+        const gc    = gradeColor(grade);
+        return `
+        <div class="dev-lead-row" id="dev-row-${l.id}">
+            <div class="dev-lead-info">
+                <span class="dev-lead-name">${l.company}</span>
+                <span class="dev-lead-loc">${l.city}, ${l.state}</span>
+                <span class="dev-lead-person">${l.name || ''}</span>
+            </div>
+            <div class="dev-lead-score" style="color:${gc};">
+                <span class="dev-score-num">${score}</span>
+                <span class="dev-score-grade">${grade}</span>
+            </div>
+            <div class="dev-lead-actions">
+                <button class="dev-action-btn" onclick="devRun('${l.id}','scoring',this)"
+                    title="Re-run scoring only (fast, no LLM)">Score</button>
+                <button class="dev-action-btn" onclick="devRun('${l.id}','scoring,pain_points',this)"
+                    title="Re-run scoring + pain points">+ Pain Pts</button>
+                <button class="dev-action-btn" onclick="devRun('${l.id}','scoring,pain_points,outreach',this)"
+                    title="Re-run scoring + pain points + outreach email">+ Outreach</button>
+            </div>
+            <div class="dev-lead-status" id="dev-status-${l.id}"></div>
+        </div>`;
+    }).join('');
+}
+
+window.devRun = async function(leadId, steps, btn) {
+    const row        = document.getElementById(`dev-row-${leadId}`);
+    const statusEl   = document.getElementById(`dev-status-${leadId}`);
+    const allBtns    = row.querySelectorAll('.dev-action-btn');
+
+    allBtns.forEach(b => b.disabled = true);
+    btn.textContent = '…';
+    statusEl.textContent = steps === 'scoring' ? 'Scoring…'
+        : steps.includes('outreach') ? 'Scoring + pain points + outreach…'
+        : 'Scoring + pain points…';
+    statusEl.style.color = '#f59e0b';
+
+    try {
+        const res = await fetch(`http://localhost:8000/dev/rescore/${leadId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ steps, llm_provider: llmProvider }),
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({ detail: 'Error' }));
+            throw new Error(err.detail || 'Request failed');
+        }
+        const data = await res.json();
+
+        // Update score badge in the row
+        const ls    = data.scores?.lead_score || {};
+        const score = ls.score != null ? ls.score.toFixed(1) : '—';
+        const grade = ls.grade || '—';
+        const gc    = gradeColor(grade);
+        row.querySelector('.dev-score-num').textContent   = score;
+        row.querySelector('.dev-score-grade').textContent = grade;
+        row.querySelector('.dev-lead-score').style.color  = gc;
+
+        statusEl.textContent = '✓ Done';
+        statusEl.style.color = '#10b981';
+
+        // Show results in the main panel
+        resultsCard.classList.add('visible');
+        resultsContent.innerHTML = '';
+        displayPipelineResults(data);
+        resultsCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    } catch (e) {
+        statusEl.textContent = `✗ ${e.message}`;
+        statusEl.style.color = '#ef4444';
+    } finally {
+        // Restore original button labels
+        const labels = ['Score', '+ Pain Pts', '+ Outreach'];
+        allBtns.forEach((b, i) => { b.disabled = false; b.textContent = labels[i]; });
+    }
+};

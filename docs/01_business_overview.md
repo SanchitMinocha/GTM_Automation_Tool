@@ -38,7 +38,7 @@ You give it a prospect's name, company, and property address. In 30–60 seconds
 
 7. **Names the pain** — identifies which operational problems this property likely has, ordered by severity.
 
-8. **Writes the email** — generates a cold outreach email grounded in the actual data points above. Not "I noticed your company" — more like "Your 2.8-star Google rating in a 97 Walk Score neighborhood suggests your residents expect fast responses you can't currently deliver."
+8. **Writes the email** — selects one of five story arcs deterministically from scores and pain points (Reputation Gap, Operational Friction, Growth Strain, Premium Expectations, Lead Speed), then generates a cold outreach email grounded in the actual data points. Not "I noticed your company" — more like "Your 2.8-star Google rating in a 97 Walk Score neighborhood suggests your residents expect fast responses you can't currently deliver."
 
 The SDR reviews the output, tweaks the email if needed, and sends. Total active time: under 5 minutes per lead.
 
@@ -50,52 +50,52 @@ The lead score is built from four independent sub-scores that each answer a diff
 
 ---
 
-### Demand Score — 20% of Lead Score
+### Demand Score — 30% of Lead Score
 *"How overwhelmed is this property manager likely to be with inbound rental activity?"*
 
 A tight rental market with a lot of renters and high walkability means constant inquiry volume. The property manager is fighting fires all day — which is exactly when automation is most valuable.
 
-| Signal | Weight | What "maxed out" looks like | Why I chose this |
+| Signal | Weight | Ceiling | Engineering Note |
 |--------|--------|----------------------------|-----------------|
-| Renter % of households | 25% | 70% renters | Cities above 70% renter share are effectively full rental markets — think Manhattan or San Francisco |
-| Vacancy rate (inverted) | 20% | ~0% vacancy | Low vacancy = properties filling up fast = high inquiry volume |
-| Walk Score | 15% | Score of 100 | Walkable neighborhoods attract renters who comparison-shop aggressively. Slow response = lost lease |
-| Transit Score | 10% | Score of 100 | Transit access expands the renter pool to people without cars, increasing lead volume per unit |
-| Median household income | 10% | $150k/year | Higher-income renters have higher service expectations and are quicker to complain or churn |
-| Nearby amenities (1km radius) | 12% | 100 amenities | Transit stops + parks + retail density is a density proxy — more density = more renters in the area |
-| Population | 8% | 500k | Base-rate adjustment: large cities have deeper renter pools |
+| Renter % of households | 25% | 50% renters | **Lifted**: High renter % is the baseline for target cities; we lift the mid-range to capture market depth. |
+| Vacancy rate (inverted) | 20% | 0–10% vacancy | **Lifted**: Even moderate tightness (5%) is a high-intensity signal in the real world. |
+| Walk Score | 15% | **Score of 80** | **Crushed (Convex)**: Ceiling set at "Very Walkable" (80) so any property at that threshold maxes out this component. Mediocre walk scores (50) still score near 0.39; car-dependent (<25) score near 0. |
+| Transit Score | 10% | **Score of 75** | **Crushed (Convex)**: Ceiling set at "Excellent Transit" (75). Low transit access is a major disqualifier. |
+| Median household income | 10% | $85k/year | **Lifted**: $85k is already a premium market. |
+| Nearby amenities (1km radius) | 12% | 40 amenities | **Lifted**: Density indicators are capped at realistic "busy" levels. |
+| Population | 8% | 250k | **Crushed (Convex)**: Small towns are heavily penalized to protect ICP focus. Uses city-level Census population. |
 
 ---
 
-### Friction Score — 35% of Lead Score
+### Friction Score — 20% of Lead Score
 *"How hard is it to operate this property, and does that difficulty make EliseAI more valuable?"*
 
-This is the highest-weighted sub-score because friction is EliseAI's primary wedge. More friction means more maintenance calls, more tenant communication, more scheduling, more everything — all the stuff that AI handles well.
+A high Friction score signals operational stress — more maintenance calls, more tenant communication, more scheduling overhead. It's a supporting signal: it tells you *why* a manager needs automation, not *whether* they do. That's why Demand and Opportunity carry more weight. Friction still matters — it sharpens the email angle and explains the pain — but it's no longer the dominant factor.
 
 **Important:** a high Friction score is a good thing for us. A 100/100 friction score means the property is maximally stressful to run and maximally in need of automation.
 
-| Signal | Weight | What "maxed out" looks like | Why I chose this |
+| Signal | Weight | Ceiling | Logic |
 |--------|--------|----------------------------|-----------------|
-| Crime score (1–15 scale) | 25% | Score of 15 (very high crime) | High crime → more security incidents → more tenant communication → more demand for fast response |
-| Annual precipitation days | 25% | 200 rain days/year | Wet climates (Seattle, Portland, Boston) mean more water intrusion issues, HVAC problems, and maintenance requests |
-| Annual snowfall | 20% | 200 cm/year | Snow markets (Chicago, Minneapolis) drive maintenance spikes and push tenants toward digital scheduling |
-| Temperature range (hottest – coldest day) | 20% | 80°C swing | Extreme seasonal variation stresses building systems — more maintenance, more tenant complaints |
-| Elevation | 10% | 2,000m | High-elevation properties face harsher winters and higher HVAC/insulation demands |
+| Crime score (1–15) | 25% | Score of 15 | **Crushed**: Low crime areas score near zero friction. |
+| Precipitation days | 25% | 120 days/year | **Crushed**: Very high precip (184+ days) maxes out. Mild weather scores near zero. |
+| Annual snowfall | 20% | 80 cm/year | **Lifted**: Snowfall is an indicator signal — any meaningful snow already signals friction. Moderate NYC snowfall (38 cm) should score ~60, not near zero. |
+| Temp range | 20% | 55°C swing | **Crushed**: Infrastructure stress proxy. Wide swings are aggressively rewarded. |
+| Elevation | 10% | 800m | **Crushed**: Harsh winter proxy. |
 
 ---
 
-### Scale Score — 15% of Lead Score
+### Scale Score — 20% of Lead Score
 *"How big is the operational footprint? More units = more automation leverage."*
 
 A 400-unit apartment complex in Seattle and a single-family rental in rural Montana are not the same opportunity. This score captures that difference.
 
-| Signal | Weight | What "maxed out" looks like | Why I chose this |
+| Signal | Weight | Ceiling | Engineering Note |
 |--------|--------|----------------------------|-----------------|
-| Building type | 30% | Apartment Complex | EliseAI's primary ICP. SFR scores about half this because automation leverage per unit is much lower |
-| Building footprint | 25% | 100,000 sq ft | Larger physical footprint correlates with more units and more tenant activity |
-| Lot area | 20% | ~200,000 sq ft parcel | Larger parcel typically means a larger property complex |
-| Floors | 15% | 30 floors | Vertical complexity adds elevator, HVAC, and per-floor maintenance communication |
-| Unit count | 10% | 500 units | Rarely available in the data — treated as a bonus signal when it is |
+| Building type | 30% | Apartment Complex | **Categorical**: Apartment Complex = 100%; SFH = 20%. |
+| Building footprint | 25% | 40,000 sq ft | **Crushed**: Small buildings score near zero. |
+| Lot area | 20% | 100,000 sq ft | **Lifted**: Mid-size parcels represent significant scale. |
+| Floors | 15% | 15 floors | **Crushed**: 1-2 floor buildings are aggressively penalized. |
+| Unit count | 10% | 250 units | **Crushed**: Direct scale proxy. |
 
 **Building type scores used in calculation:**
 
@@ -105,7 +105,10 @@ A 400-unit apartment complex in Seattle and a single-family rental in rural Mont
 | Hotel | 0.80 |
 | Commercial / Industrial | 0.75 |
 | Office Building | 0.70 |
-| Single Family Housing | 0.45 |
+| Apartment / Shopping Complex | 0.65 |
+| Shopping Complex / Amenity | 0.55 |
+| Retail / Shopping | 0.45 |
+| Single Family Housing | 0.20 |
 | Unknown | 0.20 |
 
 ---
@@ -113,85 +116,200 @@ A 400-unit apartment complex in Seattle and a single-family rental in rural Mont
 ### Opportunity Score — 30% of Lead Score
 *"Is there a specific trigger or opening that makes this company likely to act now?"*
 
-This score is about timing and buying signal — it tells you whether to reach out today or wait.
+This sub-score captures behavioral and reputational signals that demand doesn't — things that tell you whether a company is ready to act, not just whether the market is right. Renter %, vacancy, and walkability are intentionally excluded here (they already appear in Demand) to avoid double-counting.
 
-| Signal | Weight | What moves it | Why I chose this |
+| Signal | Weight | Ceiling / Trigger | Why I chose this |
 |--------|--------|--------------|-----------------|
-| News sentiment | 30% | Growth → 0.85, Cost pressure → 0.75, Trouble → 0.65, No news → 0.30 | A company expanding its portfolio needs automation immediately. A company under cost pressure is actively looking for efficiency gains |
-| Low Google rating | 20% | 1 star → 0.90, 5 stars → 0.20 | A low rating with lots of reviews is evidence of existing operational pain EliseAI directly solves |
-| Renter market share | 15% | 65% renters = max | High renter % means the addressable leasing automation market is large |
-| Vacancy urgency | 15% | 10%+ vacancy = 0.90, 0% = 0.30 | High vacancy means the property is struggling to fill units — they're in pain and looking for solutions |
-| Walkability | 10% | Walk Score 100 = max | Premium walkable markets attract renters with high expectations — faster response is a competitive edge |
-| Wikipedia presence | 10% | Page found = 0.80 | A company with a Wikipedia page is an established named account with verifiable public information |
+| News sentiment | 54% | Growth → 0.95 | **Decisive Floor**: Growth news is a primary trigger for Grade A prioritization. |
+| Low Google rating | 31% | 1 star → 1.0 | **Lifted** (linear then `_lift`): Rating pain is an indicator signal. A 3.0-star rating should score ~55, not ~43 — moderate bad reviews already signal real pain. |
+| Wikipedia presence | 15% | Page found = 0.90 | **High Floor**: Established account indicator. |
+
+---
+
+### The Engineering Defense: High-Dynamic-Range Scoring
+
+In multi-layered scoring systems, "double-averaging" naturally pulls leads into a narrow 50–65 band. To solve this and ensure clear prioritization, we employ a **Three-Part Calibration Strategy**:
+
+1.  **Ceiling Calibration**: Ceilings are set at realistic "strong" values, not theoretical maximums. Walk score ceiling is 80 (not 100) — a score of 84 is "Very Walkable" and should max out the component. Transit ceiling is 75 ("Excellent Transit"). This prevents great urban properties from being silently penalized against a ceiling no US property ever reaches.
+2.  **Concave Lifting (_lift, power 0.70)**: Applied to "indicator" signals — renter share, vacancy, snowfall, low Google rating, vacancy urgency. These are signals where moderate values already represent meaningful market intent. Lifting them ensures quality mid-range signals push leads into the 65–85+ range.
+3.  **Aggressive Convex Penalization (_crush, power 2.0)**: Applied to "structural" filters — Walk Score, Population, Building Footprint. These are pass/fail signals. A 50 Walk Score should score 0.25, not 0.50. This pushes weak leads below the 50 mark.
+4.  **Decisive Opportunity Floors**: High floors (e.g. 0.95 for growth news) for qualitative triggers ensure a single strong sales opening can override mediocre structural data.
+
+The result is a **High-Dynamic-Range Score** (spread of ~65 points) that makes automated prioritization meaningful.
 
 ---
 
 ### The Final Number
 
 ```
-Lead Score = (Demand × 0.20) + (Friction × 0.35) + (Scale × 0.15) + (Opportunity × 0.30)
+Lead Score = (Demand × 0.30) + (Friction × 0.20) + (Scale × 0.20) + (Opportunity × 0.30)
 ```
 
 | Grade | Score | What to do |
 |-------|-------|------------|
-| A | 75–100 | Strong ICP match. Route to AE immediately. |
-| B | 60–74 | Good fit. High-priority outreach. |
-| C | 45–59 | Qualified but not urgent. Standard sequence. |
-| D | 30–44 | Weak fit. Low-touch or hold. |
-| F | 0–29 | Not ICP. Skip. |
+| A | 80–100 | Strong ICP match. Route to AE immediately. |
+| B | 65–79 | Good fit. High-priority outreach. |
+| C | 50–64 | Qualified but not urgent. Standard sequence. |
+| D | 35–49 | Weak fit. Low-touch or hold. |
+| F | 0–34 | Not ICP. Skip. |
 
-**One thing worth noting about missing data:** if fewer than 30% of a sub-score's signals were available, that sub-score is excluded from the composite entirely rather than dragging the lead's score down. The final score is always a weighted average of what's actually known. Every score record includes an `available_weight` field showing coverage — so you can tell at a glance if a score was built on solid data or just a handful of signals.
+**One thing worth noting about missing data:** sub-scores are weighted in the composite proportionally to their `available_weight`. A sub-score with sparse data contributes less to the final number rather than being dropped or dragging the score down. This also prevents a sub-score that only has weak overlap signals from claiming its full composite weight.
 
 ---
 
 ## What Good and Bad Leads Look Like in Practice
 
-### Grade A — Large apartment complex, Denver, CO
-
-The company recently announced acquiring two new communities. Google rating 2.9/5 (340 reviews). Walk Score 82.
-
-- **Demand: 71/100** — strong renter market (58% renter share), low vacancy (4.1%), high walkability
-- **Friction: 78/100** — heavy snowfall (~180cm/yr), above-average crime, wide temp swing
-- **Scale: 85/100** — Apartment Complex, 92,000 sq ft footprint, 8 floors
-- **Opportunity: 88/100** — growth signal (acquisition), poor Google rating, tight market urgency
-
-**Lead Score: 80/100 — Grade A**
-
-This one is right. The company is growing and needs to scale workflows fast, already showing service failures in their reviews, operates in a harsh climate with high maintenance communication load, and manages a large multifamily asset. Every EliseAI product line has a use case here.
-
-**Email hook:** *"Your acquisition of [property] in Denver adds roughly X units to coordinate — and your 2.9-star Google rating suggests the teams there are already stretched. Here's how operators like yours use EliseAI to scale leasing and maintenance without headcount."*
+These are real pipeline runs from the test dataset — actual API responses, actual scores, actual generated emails.
 
 ---
 
-### Grade B — San Min, Real Property Associates, Seattle, WA
+### Grade A — 84/100 · Christopher Gonzalez · Inland American Real Estate · Chicago, IL
 
-Property at 838 NE 66th St. No recent news. Walk Score 97, Transit 65.
+**Property:** 40 E Oak St, Gold Coast — 20-floor apartment complex
 
-- **Demand: ~68/100** — 54.8% renter share, $105k median income, Walker's Paradise
-- **Friction: ~52/100** — Seattle rain (~150 precip days), moderate crime
-- **Scale: ~45/100** — parcel is 83,000 sq ft but limited building type data available
-- **Opportunity: ~55/100** — no news signal, no Google rating retrieved, moderate walkability
+**What the data showed:**
 
-**Lead Score: 66/100 — Grade B**
+| Signal | Value | What it means |
+|--------|-------|---------------|
+| Walk Score | **99** — Walker's Paradise | Every amenity within walking distance; inquiry volume is relentless |
+| Transit Score | **92** — Rider's Paradise | Tenants move in and out constantly; turnover is high |
+| Renter share | **54.4%** | Majority-renter city; the ICP market is there |
+| Population | **2,742,119** | Third-largest US city; no scale concern |
+| Annual snowfall | **62.7 cm** | Heavy Chicago winters; maintenance coordination load is real |
+| Precipitation days | **178 days/yr** | Nearly half the year brings a weather event requiring tenant comms |
+| Temperature swing | **-24°C to 35.7°C** | 60°C range; infrastructure stress year-round |
+| Vacancy rate | **5.7%** | Tight market; every missed inquiry costs a lease |
 
-The absence of news here isn't disqualifying. It just means the pitch leads with market conditions rather than a news trigger. Seattle is a strong rental market and the property is sizeable. The score is honest about what it doesn't know.
+**Scores:** Demand **89.4** · Friction **89.7** · Scale **100** · Opportunity **21.9** → **Lead Score: 81.1 — Grade A**
 
-**Email hook:** *"Your Walk Score 97 property is in one of Seattle's highest-demand corridors — renters there expect instant responses, and the ones you lose go to the next building on the block."*
+**Pain points identified:**
+- [HIGH] Core ICP — Multifamily Property: Apartment complex, EliseAI's primary target
+- [HIGH] High Lead Volume Overload: Walk Score 99 drives constant inquiry volume; manual handling loses leases
+- [HIGH] Harsh Operating Conditions: 62.7 cm snow + 178 rain days = continuous maintenance communication burden
+- [MEDIUM] High Tenant Mobility: Transit Score 92 in a 54% renter market means high turnover and a full inquiry pipeline at all times
+
+**Generated email** *(arc: operational\_friction)*
+
+> **Subject:** Midnight Maintenance Calls
+>
+> Your team deals with around 2 feet of snow and ~178 rainy days per year, which means constant maintenance issues. This creates a reactive environment where your team is always on call to fix something. Your building's temperature can drop to -12°F, putting a strain on your maintenance team.
+>
+> At Inland American Real Estate, a burst pipe during a cold snap can lead to a flooded lobby and numerous resident calls, taking your team away from the actual fix. EliseAI keeps residents informed automatically so your team can focus on the fix, not the calls.
+>
+> Worth a call?
+
+**Why this is right:** Every EliseAI use case applies here — leasing automation (99 Walk Score drives constant inquiries), maintenance coordination (Chicago winters), and tenant communication at scale (20-floor building). Opportunity scores low (21.9) because there's no news trigger, no Wikipedia page, and a decent Google rating (4.1★) — no behavioral signal to act on right now. The Demand and Scale scores alone are enough to push it into Grade A.
 
 ---
 
-### Grade F — Regional property manager, rural Montana
+### Grade B — 79/100 · Anna Miller · Kairoi Residential · New York, NY
 
-Single-family rental portfolio, town population 8,000, renter share 28%, vacancy 11%, Walk Score 22, no news, Google rating 4.4/5 (12 reviews).
+**Property:** 152 E 81st St, Upper East Side
 
-- **Demand: 18/100** — low population, very low renter share, poor walkability
-- **Friction: 35/100** — some snowfall and temp range, but limited crime data
-- **Scale: 22/100** — SFR building type, small footprint
-- **Opportunity: 29/100** — high vacancy but no news, excellent reviews (no pain signal), no Wikipedia presence
+**What the data showed:**
 
-**Lead Score: 28/100 — Grade F**
+| Signal | Value | What it means |
+|--------|-------|---------------|
+| Walk Score | **84** — Very Walkable | Urban core; renters have options and high expectations |
+| Transit Score | **83** — Excellent Transit | High turnover; constant new-inquiry volume |
+| Renter share | **66.8%** | Highest in the dataset; NYC is a renter's market |
+| Population | **8,736,047** | Largest US city; market depth is unlimited |
+| Google rating | **3.0★ / 120 reviews** | The pain signal — at scale, poor ratings are a documented service failure |
+| Sample review | *"I called at 2am for an emergency alarm going off and the staff told me they would tell maintenance in the morning. I had to call the fire department."* | This is exactly the problem EliseAI solves |
+| Precipitation days | **184 days/yr** | Constant weather-driven maintenance coordination |
 
-This one is also right. The renter market is thin, the property type isn't EliseAI's ICP, and the high rating suggests this manager is handling service well without automation. The high vacancy is the only hook, but without scale or market depth behind it, there's no real opportunity here.
+**Scores:** Demand **90.6** · Friction **81.0** · Scale **65** · Opportunity **55.3** → **Lead Score: 79.7 — Grade B**
+
+**Pain points identified:**
+- [HIGH] High Lead Volume Overload: NYC density + 83 transit score = relentless inquiry volume
+- [HIGH] Harsh Operating Conditions: 184 rain days/yr — highest in the dataset
+- [HIGH] Resident Experience Issues: 3.0★ across 120 reviews reflects documented slow response and unresolved maintenance
+- [MEDIUM] High Tenant Mobility: Transit 83 in a 67%-renter city means high churn and a full leasing pipeline
+
+**Generated email** *(arc: reputation\_gap)*
+
+> **Subject:** Your Google Rating
+>
+> Your Google rating is 3 out of 5, which signals to a prospective renter that your team may have slow maintenance response and poor communication before they ever call. This can make a big difference in whether they choose your building. You're potentially losing renters due to this perception.
+>
+> At Kairoi Residential, a maintenance request like the one from a resident who called at 2:00am for an emergency alarm can go unacknowledged for days, leading to a frustrated review. EliseAI provides instant ticket acknowledgment and 24/7 automated tenant updates.
+>
+> Worth a call?
+
+**Why this is right:** The 3.0★ Google rating across 120 reviews is the story. The pipeline correctly identified this as a reputation gap and pulled the exact type of review (2am emergency ignored) to anchor the email. High-priority outreach.
+
+---
+
+### Grade C — 59/100 · Joyce Reyes · MAA · Orem, UT
+
+**Property:** 1633 S Main St, Orem
+
+**What the data showed:**
+
+| Signal | Value | What it means |
+|--------|-------|---------------|
+| Walk Score | **45** — Car-Dependent | Structurally penalized (crushed scoring); low walkability = lower inquiry volume |
+| Transit Score | **43** — Some Transit | Weak transit access; further penalizes demand |
+| Renter share | **39.5%** | Below the 50% ceiling; thinner market than ICP target cities |
+| Population | **96,734** | Small city; demand score crushed vs. 250k ceiling |
+| Annual snowfall | **251 cm/yr** | Highest in the dataset — over 8 feet of snow |
+| Precipitation days | **149 days/yr** | Heavy weather maintenance load despite small city |
+| Building type | **Single Family Housing** | Type score 0.20; not EliseAI's primary ICP |
+| Google rating | Not found | No Google Places listing — opportunity score runs without rating signal |
+
+**Scores:** Demand **58.6** · Friction **73.1** · Scale **34.7** · Opportunity **0** → **Lead Score: 57.5 — Grade C**
+
+**Pain points identified:**
+- [HIGH] Harsh Weather Conditions Impact: 251 cm of snow (8+ feet) and 149 rain days creates a real maintenance coordination burden — the single strongest signal here
+- [MEDIUM] Harsh Operating Conditions: Frequent precip + temp swings; meaningful but not decisive without market depth behind it
+- [MEDIUM] Limited Access to Public Transport: Transit Score 43 limits tenant pool and signals a lower-demand rental environment
+
+**Generated email** *(arc: operational\_friction)*
+
+> **Subject:** Rainy Days and Repair Calls
+>
+> Your team deals with around 149 rainy days and 8 feet of snow each year, which keeps your maintenance crew on their toes. This means they're always reacting to something — a leaky roof or a frozen pipe. Your building needs constant attention, and that's just the weather.
+>
+> At MAA, a burst pipe during a cold snap can turn into a flooded lobby and a barrage of resident calls. EliseAI keeps residents informed automatically so the team can focus on the fix, not the calls.
+>
+> Worth a call?
+
+**Why this is right:** The score is honest about the tension. The friction signal is genuinely strong (8 feet of snow is real operational pain), but the small-city population and SFH building type cap the ceiling. Opportunity scores 0 because there's no Google listing, no news hits, and no Wikipedia page — no behavioral signal available. Standard sequence — worth reaching out, but not a priority over Grade A/B leads.
+
+---
+
+### Grade D — 49.9/100 · Tyler Morales · Scottsdale Property Group · Scottsdale, AZ
+
+**Property:** 6839 E Montecito Ave — Single-family house
+
+**What the data showed:**
+
+| Signal | Value | What it means |
+|--------|-------|---------------|
+| Walk Score | **69** — Somewhat Walkable | Decent, but well below the 80 "Very Walkable" ceiling |
+| Transit Score | **46** — Some Transit | Weak transit; structurally penalized |
+| Renter share | **33.4%** | Below 50% ceiling; owner-majority market |
+| Building type | **Single Family Housing** | Type score 0.20; fundamentally wrong ICP |
+| Building footprint | **3,686 sq ft** | Tiny; Scale score near zero for structural signals |
+| Annual snowfall | **0.3 cm** | Scottsdale is sunny and dry; near-zero friction |
+| Precipitation days | **49 days/yr** | Easy climate to operate in — the opposite of a friction trigger |
+| Google rating | **4.8★ / 100 reviews** | Residents are happy. No pain signal to sell into. |
+
+**Scores:** Demand **68.6** · Friction **39.1** · Scale **34.9** · Opportunity **0** → **Lead Score: 44.9 — Grade D**
+
+**Pain points identified:** Only two LLM-generated pain points were identified — both marginal. The 8.4% vacancy rate generated a revenue-loss estimate, and the thin renter percentage generated a communication efficiency concern. Neither is grounded in operational pain.
+
+**Generated email** *(arc: lead\_speed)*
+
+> **Subject:** Units sitting empty this week
+>
+> Your vacancy rate is around 8%. In Scottsdale, renters make quick decisions, often shopping multiple properties at once. Prospects are 33.4% of the population, and they're moving fast.
+>
+> At Scottsdale Property Group, a prospect who submits at 9pm and doesn't hear back until the next morning often signs a lease somewhere else. EliseAI responds instantly, 24/7, so no lead goes cold.
+>
+> Worth a call?
+
+**Why this is right — and what it tells you:** The 4.8-star Google rating is the tell. A manager with 100 happy reviews in a sunny climate with a small footprint is running their operation well without automation. Opportunity scores 0 — the 4.8★ rating produces near-zero low_rating signal, and there's no news or Wikipedia presence. There's no pain to sell into. Skip.
 
 ---
 

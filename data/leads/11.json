@@ -1,0 +1,331 @@
+{
+  "id": "11",
+  "created_at": "2026-04-27T15:20:48.269072Z",
+  "lead_info": {
+    "name": "Karen Campbell",
+    "email": "karen.campbell@bluemoonproperties.com",
+    "company": "Blue Moon Properties",
+    "address": "374 William S Canning Blvd",
+    "city": "Fall River",
+    "state": "MA"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 41.67313699,
+      "lon": -71.160739,
+      "source": "intellipins"
+    },
+    "census": {
+      "population": "93,339",
+      "median_income": "$49,613",
+      "renter_percentage": "63.7%"
+    },
+    "fred": {
+      "vacancy_rate": "3.4%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": null,
+      "city": {
+        "title": "Fall River, Massachusetts",
+        "extract": "Fall River is a city in Bristol County, Massachusetts, United States. Fall River's population was 94,000 at the 2020 United States census, making it the tenth-largest city in the state, and the second-largest municipality in the county behind New Bedford. It abuts the Rhode Island state line with Tiverton, Rhode Island, to its south."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"Blue Moon Properties\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 82,
+      "description": "Very Walkable",
+      "transit_score": 34,
+      "transit_description": "Some Transit",
+      "bike_score": 50,
+      "bike_description": "Bikeable"
+    },
+    "intellipins": {
+      "lat": 41.67313699,
+      "lon": -71.160739,
+      "ipins_id": "iUS00017080089",
+      "address_type": null,
+      "formatted_address": "374 William S Canning Blvd, Fall River MA 02721, United States",
+      "geocode_score": 0.888,
+      "parcel": {
+        "area_sqm": 44695,
+        "area_sqft": "481,092 sq ft",
+        "elevation_m": 185,
+        "parcel_owner": "RENAISSANCE DEV CORP",
+        "apn": "D-19-0094",
+        "iparcel_id": "iUSP000111296010",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  -71.160345,
+                  41.672619
+                ],
+                [
+                  -71.160353,
+                  41.672613
+                ],
+                [
+                  -71.160361,
+                  41.672607
+                ],
+                [
+                  -71.160371,
+                  41.672603
+                ],
+                [
+                  -71.160381,
+                  41.672601
+                ],
+                [
+                  -71.160392,
+                  41.672599
+                ],
+                [
+                  -71.160403,
+                  41.672599
+                ],
+                [
+                  -71.160413,
+                  41.6726
+                ],
+                [
+                  -71.160424,
+                  41.672602
+                ],
+                [
+                  -71.160434,
+                  41.672605
+                ],
+                [
+                  -71.160476,
+                  41.672635
+                ],
+                [
+                  -71.160533,
+                  41.672681
+                ],
+                [
+                  -71.160592,
+                  41.672735
+                ],
+                [
+                  -71.160665,
+                  41.672799
+                ],
+                [
+                  -71.160747,
+                  41.672835
+                ],
+                [
+                  -71.160814,
+                  41.672856
+                ],
+                [
+                  -71.160902,
+                  41.672865
+                ],
+                [
+                  -71.160972,
+                  41.672868
+                ],
+                [
+                  -71.16104,
+                  41.672867
+                ],
+                [
+                  -71.161174,
+                  41.673379
+                ],
+                [
+                  -71.160162,
+                  41.673184
+                ],
+                [
+                  -71.160335,
+                  41.672633
+                ],
+                [
+                  -71.160339,
+                  41.672625
+                ],
+                [
+                  -71.160345,
+                  41.672619
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "building_type": "Shopping Complex / Amenity"
+    },
+    "google": {
+      "place_name": null,
+      "matched_via": null,
+      "place_types": [],
+      "rating": null,
+      "review_count": null,
+      "editorial_summary": null,
+      "reviews": [],
+      "note": "No matching place found in nearby area"
+    },
+    "osm": {
+      "osm_type": "fast_food",
+      "osm_class": "amenity",
+      "display_name": "Burger King, 374, William S Canning Boulevard, Fall River, Bristol County, Massachusetts, 02721, United States",
+      "lat": "41.6731370",
+      "lon": "-71.1607393",
+      "boundingbox": [
+        "41.6730870",
+        "41.6731870",
+        "-71.1607893",
+        "-71.1606893"
+      ],
+      "osm_id": "way/213037426",
+      "building_details": {
+        "building_type": "yes",
+        "floors": null,
+        "units": null,
+        "name": null,
+        "operator": null,
+        "height": null,
+        "calculated_area": "5,269 sq ft",
+        "geometry_wkt": "POLYGON ((-71.1606702 41.6730343, -71.1607138 41.6730007, -71.1608121 41.6730719, -71.1608248 41.6730621, -71.1608446 41.6730465, -71.1608936 41.6730813, -71.1608734 41.6730972, -71.1608594 41.6731079, -71.1609065 41.673142, -71.1609134 41.6731366, -71.1609468 41.6731608, -71.1608976 41.6731987, -71.1608931 41.6731954, -71.1608388 41.6732373, -71.1608248 41.6732271, -71.1607726 41.6732674, -71.1605642 41.6731164, -71.1605856 41.6730999, -71.1605745 41.6730919, -71.1606594 41.6730265, -71.1606702 41.6730343))"
+      },
+      "amenities_1000m": {
+        "transit": "2",
+        "parks": "1",
+        "retail": "24"
+      }
+    },
+    "open_meteo": {
+      "annual_precip_days": 181,
+      "annual_snowfall_cm": 46.5,
+      "annual_precipitation_mm": 1375.8,
+      "hottest_day_c": 32.2,
+      "coldest_day_c": -12.2
+    },
+    "crime": {
+      "city": "Fall River",
+      "state": "MA",
+      "ori": "MA0030800",
+      "violent_crime_rate_per_100k": 795.7,
+      "national_avg_violent_per_100k": 380,
+      "above_national_avg_violent": true,
+      "crime_score": 9.0,
+      "data_year": 2025,
+      "source": "FBI CDE",
+      "violent_crime_score": 12.4,
+      "property_crime_rate_per_100k": 1500.6,
+      "national_avg_property_per_100k": 2110,
+      "above_national_avg_property": false,
+      "property_data_year": 2025,
+      "property_crime_score": 3.8
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 74.1,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "renter_pct": 100.0,
+        "low_vacancy": 74.8,
+        "walk_score": 100.0,
+        "transit_score": 20.6,
+        "income": 68.6,
+        "nearby_amenities": 75.9,
+        "population": 13.9
+      }
+    },
+    "friction": {
+      "score": 60.4,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "crime": 32.7,
+        "precip_days": 100.0,
+        "snowfall": 68.4,
+        "temp_range": 65.2,
+        "elevation": 5.3
+      }
+    },
+    "scale": {
+      "score": 49.2,
+      "available_weight": 0.75,
+      "max_weight": 1.0,
+      "building_type": "Shopping Complex / Amenity",
+      "components": {
+        "building_type": 55.0,
+        "footprint": 1.7,
+        "lot_area": 100.0
+      }
+    },
+    "opportunity": {
+      "score": 0.0,
+      "available_weight": 0.0,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {}
+    },
+    "lead_score": {
+      "score": 64.1,
+      "grade": "C",
+      "available_weight": 0.65,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 74.1,
+        "friction": 60.4,
+        "scale": 49.2
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "tight_market",
+      "label": "Tight Market \u2014 Speed Wins Leases",
+      "severity": "high",
+      "description": "A 3.4% vacancy rate with 64% renters means fierce competition for units. The first team to respond wins the lease. EliseAI's instant AI engagement converts leads before competitors do.",
+      "source": "rule"
+    },
+    {
+      "tag": "harsh_conditions",
+      "label": "Harsh Operating Conditions",
+      "severity": "medium",
+      "description": "Challenging conditions (frequent precipitation (181 days/yr), above-average crime) increase maintenance coordination load and incident management. Automated tenant communication keeps residents informed without burdening staff.",
+      "source": "rule"
+    },
+    {
+      "tag": "limited_renter_engagement",
+      "label": "Limited Renter Engagement",
+      "severity": "medium",
+      "description": "With a low Google rating (N/A with 0 reviews) and no Wikipedia company page, Blue Moon Properties may struggle to attract and retain renters, affecting lease renewals and referrals.",
+      "source": "llm"
+    },
+    {
+      "tag": "inadequate_weather_sensitivity",
+      "label": "Inadequate Weather Sensitivity",
+      "severity": "low",
+      "description": "The harsh climate with 181 precip days, 46.5 cm of snowfall, and a temperature range of -12.2\u00b0C to 32.2\u00b0C may require more maintenance and upkeep, leading to inefficiencies in maintenance coordination if not properly managed.",
+      "source": "llm"
+    }
+  ],
+  "outreach": {
+    "subject": "Maintenance Calls Piling Up",
+    "greeting": "Hi Karen,",
+    "message": "Your team deals with around 1.5 feet of snow and 181 rainy days every year, which means your maintenance team is constantly putting out fires. This leaves your team reacting to issues rather than preventing them. Your building's maintenance load is a heavy burden.\n\nAt Blue Moon Properties, a burst pipe during a cold snap can turn into a flood of resident calls, taking your team away from the actual fix. EliseAI keeps residents informed automatically so the team can focus on the fix, not the calls.\n\nWorth a call?",
+    "arc": "operational_friction",
+    "generated_at": "2026-04-27T15:20:48.268895Z",
+    "provider": "groq"
+  }
+}

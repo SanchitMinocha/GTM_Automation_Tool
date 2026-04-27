@@ -1,3 +1,10 @@
+# SDR identity used to build the email signature. Edit these fields to change who the email comes from.
+SDR_SIGNATURE = {
+    "name":    "Alex Chen",
+    "title":   "Account Executive",
+    "company": "EliseAI",
+}
+
 STATE_FIPS = {
     "AL": "01", "AK": "02", "AZ": "04", "AR": "05", "CA": "06", "CO": "08", "CT": "09", "DE": "10",
     "FL": "12", "GA": "13", "HI": "15", "ID": "16", "IL": "17", "IN": "18", "IA": "19", "KS": "20",

@@ -1,0 +1,305 @@
+{
+  "id": "53",
+  "created_at": "2026-04-27T15:18:54.807942Z",
+  "lead_info": {
+    "name": "Donald Ortiz",
+    "email": "donald.ortiz@bluemoonproperties.com",
+    "company": "Blue Moon Properties",
+    "address": "3191 County rd 10",
+    "city": "Canandaigua",
+    "state": "NY"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 42.875977,
+      "lon": -77.243326,
+      "source": "intellipins"
+    },
+    "census": {
+      "population": "10,563",
+      "median_income": "$52,365",
+      "renter_percentage": "52.0%"
+    },
+    "fred": {
+      "vacancy_rate": "5.3%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": null,
+      "city": {
+        "title": "Canandaigua, New York",
+        "extract": "Canandaigua is a city in Ontario County, New York, United States. Its population was 10,576 at the 2020 census. It is the county seat of Ontario County; some administrative offices are at the county complex in the adjacent town of Hopewell."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"Blue Moon Properties\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 45,
+      "description": "Car-Dependent",
+      "bike_score": 42,
+      "bike_description": "Somewhat Bikeable"
+    },
+    "intellipins": {
+      "lat": 42.875977,
+      "lon": -77.243326,
+      "ipins_id": "iUS00149496458",
+      "address_type": null,
+      "formatted_address": "3191 County Road 10, Canandaigua NY 14424, United States",
+      "geocode_score": 0.888,
+      "parcel": {
+        "area_sqm": 577465,
+        "area_sqft": "6,215,775 sq ft",
+        "elevation_m": 724,
+        "parcel_owner": "JR & R II, LLC",
+        "apn": "85.03-1-11.000",
+        "iparcel_id": "iUSP000066928095",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  -77.241391,
+                  42.876442
+                ],
+                [
+                  -77.242477,
+                  42.875197
+                ],
+                [
+                  -77.242464,
+                  42.874627
+                ],
+                [
+                  -77.242443,
+                  42.873704
+                ],
+                [
+                  -77.244109,
+                  42.874487
+                ],
+                [
+                  -77.243868,
+                  42.874765
+                ],
+                [
+                  -77.244673,
+                  42.875143
+                ],
+                [
+                  -77.244522,
+                  42.875317
+                ],
+                [
+                  -77.243952,
+                  42.875972
+                ],
+                [
+                  -77.243893,
+                  42.875944
+                ],
+                [
+                  -77.243626,
+                  42.876252
+                ],
+                [
+                  -77.243818,
+                  42.876342
+                ],
+                [
+                  -77.243725,
+                  42.876448
+                ],
+                [
+                  -77.244089,
+                  42.87662
+                ],
+                [
+                  -77.243813,
+                  42.876937
+                ],
+                [
+                  -77.2414,
+                  42.876939
+                ],
+                [
+                  -77.240965,
+                  42.876939
+                ],
+                [
+                  -77.240962,
+                  42.876939
+                ],
+                [
+                  -77.241391,
+                  42.876442
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "building_type": "Apartment Complex"
+    },
+    "google": {
+      "place_name": "3191 Co Rd 10",
+      "matched_via": "address",
+      "rating": null,
+      "review_count": null,
+      "editorial_summary": null,
+      "reviews": []
+    },
+    "osm": {
+      "osm_type": "residential",
+      "osm_class": "highway",
+      "display_name": "Moran Road, Town of Canandaigua, Town of Hopewell, Ontario County, New York, 14424, United States",
+      "lat": "42.8730562",
+      "lon": "-77.2456360",
+      "boundingbox": [
+        "42.8721885",
+        "42.8739239",
+        "-77.2456642",
+        "-77.2456078"
+      ],
+      "osm_id": "way/20124705",
+      "building_details": {
+        "building_type": null,
+        "floors": null,
+        "units": null,
+        "name": "Moran Road",
+        "operator": null,
+        "height": null,
+        "calculated_area": "1 sq ft",
+        "geometry_wkt": "POLYGON ((-77.2456642 42.8721885, -77.2456614 42.8722755, -77.2456507 42.8726046, -77.2456351 42.873083, -77.2456199 42.8735518, -77.2456105 42.8738422, -77.2456078 42.8739239, -77.2456642 42.8721885))"
+      },
+      "amenities_1000m": {
+        "transit": "7",
+        "parks": "0",
+        "retail": "12"
+      }
+    },
+    "open_meteo": {
+      "annual_precip_days": 248,
+      "annual_snowfall_cm": 90.8,
+      "annual_precipitation_mm": 1170.0,
+      "hottest_day_c": 34.2,
+      "coldest_day_c": -15.9
+    },
+    "crime": {
+      "city": "Canandaigua",
+      "state": "NY",
+      "ori": "NY0342900",
+      "violent_crime_rate_per_100k": 248.6,
+      "national_avg_violent_per_100k": 380,
+      "above_national_avg_violent": false,
+      "crime_score": 3.7,
+      "data_year": 2024,
+      "source": "FBI CDE",
+      "violent_crime_score": 3.6,
+      "property_crime_rate_per_100k": 1491.3,
+      "national_avg_property_per_100k": 2110,
+      "above_national_avg_property": false,
+      "property_data_year": 2024,
+      "property_crime_score": 3.8
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 62.0,
+      "available_weight": 0.9,
+      "max_weight": 1.0,
+      "components": {
+        "renter_pct": 100.0,
+        "low_vacancy": 58.9,
+        "walk_score": 31.6,
+        "income": 71.2,
+        "nearby_amenities": 59.4,
+        "population": 0.2
+      }
+    },
+    "friction": {
+      "score": 70.7,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "crime": 3.7,
+        "precip_days": 100.0,
+        "snowfall": 100.0,
+        "temp_range": 83.0,
+        "elevation": 81.9
+      }
+    },
+    "scale": {
+      "score": 100.0,
+      "available_weight": 0.5,
+      "max_weight": 1.0,
+      "building_type": "Apartment Complex",
+      "components": {
+        "building_type": 100.0,
+        "lot_area": 100.0
+      }
+    },
+    "opportunity": {
+      "score": 0.0,
+      "available_weight": 0.0,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {}
+    },
+    "lead_score": {
+      "score": 71.7,
+      "grade": "B",
+      "available_weight": 0.57,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 62.0,
+        "friction": 70.7,
+        "scale": 100.0
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "core_icp",
+      "label": "Core ICP \u2014 Multifamily Property",
+      "severity": "high",
+      "description": "This is an apartment complex \u2014 EliseAI's primary ICP. Multifamily operators gain the most from AI-powered leasing (instant lead response, tour scheduling, renewal reminders) and maintenance coordination at scale.",
+      "source": "rule"
+    },
+    {
+      "tag": "harsh_conditions",
+      "label": "Harsh Operating Conditions",
+      "severity": "medium",
+      "description": "Challenging conditions (heavy snowfall (91 cm/yr), frequent precipitation (248 days/yr)) increase maintenance coordination load and incident management. Automated tenant communication keeps residents informed without burdening staff.",
+      "source": "rule"
+    },
+    {
+      "tag": "high_occupancy_rate",
+      "label": "High Vacancy Rate",
+      "severity": "high",
+      "description": "With a vacancy rate of 5.3%, Blue Moon Properties may be missing out on potential rental opportunities and losing revenue due to inefficient leasing processes. EliseAI's AI-powered leasing solutions can help streamline the leasing process and maximize occupancy.",
+      "source": "llm"
+    },
+    {
+      "tag": "tenant_communication_issues",
+      "label": "Tenant Communication Challenges",
+      "severity": "medium",
+      "description": "The lack of Google ratings and Wikipedia company page suggests potential communication gaps between Blue Moon Properties and its tenants. EliseAI's tenant communication features can help improve resident satisfaction and engagement through regular and effective communication channels.",
+      "source": "llm"
+    }
+  ],
+  "outreach": {
+    "subject": "Maintenance Calls Piling Up",
+    "greeting": "Hi Donald,",
+    "message": "Your team deals with around 3 feet of snow and ~248 rainy days each year, meaning maintenance issues are a constant battle. This means your team spends more time handling resident complaints than actually fixing the problems. Your building needs attention, and your team is stretched thin.\n\nAt Blue Moon Properties, a burst pipe during a cold snap can quickly turn into a flooded lobby and a slew of resident calls, all while your team is trying to fix the issue. EliseAI keeps residents informed automatically so the team can focus on the fix, not the calls.\n\nWorth a call?",
+    "arc": "operational_friction",
+    "generated_at": "2026-04-27T15:18:54.807899Z",
+    "provider": "groq"
+  }
+}

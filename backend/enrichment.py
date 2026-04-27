@@ -161,14 +161,31 @@ async def get_census_data(city: str, state: str) -> Dict[str, Any]:
             response = await client.get(url)
             if response.status_code == 200:
                 data = response.json()
+                city_lower = city.lower()
+                best_row, best_pop = None, -1
                 for row in data[1:]:
-                    if city.lower() in row[0].lower():
-                        print(f"Found Census match: {row[0]}")
-                        return {
-                            "population": f"{int(row[1]):,}" if row[1] and int(row[1]) > 0 else "N/A",
-                            "median_income": f"${int(row[2]):,}" if row[2] and int(row[2]) > 0 else "N/A",
-                            "renter_percentage": f"{row[3]}%" if row[3] and float(row[3]) > 0 else "N/A"
-                        }
+                    # Match against place name only (before first comma) to avoid
+                    # matching the state suffix — e.g. "new york" must not match
+                    # "Albany city, New York" via the ", New York" state suffix.
+                    place_name = row[0].split(",")[0].lower()
+                    if not place_name.startswith(city_lower):
+                        continue
+                    # Pick the highest-population result to break ties like
+                    # "New York city" vs "New York Mills village".
+                    try:
+                        pop = int(row[1]) if row[1] else 0
+                    except (ValueError, TypeError):
+                        pop = 0
+                    if pop > best_pop:
+                        best_pop, best_row = pop, row
+                if best_row:
+                    row = best_row
+                    print(f"Found Census match: {row[0]}")
+                    return {
+                        "population": f"{int(row[1]):,}" if row[1] and int(row[1]) > 0 else "N/A",
+                        "median_income": f"${int(row[2]):,}" if row[2] and int(row[2]) > 0 else "N/A",
+                        "renter_percentage": f"{row[3]}%" if row[3] and float(row[3]) > 0 else "N/A"
+                    }
             else:
                 print(f"Census API error: {response.status_code}")
         except Exception as e:
@@ -420,16 +437,20 @@ def _classify_building_type(
     address_type: str | None,
     osm_class: str | None,
     osm_type: str | None,
-) -> str:
-    osm_class_lc = (osm_class or "").lower()
-    osm_type_lc  = (osm_type or "").lower()
-    addr_type_lc = (address_type or "").lower()
+    osm_building_tag: str | None = None,
+    walk_score: int | float | None = None,
+) -> str | None:
+    osm_class_lc    = (osm_class or "").lower()
+    osm_type_lc     = (osm_type or "").lower()
+    addr_type_lc    = (address_type or "").lower()
+    building_tag_lc = (osm_building_tag or "").lower()
 
-    if osm_type_lc in ("apartments", "residential", "dormitory"):
+    _APARTMENT_TAGS = {"apartments", "residential", "dormitory", "property_management", "flat", "housing"}
+    if osm_type_lc in _APARTMENT_TAGS or building_tag_lc in _APARTMENT_TAGS:
         return "Apartment Complex"
     if osm_type_lc in ("commercial", "retail", "supermarket", "warehouse", "industrial"):
         return "Commercial / Industrial"
-    if osm_type_lc == "office":
+    if osm_type_lc == "office" or osm_class_lc == "office":
         return "Office Building"
     if osm_type_lc == "hotel":
         return "Hotel"
@@ -439,7 +460,16 @@ def _classify_building_type(
         return "Retail / Shopping"
     if addr_type_lc in ("base", "supplementary"):
         return "Apartment / Shopping Complex"
-    return "Single Family Housing"
+    # Only call it Single Family if OSM explicitly tags it as such.
+    # Nominatim type="house" just means an interpolated road address — not a building type.
+    _SINGLE_FAMILY_TAGS = {"house", "detached", "semidetached_house", "bungalow", "terrace"}
+    if building_tag_lc in _SINGLE_FAMILY_TAGS:
+        return "Single Family Housing"
+    # Walk score fallback: car-dependent areas (< 50) skew single family;
+    # walkable areas (>= 50) skew apartment/shopping complex.
+    if walk_score is not None:
+        return "Single Family Housing" if walk_score < 50 else "Apartment / Shopping Complex"
+    return "Unknown"
 
 
 async def _geocode_address(
@@ -554,51 +584,170 @@ async def get_walkscore_data(address: str, city: str, state: str, lat: float, lo
     return {"walk_score": "N/A", "description": "Walk Score unavailable"}
 
 
-async def get_google_places_data(company: str, address: str, city: str, state: str) -> Dict[str, Any]:
+_GP_STOP_WORDS = frozenset({"the", "of", "and", "a", "an", "at", "in", "for", "co", "inc", "llc", "ltd", "corp", "lp"})
+
+
+def _company_name_matches(company: str, place_name: str) -> bool:
+    """Return True if any significant word from company appears in place_name."""
+    sig_words = {w.lower() for w in company.split() if w.lower() not in _GP_STOP_WORDS and len(w) > 2}
+    place_lower = place_name.lower()
+    return any(w in place_lower for w in sig_words)
+
+
+async def get_google_places_data(
+    company: str,
+    address: str,
+    city: str,
+    state: str,
+    building_type: str | None = None,
+    lat: float | None = None,
+    lon: float | None = None,
+) -> Dict[str, Any]:
     api_key = os.getenv("GOOGLE_PLACES_API_KEY")
     if not api_key or "your_" in (api_key or ""):
         return {"error": "Key required"}
 
     base = "https://maps.googleapis.com/maps/api/place"
 
+    location_params: dict = {}
+    if lat is not None and lon is not None:
+        location_params = {"location": f"{lat},{lon}", "radius": 50000}
+
+    _SKIP_TYPES   = {"locality", "political", "country", "route",
+                     "administrative_area_level_1", "administrative_area_level_2"}
+    _ACCEPT_TYPES = {"establishment", "point_of_interest", "apartment_complex"}
+
+    _no_match_result = {
+        "place_name":        None,
+        "matched_via":       None,
+        "place_types":       [],
+        "rating":            None,
+        "review_count":      None,
+        "editorial_summary": None,
+        "reviews":           [],
+        "note":              "No matching place found in nearby area",
+    }
+
     async with httpx.AsyncClient(timeout=15.0) as client:
-        # Step 1: Text Search
-        # Try the property address first — works for apartment complexes where the
-        # building itself is a registered business with tenant reviews.
-        # Fall back to company name — works for SFR / corporate office addresses
-        # that aren't standalone Google business listings.
         place_id = None
         matched_name = None
         matched_query_type = None
-        for query, qtype in [
-            (f"{address} {city} {state}", "address"),
-            (f"{company} {city} {state}", "company"),
-        ]:
+        place_types: list = []
+
+        # ── Search 1: address text search (always) ────────────────────────────
+        # Google's own 'apartment_complex' type is the authoritative building
+        # classifier — more reliable than OSM tags. One call gets both the
+        # place_id and the types; place_types is stored in the enrichment result
+        # so callers can derive building_type without a second API call.
+        #
+        # For apartment-like buildings, append "apartments" so Google resolves
+        # the named complex rather than a raw street premise. We pin to
+        # location+radius=500 so only things at the actual address come back.
+        _APT_TYPES = {"Apartment Complex", "Apartment / Shopping Complex"}
+        # Street number extracted for address-match guard (e.g. "5959" from "5959 Broadway")
+        _addr_parts = address.strip().split()
+        _street_num = _addr_parts[0] if _addr_parts and _addr_parts[0].isdigit() else ""
+        # Types that indicate the result is clearly NOT a residential building —
+        # used to reject false positives when accepting on street-number match alone.
+        _NON_RESIDENTIAL = {
+            "food", "restaurant", "cafe", "bar", "bakery",
+            "store", "shopping_mall", "clothing_store", "grocery_or_supermarket",
+            "school", "university", "hospital", "gym", "gas_station", "parking",
+        }
+        try:
+            query_suffix = " apartments" if building_type in _APT_TYPES else ""
+            params: dict = {"query": f"{address}{query_suffix}, {city}, {state}", "key": api_key}
+            if lat is not None and lon is not None:
+                params.update({"location": f"{lat},{lon}", "radius": 500})
+            r = await client.get(f"{base}/textsearch/json", params=params)
+            results = r.json().get("results", [])
+            if results:
+                c       = results[0]
+                c_types = set(c.get("types", []))
+                c_name  = c.get("name", "")
+                is_google_apartment = "apartment_complex" in c_types
+                has_useful_type     = bool(_ACCEPT_TYPES & c_types) and not (c_types & _SKIP_TYPES)
+                is_non_residential  = bool(c_types & _NON_RESIDENTIAL)
+                name_matches        = _company_name_matches(company, c_name)
+                result_addr         = (c.get("formatted_address") or "").lower()
+                street_num_ok       = not _street_num or _street_num in result_addr
+
+                # apt_ok: we searched "{address} apartments" with a 500 m pin,
+                # result is at the right street number, and it's not obviously a
+                # restaurant/store/school — street-number match is sufficient here
+                # because Google doesn't always tag residential buildings as
+                # apartment_complex even when they clearly are.
+                apt_ok   = (building_type in _APT_TYPES and _street_num
+                            and street_num_ok and has_useful_type and not is_non_residential)
+                other_ok = name_matches or (is_google_apartment and street_num_ok)
+                if apt_ok or (other_ok and has_useful_type):
+                    place_id           = c["place_id"]
+                    matched_name       = c_name
+                    matched_query_type = "address"
+                    place_types        = sorted(c_types)
+                    print(f"Google Places: '{matched_name}' via address search (types={place_types})")
+        except Exception as e:
+            print(f"Google Text Search (address) error: {e}")
+
+        # ── Search 1b: apartment retry when building type was unknown ────────────
+        # OSM often lacks building tags for dense urban addresses (e.g. NYC), so
+        # building_type may be "Unknown" even for a clear apartment building. If the
+        # plain address search found nothing, try again with the "apartments" suffix
+        # and accept on street-number match + non-residential type check.
+        if not place_id and _street_num and building_type not in _APT_TYPES:
             try:
-                r = await client.get(
-                    f"{base}/textsearch/json",
-                    params={"query": query, "key": api_key},
-                )
+                params = {"query": f"{address} apartments, {city}, {state}", "key": api_key}
+                if lat is not None and lon is not None:
+                    params.update({"location": f"{lat},{lon}", "radius": 500})
+                r = await client.get(f"{base}/textsearch/json", params=params)
                 results = r.json().get("results", [])
                 if results:
-                    place_id           = results[0]["place_id"]
-                    matched_name       = results[0].get("name", company)
-                    matched_query_type = qtype
-                    print(f"Google Places matched: '{matched_name}' via {qtype} search")
-                    break
+                    c       = results[0]
+                    c_types = set(c.get("types", []))
+                    c_name  = c.get("name", "")
+                    has_useful_type    = bool(_ACCEPT_TYPES & c_types) and not (c_types & _SKIP_TYPES)
+                    is_non_residential = bool(c_types & _NON_RESIDENTIAL)
+                    result_addr        = (c.get("formatted_address") or "").lower()
+                    if has_useful_type and not is_non_residential and _street_num in result_addr:
+                        place_id           = c["place_id"]
+                        matched_name       = c_name
+                        matched_query_type = "address"
+                        place_types        = sorted(c_types)
+                        print(f"Google Places: '{matched_name}' via apt retry (types={place_types})")
             except Exception as e:
-                print(f"Google Text Search error: {e}")
+                print(f"Google Text Search (apt retry) error: {e}")
+
+        # ── Search 2: company name fallback ───────────────────────────────────
+        # Runs whenever the address search found nothing useful.
+        if not place_id:
+            try:
+                params = {"query": f"{company} {city} {state}", "key": api_key}
+                params.update(location_params)
+                r = await client.get(f"{base}/textsearch/json", params=params)
+                results = r.json().get("results", [])
+                if results:
+                    c_name = results[0].get("name", "")
+                    if _company_name_matches(company, c_name):
+                        place_id           = results[0]["place_id"]
+                        matched_name       = c_name
+                        matched_query_type = "company"
+                        place_types        = sorted(results[0].get("types", []))
+                        print(f"Google Places: '{matched_name}' via company search")
+                    else:
+                        print(f"Google Places: '{c_name}' doesn't match company '{company}', skipping")
+            except Exception as e:
+                print(f"Google Text Search (company) error: {e}")
 
         if not place_id:
-            return {"error": "No matching place found"}
+            return _no_match_result
 
-        # Step 2: Place Details — fetch rating, review count, and up to 5 reviews
+        # ── Place Details ─────────────────────────────────────────────────────
         try:
             r = await client.get(
                 f"{base}/details/json",
                 params={
                     "place_id": place_id,
-                    "fields": "name,rating,user_ratings_total,reviews",
+                    "fields": "name,rating,user_ratings_total,reviews,editorial_summary",
                     "key": api_key,
                 },
             )
@@ -618,12 +767,16 @@ async def get_google_places_data(company: str, address: str, city: str, state: s
         for rv in raw_reviews[:5]
     ]
 
+    editorial_summary = (detail.get("editorial_summary") or {}).get("overview") or None
+
     return {
-        "place_name":    detail.get("name", matched_name),
-        "matched_via":   matched_query_type,
-        "rating":        detail.get("rating"),
-        "review_count":  detail.get("user_ratings_total"),
-        "reviews":       reviews,
+        "place_name":        detail.get("name", matched_name),
+        "matched_via":       matched_query_type,
+        "place_types":       place_types,
+        "rating":            detail.get("rating"),
+        "review_count":      detail.get("user_ratings_total"),
+        "editorial_summary": editorial_summary,
+        "reviews":           reviews,
     }
 
 async def get_climate_data(lat: float, lon: float) -> Dict[str, Any]:
@@ -787,6 +940,7 @@ async def get_osm_data(address: str, city: str, state: str, lat: float, lon: flo
         # ── Step 1a: Nominatim structured forward search ───────────────────────
         # Returns exact OSM object + precise parcel centroid when the address
         # exists in OSM (more accurate than Census street interpolation).
+        _structured_hit = None
         try:
             r = await client.get(
                 "https://nominatim.openstreetmap.org/search",
@@ -797,24 +951,53 @@ async def get_osm_data(address: str, city: str, state: str, lat: float, lon: flo
             if r.status_code == 200:
                 hits = r.json()
                 if hits:
-                    hit = hits[0]
-                    query_lat = float(hit["lat"])
-                    query_lon = float(hit["lon"])
-                    result["lat"]          = hit["lat"]
-                    result["lon"]          = hit["lon"]
-                    result["osm_type"]     = hit.get("type", "N/A")
-                    result["osm_class"]    = hit.get("class", "N/A")
-                    result["display_name"] = hit.get("display_name", "N/A")
-                    result["boundingbox"]  = hit.get("boundingbox", "N/A")
-                    osm_type = hit.get("osm_type", "node").lower()
-                    osm_id   = hit.get("osm_id")
-                    if osm_id:
-                        result["osm_id"] = f"{osm_type}/{osm_id}"
-                    print(f"Nominatim forward: {result['display_name']} at {query_lat},{query_lon}")
+                    _structured_hit = hits[0]
         except Exception as e:
-            print(f"Nominatim forward search error: {e}")
+            print(f"Nominatim structured search error: {e}")
 
-        # ── Step 1b: Reverse geocode fallback at Census coords ─────────────────
+        # If the structured result is only a road segment, try freeform first —
+        # it resolves house numbers to the actual building polygon.
+        _freeform_hit = None
+        if not _structured_hit or _structured_hit.get("class") == "highway":
+            try:
+                r = await client.get(
+                    "https://nominatim.openstreetmap.org/search",
+                    headers=_OSM_HEADERS,
+                    params={"q": f"{address}, {city}, {state}", "format": "json", "limit": 1},
+                )
+                if r.status_code == 200:
+                    hits = r.json()
+                    if hits:
+                        _freeform_hit = hits[0]
+            except Exception as e:
+                print(f"Nominatim freeform search error: {e}")
+
+        # Pick the best hit: prefer non-highway over highway
+        _best = _freeform_hit or _structured_hit
+        if _best:
+            hit = _best
+            query_lat = float(hit["lat"])
+            query_lon = float(hit["lon"])
+            result["lat"]          = hit["lat"]
+            result["lon"]          = hit["lon"]
+            result["osm_type"]     = hit.get("type", "N/A")
+            result["osm_class"]    = hit.get("class", "N/A")
+            result["display_name"] = hit.get("display_name", "N/A")
+            result["boundingbox"]  = hit.get("boundingbox", "N/A")
+            osm_type = hit.get("osm_type", "node").lower()
+            # Discard the osm_id when Nominatim resolved to a road segment — the
+            # geometry we'd fetch is a polyline, not a building polygon. The radius
+            # search in Step 2b will find the actual building at these coordinates.
+            if hit.get("class") == "highway":
+                osm_id = None
+            else:
+                osm_id = hit.get("osm_id")
+            if osm_id:
+                result["osm_id"] = f"{osm_type}/{osm_id}"
+            src = "freeform" if hit is _freeform_hit else "structured"
+            print(f"Nominatim forward ({src}): {result['display_name']} at {query_lat},{query_lon}")
+
+        # ── Step 1b: Reverse geocode fallback at Census/Intellipins coords ─────────────────
         # Used when the address isn't in OSM as a named object.
         # Does not update query_lat/query_lon — Census coords stay for radius queries.
         if not osm_id:
@@ -858,7 +1041,9 @@ async def get_osm_data(address: str, city: str, state: str, lat: float, lon: flo
                                 if m.get("role") == "outer" and "geometry" in m:
                                     geom = m["geometry"]
                                     break
-                        if len(geom) >= 3:
+                        # Require a building tag — prevents road ways or park
+                        # boundaries from being accepted as building geometry.
+                        if len(geom) >= 3 and el.get("tags", {}).get("building"):
                             building_el = el
                             print(f"OSM ID geometry found: {osm_type}/{osm_id}")
             except Exception as e:
@@ -978,7 +1163,7 @@ async def get_osm_data(address: str, city: str, state: str, lat: float, lon: flo
 
 _NA_STRINGS = frozenset({
     "", "n/a", "na", "none", "null", "data unavailable", "unavailable",
-    "-", "--", "not available", "no data", "walk score unavailable",
+    "-", "--", "not available", "no data", "walk score unavailable", "unknown",
 })
 
 
@@ -1006,58 +1191,84 @@ async def enrich_lead(lead: Any) -> Dict[str, Any]:
     )
     geocoords = {"lat": lat, "lon": lon, "source": geo_source} if lat is not None else {}
 
-    task_map: Dict[str, Any] = {}
-    _ipins_error: Dict[str, Any] | None = None   # set when Intellipins is on but geocode failed
+    # ── Phase 1: all APIs except Google ──────────────────────────────────
+    # Google runs in phase 2 because its search strategy depends on building type,
+    # which is derived from OSM + Intellipins results. OSM is already one of the
+    # slowest tasks, so phase 2 adds zero wall-clock time to total pipeline time.
+    phase1: Dict[str, Any] = {}
+    _ipins_error: Dict[str, Any] | None = None
 
     if "census" in enabled:
-        task_map["census"] = asyncio.create_task(get_census_data(lead.city, lead.state))
+        phase1["census"] = asyncio.create_task(get_census_data(lead.city, lead.state))
     if "fred" in enabled:
-        task_map["fred"] = asyncio.create_task(get_fred_data(lead.city, lead.state))
+        phase1["fred"] = asyncio.create_task(get_fred_data(lead.city, lead.state))
     if "wikipedia" in enabled:
-        task_map["wikipedia"] = asyncio.create_task(get_wikipedia_data(lead.company, lead.city, lead.state))
+        phase1["wikipedia"] = asyncio.create_task(get_wikipedia_data(lead.company, lead.city, lead.state))
     if "news" in enabled:
-        task_map["news"] = asyncio.create_task(get_news_data(lead.company, lead.city))
-    if "walkscore" in enabled:
-        if lat is not None:
-            task_map["walkscore"] = asyncio.create_task(get_walkscore_data(lead.property_address, lead.city, lead.state, lat, lon))
+        phase1["news"] = asyncio.create_task(get_news_data(lead.company, lead.city))
+    if "walkscore" in enabled and lat is not None:
+        phase1["walkscore"] = asyncio.create_task(get_walkscore_data(lead.property_address, lead.city, lead.state, lat, lon))
     if "intellipins" in enabled:
         if isinstance(ipins_geocode, dict):
             # Forward geocode already done — only run parcel lookup (no second API call)
-            task_map["intellipins"] = asyncio.create_task(_intellipins_parcel_lookup(ipins_geocode))
+            phase1["intellipins"] = asyncio.create_task(_intellipins_parcel_lookup(ipins_geocode))
         else:
             key_ok = bool(os.getenv("INTELLIPINS_KEY")) and "your_" not in (os.getenv("INTELLIPINS_KEY") or "")
             if ipins_geocode == "rate_limited":
                 _ipins_error = {"error": "Rate limited — too many requests. Wait a minute and try again."}
             else:
                 _ipins_error = {"error": "Key required" if not key_ok else "Geocode unavailable — check address"}
-    if "google" in enabled:
-        task_map["google"] = asyncio.create_task(get_google_places_data(lead.company, lead.property_address, lead.city, lead.state))
-    if "osm" in enabled:
-        if lat is not None:
-            task_map["osm"] = asyncio.create_task(get_osm_data(lead.property_address, lead.city, lead.state, lat, lon))
-    if "open_meteo" in enabled:
-        if lat is not None:
-            task_map["open_meteo"] = asyncio.create_task(get_climate_data(lat, lon))
+    if "osm" in enabled and lat is not None:
+        phase1["osm"] = asyncio.create_task(get_osm_data(lead.property_address, lead.city, lead.state, lat, lon))
+    if "open_meteo" in enabled and lat is not None:
+        phase1["open_meteo"] = asyncio.create_task(get_climate_data(lat, lon))
     if "crime" in enabled:
-        task_map["crime"] = asyncio.create_task(get_crime_data(lead.city, lead.state))
+        phase1["crime"] = asyncio.create_task(get_crime_data(lead.city, lead.state))
 
     enrichment: Dict[str, Any] = {}
-    if task_map:
-        results = await asyncio.gather(*task_map.values(), return_exceptions=True)
-        for key, result in zip(task_map.keys(), results):
+    if phase1:
+        p1_results = await asyncio.gather(*phase1.values(), return_exceptions=True)
+        for key, result in zip(phase1.keys(), p1_results):
             enrichment[key] = result if not isinstance(result, Exception) else {}
     if _ipins_error is not None:
         enrichment["intellipins"] = _ipins_error
 
-    # Derive building type from combined Intellipins + OSM signals
+    # ── Derive building type (needed for Google search strategy) ─────────
     ipins_result = enrichment.get("intellipins", {})
     osm_result   = enrichment.get("osm", {})
-    if isinstance(ipins_result, dict) and "_disabled" not in ipins_result and "error" not in ipins_result:
-        ipins_result["building_type"] = _classify_building_type(
-            ipins_result.get("address_type"),
-            osm_result.get("osm_class") if isinstance(osm_result, dict) else None,
-            osm_result.get("osm_type")  if isinstance(osm_result, dict) else None,
+    ipins_ok = isinstance(ipins_result, dict) and "_disabled" not in ipins_result and "error" not in ipins_result
+    _osm_building_tag = (
+        osm_result.get("building_details", {}).get("building_type")
+        if isinstance(osm_result, dict) else None
+    )
+    _ws = enrichment.get("walkscore", {})
+    _walk_score_val = _ws.get("walk_score") if isinstance(_ws, dict) else None
+    _walk_score_num = _walk_score_val if isinstance(_walk_score_val, (int, float)) else None
+    building_type = _classify_building_type(
+        ipins_result.get("address_type") if ipins_ok else None,
+        osm_result.get("osm_class") if isinstance(osm_result, dict) else None,
+        osm_result.get("osm_type")  if isinstance(osm_result, dict) else None,
+        osm_building_tag=_osm_building_tag,
+        walk_score=_walk_score_num,
+    )
+    if ipins_ok:
+        ipins_result["building_type"] = building_type
+
+    # ── Phase 2: Google Places ────────────────────────────────────────────
+    # Always searches by address first; Google's 'apartment_complex' type is
+    # the authoritative classifier. place_types is stored in the enrichment
+    # result so no second call is needed to determine building type.
+    if "google" in enabled:
+        enrichment["google"] = await get_google_places_data(
+            lead.company, lead.property_address, lead.city, lead.state,
+            building_type=building_type, lat=lat, lon=lon,
         )
+        # Refine building_type from Google's authoritative place_types.
+        google_result = enrichment["google"]
+        if isinstance(google_result, dict) and "apartment_complex" in (google_result.get("place_types") or []):
+            building_type = "Apartment Complex"
+            if ipins_ok:
+                ipins_result["building_type"] = "Apartment Complex"
 
     for api in _ALL_APIS - enabled:
         enrichment[api] = {"_disabled": True}

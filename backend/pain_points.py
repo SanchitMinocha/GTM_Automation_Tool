@@ -248,7 +248,7 @@ Data:
 - Walk: {_v(ws.get('walk_score'))} | Transit: {_v(ws.get('transit_score'))} | Bike: {_v(ws.get('bike_score'))}
 - Crime score (1-15): {_v(crime.get('crime_score'))} | Above national avg: {_v(crime.get('above_national_avg_violent'))}
 - Precip days: {_v(climate.get('annual_precip_days'))} | Snowfall: {_v(climate.get('annual_snowfall_cm'))} cm | Temp: {_v(climate.get('coldest_day_c'))}–{_v(climate.get('hottest_day_c'))} °C
-- Google rating: {_v(google.get('rating'))} ({google.get('review_count') or 0} reviews)
+- Google rating: {_v(google.get('rating'))} ({google.get('review_count') or 0} reviews){f" | Google summary: {google.get('editorial_summary')}" if google.get('editorial_summary') else ""}
 - Wikipedia company page: {'Yes' if isinstance(wiki.get('company'), dict) else 'No'}
 - Recent news: {news_titles or ['None']}
 - Sample reviews: {reviews_summary}

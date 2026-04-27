@@ -1,0 +1,122 @@
+[
+  {
+    "id": "1",
+    "created_at": "2026-04-27T15:21:52.568819Z",
+    "name": "San Min",
+    "company": "Real Property Associates",
+    "city": "Seattle",
+    "state": "WA",
+    "lead_score": 54.1,
+    "grade": "C"
+  },
+  {
+    "id": "11",
+    "created_at": "2026-04-27T15:20:48.272082Z",
+    "name": "Karen Campbell",
+    "company": "Blue Moon Properties",
+    "city": "Fall River",
+    "state": "MA",
+    "lead_score": 64.1,
+    "grade": "C"
+  },
+  {
+    "id": "2",
+    "created_at": "2026-04-27T15:20:26.966049Z",
+    "name": "Betty Torres",
+    "company": "Essex Property Trust",
+    "city": "Bronx",
+    "state": "NY",
+    "lead_score": 74.0,
+    "grade": "B"
+  },
+  {
+    "id": "d887a82a-1388-44bd-a21a-f87da6b569ba",
+    "created_at": "2026-04-27T15:20:21.233266Z",
+    "name": "Tyler Morales",
+    "company": "Lincoln Property Company",
+    "city": "Chelmsford",
+    "state": "MA",
+    "lead_score": 72.1,
+    "grade": "B"
+  },
+  {
+    "id": "8",
+    "created_at": "2026-04-27T15:20:15.296675Z",
+    "name": "Ronald Miller",
+    "company": "Epoch Residential",
+    "city": "Danvers",
+    "state": "MA",
+    "lead_score": 58.9,
+    "grade": "C"
+  },
+  {
+    "id": "283",
+    "created_at": "2026-04-27T15:20:03.659888Z",
+    "name": "Helen Richardson",
+    "company": "Bozzuto",
+    "city": "Livermore",
+    "state": "CA",
+    "lead_score": 54.7,
+    "grade": "C"
+  },
+  {
+    "id": "76",
+    "created_at": "2026-04-27T15:19:54.535404Z",
+    "name": "William Kim",
+    "company": "Elmington Property Management",
+    "city": "Greece",
+    "state": "NY",
+    "lead_score": 56.0,
+    "grade": "C"
+  },
+  {
+    "id": "6",
+    "created_at": "2026-04-27T15:19:42.731717Z",
+    "name": "Tyler Morales",
+    "company": "Scottsdale Property Group",
+    "city": "Scottsdale",
+    "state": "AZ",
+    "lead_score": 44.9,
+    "grade": "D"
+  },
+  {
+    "id": "53",
+    "created_at": "2026-04-27T15:18:54.808968Z",
+    "name": "Donald Ortiz",
+    "company": "Blue Moon Properties",
+    "city": "Canandaigua",
+    "state": "NY",
+    "lead_score": 71.7,
+    "grade": "B"
+  },
+  {
+    "id": "4",
+    "created_at": "2026-04-27T15:18:48.766074Z",
+    "name": "Anna Miller",
+    "company": "Kairoi Residential",
+    "city": "New York",
+    "state": "NY",
+    "lead_score": 79.7,
+    "grade": "B"
+  },
+  {
+    "id": "3",
+    "created_at": "2026-04-27T15:18:38.538515Z",
+    "name": "Joyce Reyes",
+    "company": "MAA",
+    "city": "Orem",
+    "state": "UT",
+    "lead_score": 57.5,
+    "grade": "C"
+  },
+  {
+    "id": "5",
+    "created_at": "2026-04-27T15:18:24.500315Z",
+    "name": "Christopher Gonzalez",
+    "company": "Inland American Real Estate",
+    "city": "Chicago",
+    "state": "IL",
+    "lead_score": 81.1,
+    "grade": "A"
+  }
+]

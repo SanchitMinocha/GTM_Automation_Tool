@@ -1,0 +1,370 @@
+{
+  "id": "2",
+  "created_at": "2026-04-27T15:20:26.963168Z",
+  "lead_info": {
+    "name": "Betty Torres",
+    "email": "betty.torres@essexapartmenthomes.com",
+    "company": "Essex Property Trust",
+    "address": "5959 Broadway",
+    "city": "Bronx",
+    "state": "NY"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 40.889179,
+      "lon": -73.898822,
+      "source": "intellipins"
+    },
+    "census": {
+      "population": "6,569",
+      "median_income": "$168,917",
+      "renter_percentage": "23.1%"
+    },
+    "fred": {
+      "vacancy_rate": "5.3%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": {
+        "title": "Essex Property Trust",
+        "extract": "Essex Property Trust is a publicly traded real estate investment trust that invests in apartments in California and in the Seattle metropolitan area.",
+        "url": "https://en.wikipedia.org/wiki/Essex_Property_Trust"
+      },
+      "city": {
+        "title": "The Bronx",
+        "extract": "The Bronx is the northernmost of the five boroughs of New York City, coextensive with Bronx County, in the U.S. state of New York. The borough shares a land border with Westchester County, New York to its north; to its south and west, the New York City borough of Manhattan lies across the Harlem River; and to its south and east is the borough of Queens, across the East River. The Bronx, the only New York City borough located primarily on the U.S. mainland, has a land area of 42 square miles (109\u00a0km2) and a population of 1,472,654 at the 2020 census. It has the fourth-largest area, fourth-highest population, and third-highest population density of the boroughs."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"Essex Property Trust\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 93,
+      "description": "Walker's Paradise",
+      "transit_score": 89,
+      "transit_description": "Excellent Transit",
+      "bike_score": 79,
+      "bike_description": "Very Bikeable"
+    },
+    "intellipins": {
+      "lat": 40.889179,
+      "lon": -73.898822,
+      "ipins_id": "iUS00147383809",
+      "address_type": null,
+      "formatted_address": "5959 Broadway, Bronx NY 10463, United States",
+      "geocode_score": 0.888,
+      "parcel": {
+        "area_sqm": 17112,
+        "area_sqft": "184,191 sq ft",
+        "elevation_m": 20,
+        "parcel_owner": "CM WATER GROUP LLC",
+        "apn": "2057760621",
+        "iparcel_id": "iUSP000037212314",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  -73.898823,
+                  40.889405
+                ],
+                [
+                  -73.89881,
+                  40.889394
+                ],
+                [
+                  -73.898794,
+                  40.889377
+                ],
+                [
+                  -73.89878,
+                  40.88936
+                ],
+                [
+                  -73.89877,
+                  40.889343
+                ],
+                [
+                  -73.898765,
+                  40.889332
+                ],
+                [
+                  -73.89876,
+                  40.889321
+                ],
+                [
+                  -73.898756,
+                  40.889303
+                ],
+                [
+                  -73.898753,
+                  40.889283
+                ],
+                [
+                  -73.898753,
+                  40.889267
+                ],
+                [
+                  -73.898754,
+                  40.889256
+                ],
+                [
+                  -73.898756,
+                  40.889246
+                ],
+                [
+                  -73.89876,
+                  40.889229
+                ],
+                [
+                  -73.898763,
+                  40.889222
+                ],
+                [
+                  -73.898769,
+                  40.889208
+                ],
+                [
+                  -73.898758,
+                  40.889205
+                ],
+                [
+                  -73.898883,
+                  40.888958
+                ],
+                [
+                  -73.899237,
+                  40.889059
+                ],
+                [
+                  -73.899202,
+                  40.889126
+                ],
+                [
+                  -73.899103,
+                  40.889475
+                ],
+                [
+                  -73.898908,
+                  40.889444
+                ],
+                [
+                  -73.898884,
+                  40.889437
+                ],
+                [
+                  -73.898865,
+                  40.88943
+                ],
+                [
+                  -73.898851,
+                  40.889424
+                ],
+                [
+                  -73.898841,
+                  40.889418
+                ],
+                [
+                  -73.898835,
+                  40.889413
+                ],
+                [
+                  -73.898823,
+                  40.889405
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "building_type": "Apartment / Shopping Complex"
+    },
+    "google": {
+      "place_name": "The Station Apartments",
+      "matched_via": "address",
+      "place_types": [
+        "establishment",
+        "point_of_interest"
+      ],
+      "rating": 1,
+      "review_count": 4,
+      "editorial_summary": null,
+      "reviews": [
+        {
+          "author": "Michael Demos",
+          "rating": 1,
+          "time": "6 months ago",
+          "text": "Very very unprofessional.  I scheduled a tour and waited two and a half hours and no one ever showed up.  When you call the leasing office it isn't even in New York it's in another state so they don't know anything.  If you call the front desk there in another state also.  It's been over a week sinc"
+        },
+        {
+          "author": "Desyre Urena",
+          "rating": 1,
+          "time": "a year ago",
+          "text": "There hasn\u2019t been Hot water for 2 weeks in this building !!! Freezing temperature outside , snowing , and management still doesn\u2019t respond. This building has had 8 violations and more than 100 complaints in the last 2 weeks because of NO hot water (check hpd site) Poor management, cheaply made build"
+        },
+        {
+          "author": "Channeling Imogene",
+          "rating": 1,
+          "time": "2 years ago",
+          "text": "Over priced cold apartments with electric heaters that do not help. Summer time the apartment is an oven. Winter season it is a freezer. Con Ed bill in the hundreds. This was done on purpose and the your forced to get renters insurance or the rent is more. Trust I'm looking to move they don't care a"
+        },
+        {
+          "author": "christopher helmer",
+          "rating": 1,
+          "time": "a year ago",
+          "text": "No hot water with no communication\n\nUpdate: Sinks will fill up by themselves with black water and overflow!"
+        }
+      ]
+    },
+    "osm": {
+      "osm_type": "house",
+      "osm_class": "place",
+      "display_name": "5959, Broadway, The Bronx, Bronx County, New York, 10463, United States",
+      "lat": "40.8891910",
+      "lon": "-73.8986051",
+      "boundingbox": [
+        "40.8891410",
+        "40.8892410",
+        "-73.8986551",
+        "-73.8985551"
+      ],
+      "osm_id": "way/1241117024",
+      "building_details": {
+        "building_type": "yes",
+        "floors": null,
+        "units": null,
+        "name": null,
+        "operator": null,
+        "height": null,
+        "calculated_area": "11,600 sq ft",
+        "geometry_wkt": "POLYGON ((-73.8989026 40.8889864, -73.8987665 40.8892453, -73.8987807 40.8892522, -73.8987595 40.8892909, -73.898769 40.8892932, -73.8987676 40.8893528, -73.8988038 40.8894027, -73.8988656 40.8894268, -73.8988615 40.8894367, -73.8989373 40.8894467, -73.8989362 40.8894553, -73.8991254 40.8894733, -73.8991605 40.8893257, -73.8990156 40.889316, -73.8989773 40.8892707, -73.8991008 40.889044, -73.8989026 40.8889864))"
+      },
+      "amenities_1000m": {
+        "transit": "38",
+        "parks": "16",
+        "retail": "35"
+      }
+    },
+    "open_meteo": {
+      "annual_precip_days": 177,
+      "annual_snowfall_cm": 41.9,
+      "annual_precipitation_mm": 1208.8,
+      "hottest_day_c": 34.8,
+      "coldest_day_c": -13.4
+    },
+    "crime": {
+      "error": "No ORI found for Bronx, NY"
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 73.4,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "renter_pct": 58.2,
+        "low_vacancy": 58.9,
+        "walk_score": 100.0,
+        "transit_score": 100.0,
+        "income": 100.0,
+        "nearby_amenities": 100.0,
+        "population": 0.1
+      }
+    },
+    "friction": {
+      "score": 70.8,
+      "available_weight": 0.75,
+      "max_weight": 1.0,
+      "components": {
+        "precip_days": 100.0,
+        "snowfall": 63.6,
+        "temp_range": 76.8,
+        "elevation": 0.1
+      }
+    },
+    "scale": {
+      "score": 55.5,
+      "available_weight": 0.75,
+      "max_weight": 1.0,
+      "building_type": "Apartment / Shopping Complex",
+      "components": {
+        "building_type": 65.0,
+        "footprint": 8.4,
+        "lot_area": 100.0
+      }
+    },
+    "opportunity": {
+      "score": 97.0,
+      "available_weight": 0.5,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {
+        "low_rating": 100.0,
+        "wiki_presence": 90.0
+      }
+    },
+    "lead_score": {
+      "score": 74.0,
+      "grade": "B",
+      "available_weight": 0.75,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 73.4,
+        "friction": 70.8,
+        "scale": 55.5,
+        "opportunity": 97.0
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "volume_overload",
+      "label": "High Lead Volume Overload",
+      "severity": "high",
+      "description": "High rental demand combined with a large property footprint likely floods property managers with inquiries. Manual handling causes slow response times and lost leases \u2014 precisely where EliseAI's automated engagement wins.",
+      "source": "rule"
+    },
+    {
+      "tag": "premium_market",
+      "label": "Premium Market \u2014 Instant Response Required",
+      "severity": "high",
+      "description": "Walk Score 93 and median household income $168,917 signal a quality renter base with high service expectations. Delayed responses directly cost leases; EliseAI provides 24/7 instant engagement.",
+      "source": "rule"
+    },
+    {
+      "tag": "harsh_conditions",
+      "label": "Harsh Operating Conditions",
+      "severity": "medium",
+      "description": "Challenging conditions (frequent precipitation (177 days/yr)) increase maintenance coordination load and incident management. Automated tenant communication keeps residents informed without burdening staff.",
+      "source": "rule"
+    },
+    {
+      "tag": "tenant_friction",
+      "label": "Long Waiting Times",
+      "severity": "high",
+      "description": "EliseAI detected long waiting times for in-person property visits, with one tenant waiting over 2.5 hours for a scheduled tour.",
+      "source": "llm"
+    },
+    {
+      "tag": "maintenance_inadequacy",
+      "label": "Prolonged Service Disruptions",
+      "severity": "high",
+      "description": "There have been significant disruptions to core services, with hot water outages lasting 2 weeks amidst harsh winter conditions, affecting tenant comfort and safety.",
+      "source": "llm"
+    }
+  ],
+  "outreach": {
+    "subject": "Units sitting empty",
+    "greeting": "Hi Betty,",
+    "message": "Your building is in a neighborhood with a Walk Score of 93, where the median household income is around $169,000, and renters expect a high level of service. This means your team needs to be highly responsive to meet the demands of these renters. Your team's speed and responsiveness can make all the difference in securing leases and renewals.\n\n At Essex Property Trust, a tour request that sits unanswered for a day or a maintenance ticket that goes quiet can lead to frustration and lost leases. EliseAI provides instant response for leasing, maintenance, and renewals, 24/7. \n\n Worth a call?",
+    "arc": "premium_expectations",
+    "generated_at": "2026-04-27T15:20:26.963115Z",
+    "provider": "groq"
+  }
+}

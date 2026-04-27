@@ -6,6 +6,21 @@ Each sub-score uses only available features (no imputation):
 
 All component values are normalized 0–1 before weighting.
 Final sub-scores are 0–100.
+
+Scoring Philosophy (V6):
+    - Calibration: Ceilings set to practical "strong" values (e.g., 80 walk score,
+      75 transit score, 250k pop, 40k sqft).
+    - Concave Lifting (_lift, power 0.7): Applied to "indicator" signals where
+      moderate values already represent meaningful intent (renter %, vacancy,
+      income, snowfall, low rating, vacancy urgency).
+    - Aggressive Convex Penalization (_crush, power 2.0): Applied to "structural"
+      filters (walkability, population, footprint, floors, units) to ensure weak
+      leads stay significantly below 50.
+    - Ceiling calibration: walk/transit ceilings set so that "very walkable" /
+      "excellent transit" scores (80+/75+) max out the component rather than being
+      penalized by a needlessly high 100-point ceiling.
+    - Decisive Opportunity: Triggers like growth news or established Wikipedia
+      presence use high floors to ensure they can push a lead into Grade A.
 """
 from __future__ import annotations
 import re
@@ -23,30 +38,15 @@ def _parse_float(value: Any) -> Optional[float]:
     if isinstance(value, (int, float)):
         return float(value)
     s = str(value).strip().replace("$", "").replace(",", "").replace("%", "")
-    s = re.sub(r"\s+\S.*$", "", s).strip()  # strip trailing units (sq ft, cm, etc.)
+    s = re.sub(r"\s+\S.*$", "", s).strip()  # strip trailing units
     try:
         return float(s)
     except ValueError:
         return None
 
 
-def _safe_get(d: Any, *keys, default=None) -> Any:
-    """None-safe nested dict get."""
-    for key in keys:
-        if not isinstance(d, dict):
-            return default
-        d = d.get(key)
-        if d is None:
-            return default
-    return d
-
-
 def _weighted_score(components: Dict[str, Tuple[float, float]]) -> Tuple[float, float]:
-    """
-    components: {name: (normalized_0_to_1, weight)}
-    Returns (score_0_to_100, total_available_weight)
-    Missing components should be excluded before calling.
-    """
+    """components: {name: (normalized_0_to_1, weight)} -> (score_0_100, weight)"""
     if not components:
         return 0.0, 0.0
     total_weight = sum(w for _, w in components.values())
@@ -54,21 +54,21 @@ def _weighted_score(components: Dict[str, Tuple[float, float]]) -> Tuple[float, 
     return round(score, 1), round(total_weight, 3)
 
 
+def _lift(x: float, power: float = 0.70) -> float:
+    """Concave curve: lifts mid-range. For indicator signals where moderate = good."""
+    return min(max(x, 0.0), 1.0) ** power
+
+
+def _crush(x: float, power: float = 2.0) -> float:
+    """Convex curve: penalizes low-mid range. For structural signals where low = bad."""
+    return min(max(x, 0.0), 1.0) ** power
+
+
 # ---------------------------------------------------------------------------
-# 1. DEMAND SCORE — rental market pressure / how overwhelmed managers are
+# 1. DEMAND SCORE (30%)
 # ---------------------------------------------------------------------------
 
 def score_demand(enrichment: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Weights (max 1.0):
-      renter_pct        0.25  — higher % renters = more rental market activity
-      low_vacancy       0.20  — lower vacancy = tighter market = more leads
-      walk_score        0.15  — walkability drives renter demand
-      transit_score     0.10  — transit access expands renter pool
-      income            0.10  — higher income = premium renters with high expectations
-      nearby_amenities  0.12  — 1000m radius transit+parks+retail density
-      population        0.08  — high-pop cities have denser renter concentrations
-    """
     census = enrichment.get("census") or {}
     fred   = enrichment.get("fred") or {}
     ws     = enrichment.get("walkscore") or {}
@@ -76,295 +76,190 @@ def score_demand(enrichment: Dict[str, Any]) -> Dict[str, Any]:
 
     components: Dict[str, Tuple[float, float]] = {}
 
+    # Renter %: ceiling 50%; LIFTED
     renter_pct = _parse_float(census.get("renter_percentage"))
     if renter_pct is not None and renter_pct > 0:
-        components["renter_pct"] = (min(renter_pct / 70.0, 1.0), 0.25)
+        components["renter_pct"] = (_lift(min(renter_pct / 50.0, 1.0)), 0.25)
 
+    # Vacancy: ceiling 10%; LIFTED
     vacancy = _parse_float(fred.get("vacancy_rate"))
     if vacancy is not None:
-        components["low_vacancy"] = (max(0.0, 1.0 - vacancy / 15.0), 0.20)
+        components["low_vacancy"] = (_lift(max(0.0, 1.0 - vacancy / 10.0)), 0.20)
 
+    # Structural filters: CONVEX — ceiling at "very walkable" / "excellent transit"
+    # so scores at those thresholds max out rather than being penalized by a 100-pt ceiling.
     walk = _parse_float(ws.get("walk_score"))
     if walk is not None:
-        components["walk_score"] = (walk / 100.0, 0.15)
+        components["walk_score"] = (_crush(min(walk / 80.0, 1.0)), 0.15)
 
     transit = _parse_float(ws.get("transit_score"))
     if transit is not None:
-        components["transit_score"] = (transit / 100.0, 0.10)
+        components["transit_score"] = (_crush(min(transit / 75.0, 1.0)), 0.10)
 
     income = _parse_float(census.get("median_income"))
     if income is not None and income > 0:
-        components["income"] = (min(income / 150_000.0, 1.0), 0.10)
+        components["income"] = (_lift(min(income / 85_000.0, 1.0)), 0.10)
 
     amenities = osm.get("amenities_1000m") or {}
-    transit_ct = _parse_float(amenities.get("transit")) or 0.0
-    parks_ct   = _parse_float(amenities.get("parks"))   or 0.0
-    retail_ct  = _parse_float(amenities.get("retail"))  or 0.0
-    total_amenities = transit_ct + parks_ct + retail_ct
-    if amenities:  # only add if amenity data was actually fetched
-        components["nearby_amenities"] = (min(total_amenities / 100.0, 1.0), 0.12)
+    total_amenities = sum(_parse_float(v) or 0.0 for v in amenities.values())
+    if amenities:
+        components["nearby_amenities"] = (_lift(min(total_amenities / 40.0, 1.0)), 0.12)
 
     population = _parse_float(census.get("population"))
     if population is not None and population > 0:
-        components["population"] = (min(population / 500_000.0, 1.0), 0.08)
+        components["population"] = (_crush(min(population / 250_000.0, 1.0)), 0.08)
 
     score, avail = _weighted_score(components)
-    return {
-        "score": score,
-        "available_weight": avail,
-        "max_weight": 1.0,
-        "components": {k: round(v * 100, 1) for k, (v, _) in components.items()},
-    }
+    return {"score": score, "available_weight": avail, "max_weight": 1.0,
+            "components": {k: round(v * 100, 1) for k, (v, _) in components.items()}}
 
 
 # ---------------------------------------------------------------------------
-# 2. FRICTION SCORE — operational difficulty (weather, crime, geography)
+# 2. FRICTION SCORE (20%)
 # ---------------------------------------------------------------------------
 
 def score_friction(enrichment: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Weights (max 1.0):
-      crime        0.25  — crime score (1–15) → normalized; drives security overhead
-      precip_days  0.25  — rain days → virtual/3D tour demand spikes in bad weather
-      snowfall     0.20  — annual snowfall → HVAC/plumbing load + in-person tour friction
-      temp_range   0.20  — extreme temperature swings → maintenance complexity
-      elevation    0.10  — high elevation → harsher winters, infrastructure stress
-    """
     climate = enrichment.get("open_meteo") or {}
     crime   = enrichment.get("crime") or {}
-    ipins   = enrichment.get("intellipins") or {}
+    ipins   = (enrichment.get("intellipins") or {}).get("parcel") or {}
 
     components: Dict[str, Tuple[float, float]] = {}
 
     crime_score = _parse_float(crime.get("crime_score"))
     if crime_score is not None:
-        components["crime"] = ((crime_score - 1.0) / 14.0, 0.25)  # normalize 1–15 → 0–1
+        components["crime"] = (_crush((crime_score - 1.0) / 14.0), 0.25)
 
     precip_days = _parse_float(climate.get("annual_precip_days"))
     if precip_days is not None:
-        components["precip_days"] = (min(precip_days / 200.0, 1.0), 0.25)
+        components["precip_days"] = (_crush(min(precip_days / 120.0, 1.0)), 0.25)
 
+    # Snowfall: indicator signal (any meaningful snow = friction), not structural filter
     snowfall = _parse_float(climate.get("annual_snowfall_cm"))
     if snowfall is not None:
-        components["snowfall"] = (min(snowfall / 200.0, 1.0), 0.20)
+        components["snowfall"] = (_lift(min(snowfall / 80.0, 1.0)), 0.20)
 
     hottest = _parse_float(climate.get("hottest_day_c"))
     coldest = _parse_float(climate.get("coldest_day_c"))
     if hottest is not None and coldest is not None:
-        components["temp_range"] = (min((hottest - coldest) / 80.0, 1.0), 0.20)
+        components["temp_range"] = (_crush(min((hottest - coldest) / 55.0, 1.0)), 0.20)
 
-    elev = _parse_float(_safe_get(ipins, "parcel", "elevation_m"))
+    elev = _parse_float(ipins.get("elevation_m"))
     if elev is not None:
-        components["elevation"] = (min(elev / 2000.0, 1.0), 0.10)
+        components["elevation"] = (_crush(min(elev / 800.0, 1.0)), 0.10)
 
     score, avail = _weighted_score(components)
-    return {
-        "score": score,
-        "available_weight": avail,
-        "max_weight": 1.0,
-        "components": {k: round(v * 100, 1) for k, (v, _) in components.items()},
-    }
+    return {"score": score, "available_weight": avail, "max_weight": 1.0,
+            "components": {k: round(v * 100, 1) for k, (v, _) in components.items()}}
 
 
 # ---------------------------------------------------------------------------
-# 3. SCALE SCORE — portfolio size & operational complexity
+# 3. SCALE SCORE (20%)
 # ---------------------------------------------------------------------------
 
 _BUILDING_TYPE_WEIGHT = {
-    "Apartment Complex":            1.00,
-    "Hotel":                        0.80,
-    "Commercial / Industrial":      0.75,
-    "Office Building":              0.70,
-    "Apartment / Shopping Complex": 0.65,
-    "Shopping Complex / Amenity":   0.60,
-    "Retail / Shopping":            0.50,
-    "Single Family Housing":        0.45,
+    "Apartment Complex": 1.00, "Hotel": 0.80, "Commercial / Industrial": 0.75,
+    "Office Building": 0.70, "Apartment / Shopping Complex": 0.65,
+    "Shopping Complex / Amenity": 0.55, "Retail / Shopping": 0.45,
+    "Single Family Housing": 0.20,
 }
 
-
 def score_scale(enrichment: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Weights (max 1.0):
-      building_type  0.30  — apartment complex = highest automation value
-      footprint      0.25  — OSM building area in sq ft
-      lot_area       0.20  — Intellipins parcel area
-      floors         0.15  — vertical complexity / unit count proxy
-      units          0.10  — explicit unit count from OSM tags
-    """
-    osm   = enrichment.get("osm") or {}
+    osm = enrichment.get("osm") or {}
     ipins = enrichment.get("intellipins") or {}
-    bd    = (osm.get("building_details") or {})
-
+    bd = (osm.get("building_details") or {})
+    
     components: Dict[str, Tuple[float, float]] = {}
-
-    building_type = ipins.get("building_type")
-    if building_type:
-        components["building_type"] = (_BUILDING_TYPE_WEIGHT.get(building_type, 0.20), 0.30)
+    
+    btype = ipins.get("building_type")
+    if btype:
+        components["building_type"] = (_BUILDING_TYPE_WEIGHT.get(btype, 0.20), 0.30)
 
     footprint = _parse_float(bd.get("calculated_area"))
+    _APT_TYPES = {"Apartment Complex", "Apartment / Shopping Complex"}
     if footprint is not None and footprint > 0:
-        components["footprint"] = (min(footprint / 100_000.0, 1.0), 0.25)
+        # OSM returns the address polygon for one unit in dense cities — tiny footprints
+        # (<10k sqft) on apartment-type buildings are unreliable data, not small buildings.
+        if not (btype in _APT_TYPES and footprint < 10_000):
+            components["footprint"] = (_crush(min(footprint / 40_000.0, 1.0)), 0.25)
 
-    lot_sqm = _parse_float(_safe_get(ipins, "parcel", "area_sqm"))
+    lot_sqm = _parse_float((ipins.get("parcel") or {}).get("area_sqm"))
     if lot_sqm is not None and lot_sqm > 0:
-        components["lot_area"] = (min(lot_sqm * 10.7639 / 200_000.0, 1.0), 0.20)
+        components["lot_area"] = (_lift(min(lot_sqm * 10.76 / 100_000.0, 1.0)), 0.20)
 
     floors = _parse_float(bd.get("floors"))
     if floors is not None and floors > 0:
-        components["floors"] = (min(floors / 30.0, 1.0), 0.15)
+        components["floors"] = (_crush(min(floors / 15.0, 1.0)), 0.15)
 
     units = _parse_float(bd.get("units"))
     if units is not None and units > 0:
-        components["units"] = (min(units / 500.0, 1.0), 0.10)
+        components["units"] = (_crush(min(units / 250.0, 1.0)), 0.10)
 
     score, avail = _weighted_score(components)
-    return {
-        "score": score,
-        "available_weight": avail,
-        "max_weight": 1.0,
-        "building_type": building_type,
-        "components": {k: round(v * 100, 1) for k, (v, _) in components.items()},
-    }
+    return {"score": score, "available_weight": avail, "max_weight": 1.0, "building_type": btype,
+            "components": {k: round(v * 100, 1) for k, (v, _) in components.items()}}
 
 
 # ---------------------------------------------------------------------------
-# 4. OPPORTUNITY SCORE — likelihood they need EliseAI right now
+# 4. OPPORTUNITY SCORE (30%)
 # ---------------------------------------------------------------------------
 
-_GROWTH_KEYWORDS  = ["expand", "acquir", "growth", "new market", "scale", "portfolio",
-                      "launch", "partner", "open", "hire", "invest"]
-_COST_KEYWORDS    = ["layoff", "restructur", "downsize", "cost-cut", "job cut",
-                      "budget", "deficit", "closure", "reduce staff"]
+_GROWTH_KEYWORDS = ["expand", "acquir", "growth", "new market", "scale", "portfolio", "launch", "partner", "open", "hire", "invest"]
+_COST_KEYWORDS = ["layoff", "restructur", "downsize", "cost-cut", "job cut", "budget", "deficit", "closure", "reduce staff"]
 _TROUBLE_KEYWORDS = ["lawsuit", "fine", "penalty", "complaint", "eviction", "fraud", "investigation"]
 
-
 def _analyze_news(news: Dict[str, Any]) -> Tuple[str, float]:
-    """
-    Returns (sentiment_tag, opportunity_score_0_to_1).
-    growth → 0.85 (scaling = needs automation)
-    cost_pressure → 0.75 (efficiency = open to AI)
-    trouble → 0.65 (operational pain = addressable)
-    mixed → 0.55
-    neutral → 0.40
-    none → 0.30
-    """
     articles = news.get("latest_news", [])
-    if not isinstance(articles, list) or not articles:
-        return "none", 0.30
-    combined = " ".join(
-        (a.get("title", "") + " " + a.get("snippet", "")).lower()
-        for a in articles[:5]
-    )
-    growth  = sum(1 for kw in _GROWTH_KEYWORDS  if kw in combined)
-    cost    = sum(1 for kw in _COST_KEYWORDS    if kw in combined)
-    trouble = sum(1 for kw in _TROUBLE_KEYWORDS if kw in combined)
-
-    if growth >= 2:                        return "growth",        0.85
-    if cost >= 2:                          return "cost_pressure", 0.75
-    if trouble >= 2:                       return "trouble",       0.65
-    if growth + cost + trouble >= 1:       return "mixed",         0.55
-    return "neutral", 0.40
-
+    if not isinstance(articles, list) or not articles: return "none", 0.30
+    combined = " ".join((a.get("title", "") + " " + a.get("snippet", "")).lower() for a in articles[:5])
+    growth, cost, trouble = [sum(1 for kw in kws if kw in combined) for kws in [_GROWTH_KEYWORDS, _COST_KEYWORDS, _TROUBLE_KEYWORDS]]
+    if growth >= 2: return "growth", 0.95
+    if cost >= 2: return "cost_pressure", 0.85
+    if trouble >= 2: return "trouble", 0.75
+    if growth + cost + trouble >= 1: return "mixed", 0.60
+    return "neutral", 0.45
 
 def score_opportunity(enrichment: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Weights (max 1.0):
-      news_signal     0.30  — company growth/struggle signals
-      low_rating      0.20  — poor Google rating → operational pain EliseAI solves
-      renter_market   0.15  — high renter % → large addressable rental market
-      vacancy_urgency 0.15  — higher vacancy → struggling to fill → needs help
-      walkability     0.10  — high walk score → premium market with high expectations
-      wiki_presence   0.10  — established company worth targeting
-    """
-    news   = enrichment.get("news") or {}
-    census = enrichment.get("census") or {}
-    fred   = enrichment.get("fred") or {}
-    google = enrichment.get("google") or {}
-    wiki   = enrichment.get("wikipedia") or {}
-    ws     = enrichment.get("walkscore") or {}
-
+    news, google, wiki = [enrichment.get(k) or {} for k in ["news", "google", "wikipedia"]]
     components: Dict[str, Tuple[float, float]] = {}
 
     news_tag, news_score = _analyze_news(news)
-    if isinstance(news.get("latest_news"), list):
-        components["news_signal"] = (news_score, 0.30)
+    if isinstance(news.get("latest_news"), list): components["news_signal"] = (news_score, 0.5)
 
     rating = _parse_float(google.get("rating"))
     if rating is not None:
-        # rating 1/5 = 0.90 opportunity, rating 5/5 = 0.20 opportunity; skipped entirely when Google data unavailable
-        components["low_rating"] = (max(0.0, 0.90 - (rating - 1.0) / 4.0 * 0.70), 0.20)
+        # Linear raw score then _lift: low ratings are indicator signals (moderate pain = moderate signal)
+        raw_lr = max(0.0, 1.0 - (rating - 1.0) / 3.5)
+        components["low_rating"] = (_lift(raw_lr), 0.35)
 
-    renter_pct = _parse_float(census.get("renter_percentage"))
-    if renter_pct is not None and renter_pct > 0:
-        components["renter_market"] = (min(renter_pct / 65.0, 1.0), 0.15)
-
-    vacancy = _parse_float(fred.get("vacancy_rate"))
-    if vacancy is not None:
-        # 0% = 0.30 (stable, low urgency), 10%+ = 0.90 (struggling)
-        components["vacancy_urgency"] = (min(0.30 + vacancy / 10.0 * 0.60, 0.90), 0.15)
-
-    walk = _parse_float(ws.get("walk_score"))
-    if walk is not None:
-        components["walkability"] = (walk / 100.0, 0.10)
-
-    if isinstance(wiki.get("company"), dict):
-        components["wiki_presence"] = (0.80, 0.10)
+    if isinstance(wiki.get("company"), dict): components["wiki_presence"] = (0.90, 0.15)
 
     score, avail = _weighted_score(components)
-    return {
-        "score": score,
-        "available_weight": avail,
-        "max_weight": 1.0,
-        "news_sentiment": news_tag,
-        "components": {k: round(v * 100, 1) for k, (v, _) in components.items()},
-    }
+    return {"score": score, "available_weight": avail, "max_weight": 1.0, "news_sentiment": news_tag,
+            "components": {k: round(v * 100, 1) for k, (v, _) in components.items()}}
 
 
 # ---------------------------------------------------------------------------
-# 5. LEAD SCORE — weighted composite of sub-scores
+# 5. LEAD SCORE
 # ---------------------------------------------------------------------------
 
-_LEAD_WEIGHTS = {
-    "demand":      0.20,
-    "friction":    0.35,
-    "scale":       0.15,
-    "opportunity": 0.30,
-}
-
+_LEAD_WEIGHTS = {"demand": 0.30, "friction": 0.20, "scale": 0.20, "opportunity": 0.30}
 
 def compute_lead_score(sub_scores: Dict[str, Dict]) -> Dict[str, Any]:
     components: Dict[str, Tuple[float, float]] = {}
     for name, weight in _LEAD_WEIGHTS.items():
         sub = sub_scores.get(name, {})
-        s = sub.get("score")
-        avail = sub.get("available_weight", 0)
-        # Skip sub-score if fewer than 30% of its max weight is available (too little data)
-        if s is not None and avail >= 0.30:
-            components[name] = (s / 100.0, weight)
-
+        s, avail = sub.get("score"), sub.get("available_weight", 0)
+        if s is not None and avail > 0: components[name] = (s / 100.0, weight * avail)
+    
     total = sum(w for _, w in components.values())
-    if total == 0:
-        return {"score": 0.0, "grade": "F", "available_weight": 0.0, "weights": _LEAD_WEIGHTS}
-
-    raw = sum(v * w for v, w in components.values()) / total * 100
-    score = round(raw, 1)
-    grade = "A" if score >= 75 else "B" if score >= 60 else "C" if score >= 45 else "D" if score >= 30 else "F"
-
-    return {
-        "score": score,
-        "grade": grade,
-        "available_weight": round(total, 3),
-        "components": {k: round(v * 100, 1) for k, (v, _) in components.items()},
-        "weights": _LEAD_WEIGHTS,
-    }
-
+    if total == 0: return {"score": 0.0, "grade": "F", "available_weight": 0.0, "weights": _LEAD_WEIGHTS}
+    
+    score = round(sum(v * w for v, w in components.values()) / total * 100, 1)
+    grade = "A" if score >= 80 else "B" if score >= 65 else "C" if score >= 50 else "D" if score >= 35 else "F"
+    return {"score": score, "grade": grade, "available_weight": round(total, 3), "weights": _LEAD_WEIGHTS,
+            "components": {k: round(v * 100, 1) for k, (v, _) in components.items()}}
 
 def compute_all_scores(enrichment: Dict[str, Any]) -> Dict[str, Any]:
-    scores = {
-        "demand":      score_demand(enrichment),
-        "friction":    score_friction(enrichment),
-        "scale":       score_scale(enrichment),
-        "opportunity": score_opportunity(enrichment),
-    }
+    scores = {k: f(enrichment) for k, f in [("demand", score_demand), ("friction", score_friction), ("scale", score_scale), ("opportunity", score_opportunity)]}
     scores["lead_score"] = compute_lead_score(scores)
     return scores

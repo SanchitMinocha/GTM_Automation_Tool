@@ -26,7 +26,7 @@ async def run_pipeline(lead: Any) -> Dict[str, Any]:
 
     scores      = compute_all_scores(enrichment)
     pain_points = await infer_pain_points(lead_info, enrichment, scores, provider=provider)
-    outreach    = await generate_outreach(lead_info, enrichment, scores, pain_points, provider=provider)
+    outreach    = await generate_outreach(lead_info, enrichment, pain_points, scores=scores, provider=provider)
     saved_id    = save_lead(lead_info, enrichment, scores, pain_points, outreach, lead_id=lead_id)
 
     return {

@@ -1,0 +1,934 @@
+{
+  "id": "8",
+  "created_at": "2026-04-27T15:20:15.294573Z",
+  "lead_info": {
+    "name": "Ronald Miller",
+    "email": "ronald.miller@epochresidential.com",
+    "company": "Epoch Residential",
+    "address": "55 Brooksby Village Way",
+    "city": "Danvers",
+    "state": "MA"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 42.55425417,
+      "lon": -70.96820738,
+      "source": "intellipins"
+    },
+    "census": {
+      "population": "27,966",
+      "median_income": "$105,654",
+      "renter_percentage": "28.8%"
+    },
+    "fred": {
+      "vacancy_rate": "3.4%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": null,
+      "city": {
+        "title": "Danvers, Massachusetts",
+        "extract": "Danvers is a town in Essex County, Massachusetts, United States, located on the Danvers River near the northeastern coast of Massachusetts. The suburb is a fairly short ride from Boston and is also in close proximity to the beaches of Gloucester, Ipswich and Revere. Originally known as Salem Village, the town is most widely known for its association with the 1692 Salem witch trials. It was also the site of Danvers State Hospital, one of the state's 19th-century psychiatric hospitals. Danvers is a local center of commerce, hosting many car dealerships and the Liberty Tree Mall. As of the 2020 United States Census, the town's population was 28,087."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"Epoch Residential\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 43,
+      "description": "Car-Dependent",
+      "bike_score": 38,
+      "bike_description": "Somewhat Bikeable"
+    },
+    "intellipins": {
+      "lat": 42.55425417,
+      "lon": -70.96820738,
+      "ipins_id": "iUS00017162263",
+      "address_type": null,
+      "formatted_address": "55 Brooksby Village Way, Danvers MA 01923, United States",
+      "geocode_score": 0.888,
+      "parcel": {
+        "area_sqm": 849058,
+        "area_sqft": "9,139,175 sq ft",
+        "elevation_m": 48,
+        "parcel_owner": "INNIS, DONALD F",
+        "apn": "056 008B",
+        "iparcel_id": "iUSP000155043747",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  -70.966075,
+                  42.555504
+                ],
+                [
+                  -70.966073,
+                  42.555502
+                ],
+                [
+                  -70.966071,
+                  42.555501
+                ],
+                [
+                  -70.966069,
+                  42.555499
+                ],
+                [
+                  -70.966067,
+                  42.555498
+                ],
+                [
+                  -70.966065,
+                  42.555497
+                ],
+                [
+                  -70.966063,
+                  42.555496
+                ],
+                [
+                  -70.966061,
+                  42.555494
+                ],
+                [
+                  -70.966059,
+                  42.555493
+                ],
+                [
+                  -70.966058,
+                  42.555491
+                ],
+                [
+                  -70.966056,
+                  42.55549
+                ],
+                [
+                  -70.966054,
+                  42.555488
+                ],
+                [
+                  -70.966052,
+                  42.555487
+                ],
+                [
+                  -70.966051,
+                  42.555485
+                ],
+                [
+                  -70.966049,
+                  42.555483
+                ],
+                [
+                  -70.966048,
+                  42.555482
+                ],
+                [
+                  -70.966046,
+                  42.55548
+                ],
+                [
+                  -70.966045,
+                  42.555479
+                ],
+                [
+                  -70.966043,
+                  42.555477
+                ],
+                [
+                  -70.966042,
+                  42.555475
+                ],
+                [
+                  -70.96604,
+                  42.555474
+                ],
+                [
+                  -70.966039,
+                  42.555471
+                ],
+                [
+                  -70.966038,
+                  42.55547
+                ],
+                [
+                  -70.966036,
+                  42.555468
+                ],
+                [
+                  -70.966035,
+                  42.555467
+                ],
+                [
+                  -70.966034,
+                  42.555465
+                ],
+                [
+                  -70.966033,
+                  42.555463
+                ],
+                [
+                  -70.966032,
+                  42.555461
+                ],
+                [
+                  -70.966031,
+                  42.555459
+                ],
+                [
+                  -70.96603,
+                  42.555457
+                ],
+                [
+                  -70.966029,
+                  42.555456
+                ],
+                [
+                  -70.966028,
+                  42.555454
+                ],
+                [
+                  -70.966027,
+                  42.555452
+                ],
+                [
+                  -70.966026,
+                  42.55545
+                ],
+                [
+                  -70.966025,
+                  42.555448
+                ],
+                [
+                  -70.966025,
+                  42.555446
+                ],
+                [
+                  -70.966024,
+                  42.555444
+                ],
+                [
+                  -70.966023,
+                  42.555442
+                ],
+                [
+                  -70.966023,
+                  42.55544
+                ],
+                [
+                  -70.966022,
+                  42.555438
+                ],
+                [
+                  -70.966022,
+                  42.555437
+                ],
+                [
+                  -70.966021,
+                  42.555435
+                ],
+                [
+                  -70.966021,
+                  42.555432
+                ],
+                [
+                  -70.96602,
+                  42.555431
+                ],
+                [
+                  -70.96602,
+                  42.555429
+                ],
+                [
+                  -70.96602,
+                  42.555426
+                ],
+                [
+                  -70.96602,
+                  42.555425
+                ],
+                [
+                  -70.966019,
+                  42.555423
+                ],
+                [
+                  -70.966019,
+                  42.555421
+                ],
+                [
+                  -70.966019,
+                  42.555418
+                ],
+                [
+                  -70.966019,
+                  42.555417
+                ],
+                [
+                  -70.966019,
+                  42.555415
+                ],
+                [
+                  -70.966019,
+                  42.555412
+                ],
+                [
+                  -70.966019,
+                  42.555411
+                ],
+                [
+                  -70.966019,
+                  42.555409
+                ],
+                [
+                  -70.96602,
+                  42.555407
+                ],
+                [
+                  -70.96602,
+                  42.555404
+                ],
+                [
+                  -70.96602,
+                  42.555403
+                ],
+                [
+                  -70.96602,
+                  42.555401
+                ],
+                [
+                  -70.966021,
+                  42.555399
+                ],
+                [
+                  -70.966021,
+                  42.555397
+                ],
+                [
+                  -70.966022,
+                  42.555395
+                ],
+                [
+                  -70.966022,
+                  42.555393
+                ],
+                [
+                  -70.966023,
+                  42.555391
+                ],
+                [
+                  -70.966023,
+                  42.555389
+                ],
+                [
+                  -70.966024,
+                  42.555387
+                ],
+                [
+                  -70.966025,
+                  42.555385
+                ],
+                [
+                  -70.966025,
+                  42.555384
+                ],
+                [
+                  -70.966026,
+                  42.555381
+                ],
+                [
+                  -70.966027,
+                  42.55538
+                ],
+                [
+                  -70.966028,
+                  42.555378
+                ],
+                [
+                  -70.966029,
+                  42.555376
+                ],
+                [
+                  -70.96603,
+                  42.555374
+                ],
+                [
+                  -70.966031,
+                  42.555372
+                ],
+                [
+                  -70.966032,
+                  42.55537
+                ],
+                [
+                  -70.966033,
+                  42.555369
+                ],
+                [
+                  -70.966034,
+                  42.555367
+                ],
+                [
+                  -70.966035,
+                  42.555365
+                ],
+                [
+                  -70.966036,
+                  42.555363
+                ],
+                [
+                  -70.966038,
+                  42.555362
+                ],
+                [
+                  -70.966039,
+                  42.55536
+                ],
+                [
+                  -70.966498,
+                  42.554838
+                ],
+                [
+                  -70.966565,
+                  42.554683
+                ],
+                [
+                  -70.966432,
+                  42.554651
+                ],
+                [
+                  -70.965765,
+                  42.553977
+                ],
+                [
+                  -70.965763,
+                  42.553974
+                ],
+                [
+                  -70.965762,
+                  42.553972
+                ],
+                [
+                  -70.965761,
+                  42.553971
+                ],
+                [
+                  -70.96576,
+                  42.553969
+                ],
+                [
+                  -70.965759,
+                  42.553967
+                ],
+                [
+                  -70.965758,
+                  42.553965
+                ],
+                [
+                  -70.965757,
+                  42.553963
+                ],
+                [
+                  -70.965756,
+                  42.553962
+                ],
+                [
+                  -70.965755,
+                  42.55396
+                ],
+                [
+                  -70.965754,
+                  42.553958
+                ],
+                [
+                  -70.965754,
+                  42.553956
+                ],
+                [
+                  -70.965753,
+                  42.553954
+                ],
+                [
+                  -70.965752,
+                  42.553953
+                ],
+                [
+                  -70.965752,
+                  42.553951
+                ],
+                [
+                  -70.965751,
+                  42.553949
+                ],
+                [
+                  -70.96575,
+                  42.553947
+                ],
+                [
+                  -70.96575,
+                  42.553945
+                ],
+                [
+                  -70.965749,
+                  42.553943
+                ],
+                [
+                  -70.965749,
+                  42.553941
+                ],
+                [
+                  -70.965749,
+                  42.55394
+                ],
+                [
+                  -70.965748,
+                  42.553938
+                ],
+                [
+                  -70.965748,
+                  42.553936
+                ],
+                [
+                  -70.965748,
+                  42.553934
+                ],
+                [
+                  -70.965747,
+                  42.553932
+                ],
+                [
+                  -70.965747,
+                  42.55393
+                ],
+                [
+                  -70.965747,
+                  42.553928
+                ],
+                [
+                  -70.965747,
+                  42.553926
+                ],
+                [
+                  -70.965747,
+                  42.553924
+                ],
+                [
+                  -70.965747,
+                  42.553922
+                ],
+                [
+                  -70.965749,
+                  42.553909
+                ],
+                [
+                  -70.965753,
+                  42.553895
+                ],
+                [
+                  -70.96576,
+                  42.553882
+                ],
+                [
+                  -70.96577,
+                  42.55387
+                ],
+                [
+                  -70.965781,
+                  42.553859
+                ],
+                [
+                  -70.965795,
+                  42.55385
+                ],
+                [
+                  -70.965962,
+                  42.55376
+                ],
+                [
+                  -70.966139,
+                  42.553666
+                ],
+                [
+                  -70.96625,
+                  42.553605
+                ],
+                [
+                  -70.966258,
+                  42.5536
+                ],
+                [
+                  -70.966355,
+                  42.553538
+                ],
+                [
+                  -70.966395,
+                  42.553511
+                ],
+                [
+                  -70.966651,
+                  42.553262
+                ],
+                [
+                  -70.966716,
+                  42.553196
+                ],
+                [
+                  -70.967012,
+                  42.552894
+                ],
+                [
+                  -70.971457,
+                  42.553953
+                ],
+                [
+                  -70.970534,
+                  42.554456
+                ],
+                [
+                  -70.970149,
+                  42.554635
+                ],
+                [
+                  -70.969472,
+                  42.554999
+                ],
+                [
+                  -70.968749,
+                  42.555389
+                ],
+                [
+                  -70.968082,
+                  42.555752
+                ],
+                [
+                  -70.968025,
+                  42.555718
+                ],
+                [
+                  -70.967979,
+                  42.555687
+                ],
+                [
+                  -70.967947,
+                  42.555666
+                ],
+                [
+                  -70.967884,
+                  42.555629
+                ],
+                [
+                  -70.96783,
+                  42.555598
+                ],
+                [
+                  -70.96777,
+                  42.555571
+                ],
+                [
+                  -70.967723,
+                  42.555545
+                ],
+                [
+                  -70.967687,
+                  42.555525
+                ],
+                [
+                  -70.967639,
+                  42.555503
+                ],
+                [
+                  -70.967571,
+                  42.555477
+                ],
+                [
+                  -70.96752,
+                  42.555457
+                ],
+                [
+                  -70.96745,
+                  42.555434
+                ],
+                [
+                  -70.967399,
+                  42.555417
+                ],
+                [
+                  -70.967332,
+                  42.555398
+                ],
+                [
+                  -70.96731,
+                  42.555391
+                ],
+                [
+                  -70.967277,
+                  42.555381
+                ],
+                [
+                  -70.96725,
+                  42.555373
+                ],
+                [
+                  -70.966624,
+                  42.555125
+                ],
+                [
+                  -70.966511,
+                  42.555054
+                ],
+                [
+                  -70.966407,
+                  42.555162
+                ],
+                [
+                  -70.966372,
+                  42.555198
+                ],
+                [
+                  -70.966337,
+                  42.555235
+                ],
+                [
+                  -70.966303,
+                  42.555272
+                ],
+                [
+                  -70.966268,
+                  42.555308
+                ],
+                [
+                  -70.966233,
+                  42.555345
+                ],
+                [
+                  -70.966195,
+                  42.555386
+                ],
+                [
+                  -70.966164,
+                  42.555419
+                ],
+                [
+                  -70.96613,
+                  42.555456
+                ],
+                [
+                  -70.966096,
+                  42.555492
+                ],
+                [
+                  -70.966082,
+                  42.555507
+                ],
+                [
+                  -70.966079,
+                  42.555506
+                ],
+                [
+                  -70.966077,
+                  42.555505
+                ],
+                [
+                  -70.966075,
+                  42.555504
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "building_type": "Retail / Shopping"
+    },
+    "google": {
+      "place_name": "Epoch Residential",
+      "matched_via": "company",
+      "place_types": [
+        "establishment",
+        "general_contractor",
+        "point_of_interest"
+      ],
+      "rating": 3.7,
+      "review_count": 26,
+      "editorial_summary": null,
+      "reviews": [
+        {
+          "author": "Ivy Mancini",
+          "rating": 1,
+          "time": "12 months ago",
+          "text": "There are literally roaches in The Dalhia \u201cluxury\u2019 apartments and no one cares. The front desk guy says \u201cit\u2019s Florida.\u201d Absolutely awful how this place is maintained. He said go ahead and reach out to management\u2026.I don\u2019t know what his role is on-site, but his excuse for the terrible quality is occup"
+        },
+        {
+          "author": "Gene Murphy",
+          "rating": 5,
+          "time": "2 years ago",
+          "text": "Great place to live.  Centrally located in Winter Park. Close to shops, restaurants, museums, theatres and churches. Fantastic amenities with a zero entry pool, complete fitness center, craft shop, game room and many assembly areas.  Two outdoor bar-b-ques and fire pits.\n\nThe staff is very professio"
+        },
+        {
+          "author": "Alexander Kontos",
+          "rating": 5,
+          "time": "9 years ago",
+          "text": "By far the best Customer we have worked for in the last 10 years! Courteous staff, fair and justified expectations and compensation, and just over all an absolute pleasure to work for as a contractor! We hope to have a long lasting relationship and continue to enjoy their company values and leadersh"
+        },
+        {
+          "author": "Ryan Stafford",
+          "rating": 5,
+          "time": "3 years ago",
+          "text": "Epoch is the best company to have the opportunity to reside with, they truly provide truly exceptional service and care about their residence whole heartedly. This company isn\u2019t like other corporations they have hearts of gold and will go the extra mile for all of their clients with professionalism "
+        },
+        {
+          "author": "Fresch Bros",
+          "rating": 1,
+          "time": "7 years ago",
+          "text": "Unfortunately my dog was viciously attacked _twice- by the same dog (a pit bull mix) at the \u201ctown commons property\u201d in Gilbert Arizona. The property manager HEIDI WALKER whom I immediately reported the situation to took no actions about it. Neither did ADAM DUDLEY when I notified him of the situatio"
+        }
+      ]
+    },
+    "osm": {
+      "osm_type": "department_store",
+      "osm_class": "shop",
+      "display_name": "Walmart, 55, Brooksby Village Drive, Brooksby Village Retirement Community, Danvers, Essex County, Massachusetts, 01923, United States",
+      "lat": "42.55425417",
+      "lon": "-70.96820738",
+      "boundingbox": [
+        "42.5537393",
+        "42.5551030",
+        "-70.9689586",
+        "-70.9673991"
+      ],
+      "osm_id": "way/212872652",
+      "building_details": {
+        "building_type": "retail",
+        "floors": null,
+        "units": null,
+        "name": "Walmart",
+        "operator": "Walmart",
+        "height": null,
+        "calculated_area": "132,382 sq ft",
+        "geometry_wkt": "POLYGON ((-70.9679745 42.5537393, -70.9680207 42.5537503, -70.9686097 42.5538906, -70.9689314 42.5539673, -70.9688809 42.5540917, -70.9689586 42.5541096, -70.9688259 42.5544188, -70.9689287 42.5544429, -70.9688724 42.5545749, -70.9687634 42.5545501, -70.9685263 42.555103, -70.9685218 42.5551019, -70.968421 42.5550779, -70.968274 42.555043, -70.9673991 42.554835, -70.9674174 42.5547922, -70.967403 42.5547709, -70.9674373 42.5546912, -70.9674617 42.5546347, -70.9674952 42.5545567, -70.9675266 42.5545454, -70.9676727 42.5542061, -70.9677568 42.5542254, -70.9678146 42.5540964, -70.9679116 42.5538797, -70.9679385 42.5538198, -70.9679649 42.5537608, -70.9679745 42.5537393))"
+      },
+      "amenities_1000m": {
+        "transit": "0",
+        "parks": "0",
+        "retail": "10"
+      }
+    },
+    "open_meteo": {
+      "annual_precip_days": 191,
+      "annual_snowfall_cm": 66.2,
+      "annual_precipitation_mm": 1224.9,
+      "hottest_day_c": 35.2,
+      "coldest_day_c": -15.1
+    },
+    "crime": {
+      "city": "Danvers",
+      "state": "MA",
+      "ori": "MA0050500",
+      "violent_crime_rate_per_100k": 137.4,
+      "national_avg_violent_per_100k": 380,
+      "above_national_avg_violent": false,
+      "crime_score": 3.0,
+      "data_year": 2024,
+      "source": "FBI CDE",
+      "violent_crime_score": 2.4,
+      "property_crime_rate_per_100k": 1487.2,
+      "national_avg_property_per_100k": 2110,
+      "above_national_avg_property": false,
+      "property_data_year": 2024,
+      "property_crime_score": 3.8
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 56.6,
+      "available_weight": 0.9,
+      "max_weight": 1.0,
+      "components": {
+        "renter_pct": 68.0,
+        "low_vacancy": 74.8,
+        "walk_score": 28.9,
+        "income": 100.0,
+        "nearby_amenities": 37.9,
+        "population": 1.3
+      }
+    },
+    "friction": {
+      "score": 59.8,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "crime": 2.0,
+        "precip_days": 100.0,
+        "snowfall": 87.6,
+        "temp_range": 83.6,
+        "elevation": 0.4
+      }
+    },
+    "scale": {
+      "score": 78.0,
+      "available_weight": 0.75,
+      "max_weight": 1.0,
+      "building_type": "Retail / Shopping",
+      "components": {
+        "building_type": 45.0,
+        "footprint": 100.0,
+        "lot_area": 100.0
+      }
+    },
+    "opportunity": {
+      "score": 35.6,
+      "available_weight": 0.35,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {
+        "low_rating": 35.6
+      }
+    },
+    "lead_score": {
+      "score": 58.9,
+      "grade": "C",
+      "available_weight": 0.725,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 56.6,
+        "friction": 59.8,
+        "scale": 78.0,
+        "opportunity": 35.6
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "low_renter_engagement",
+      "label": "Lagging Tenant Retention",
+      "severity": "medium",
+      "description": "With a 3.4% vacancy rate, Epoch Residential may struggle to retain existing tenants, potentially resulting in costly turnover and reduced profitability.",
+      "source": "llm"
+    },
+    {
+      "tag": "inadequate_maintenance_response",
+      "label": "Delayed Maintenance Response",
+      "severity": "high",
+      "description": "Given the reported issue of 'literally roaches' in the building and a harsh climate with 66.2 cm of snowfall and an average temperature range of -15.1\u201335.2 \u00b0C, timely maintenance response is crucial to ensure tenant satisfaction.",
+      "source": "llm"
+    },
+    {
+      "tag": "inefficient_scheduling_process",
+      "label": "Complex Scheduling Process",
+      "severity": "low",
+      "description": "The lack of public transit options within the area (N/A) may require tenants to rely on walking (43) or biking (38), increasing the need for efficient scheduling processes for tours and maintenance visits.",
+      "source": "llm"
+    }
+  ],
+  "outreach": {
+    "subject": "Maintenance Calls Piling Up",
+    "greeting": "Hi Ronald,",
+    "message": "Your team deals with around 2 feet of snow and ~191 rainy days each year, which means maintenance issues are a constant presence in your building. This leads to a maintenance load that has your team reacting to problems rather than preventing them. Your team's day-to-day is filled with putting out fires.\n\nAt Epoch Residential, when a pipe bursts during a cold snap, residents call repeatedly because they haven't heard back on a work order, and your team gets stuck answering calls instead of fixing the issue. EliseAI keeps residents informed automatically so your team can focus on the fix, not the calls.\n\nWorth a call?",
+    "arc": "operational_friction",
+    "generated_at": "2026-04-27T15:20:15.294535Z",
+    "provider": "groq"
+  }
+}

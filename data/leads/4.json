@@ -1,0 +1,252 @@
+{
+  "id": "4",
+  "created_at": "2026-04-27T15:18:48.764552Z",
+  "lead_info": {
+    "name": "Anna Miller",
+    "email": "anna.miller@kairoiresidential.com",
+    "company": "Kairoi Residential",
+    "address": "152 E 81st St",
+    "city": "New York",
+    "state": "NY"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 40.628041,
+      "lon": -74.034103,
+      "source": "intellipins"
+    },
+    "census": {
+      "population": "8,736,047",
+      "median_income": "$70,663",
+      "renter_percentage": "66.8%"
+    },
+    "fred": {
+      "vacancy_rate": "5.3%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": null,
+      "city": {
+        "title": "New York City",
+        "extract": "New York, often called New York City (NYC), is the most populous city in the United States. It is located at the southern tip of New York State on New York Harbor, one of the world's largest natural harbors. The city comprises five boroughs, each coextensive with its respective county. It is the geographical and demographic center of both the Northeast megalopolis and the New York metropolitan area, the largest metropolitan area in the United States by both population and urban area. New York is a global center of finance and commerce, culture, technology, entertainment and media, academics and scientific output, the arts and fashion, and, as home to the headquarters of the United Nations, international diplomacy."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"Kairoi Residential\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 84,
+      "description": "Very Walkable",
+      "transit_score": 83,
+      "transit_description": "Excellent Transit",
+      "bike_score": 77,
+      "bike_description": "Very Bikeable"
+    },
+    "intellipins": {
+      "lat": 40.628041,
+      "lon": -74.034103,
+      "ipins_id": "iUS00146510127",
+      "address_type": null,
+      "formatted_address": "152 81 St, New York NY 11209, United States",
+      "geocode_score": 0.866,
+      "building_type": "Apartment / Shopping Complex"
+    },
+    "google": {
+      "place_name": "Kairoi Residential",
+      "matched_via": "company",
+      "place_types": [
+        "establishment",
+        "general_contractor",
+        "point_of_interest",
+        "real_estate_agency"
+      ],
+      "rating": 3,
+      "review_count": 120,
+      "editorial_summary": null,
+      "reviews": [
+        {
+          "author": "Kellen Pickell",
+          "rating": 1,
+          "time": "5 months ago",
+          "text": "By law, this company is supposed to have an emergency response for heat, AC, hot water and electric outages. They are required to fix it within 12 hours. I called at 2:00am for an emergency alarm going off and the staff told me they would tell maintenance in the morning. I had to call the fire depar"
+        },
+        {
+          "author": "Tisha R",
+          "rating": 5,
+          "time": "2 months ago",
+          "text": "Their maintenance team is amazing! They respond to work orders quickly and efficiently. Waldo is so friendly and always ready to help. He\u2019s typically the one that responds to my work orders and he has been the best! He\u2019s always smiling, professional and gets the job done. Thank you and I appreciate "
+        },
+        {
+          "author": "Jennifer Deck",
+          "rating": 1,
+          "time": "4 months ago",
+          "text": "I am a locator and referred a client who moved into a Kairoi property in July 2025. I have submitted my invoice multiple times and followed up for several months without receiving any meaningful response. I was eventually told that the invoice was approved, but the property was \u201cout of funds\u201d and un"
+        },
+        {
+          "author": "Ireland Pelletier",
+          "rating": 5,
+          "time": "2 months ago",
+          "text": "Waldo at Bluebonnet Preserve is an exceptional maintenance worker. He consistently demonstrates prompt responsiveness with a warm smile and diligently ensures that all requests are fulfilled promptly and efficiently."
+        },
+        {
+          "author": "Kwan Brown",
+          "rating": 5,
+          "time": "3 months ago",
+          "text": "Waldo provided amazing and above and beyond service! He handled my issues here at Blue Bonnet properties in Austin, TX! He was awesome!"
+        }
+      ]
+    },
+    "osm": {
+      "osm_type": "yes",
+      "osm_class": "building",
+      "display_name": "152, East 81st Street, Upper East Side, Manhattan Community Board 8, Manhattan, New York County, New York, 10028, United States",
+      "lat": "40.7758768",
+      "lon": "-73.9574520",
+      "boundingbox": [
+        "40.7757864",
+        "40.7759672",
+        "-73.9575606",
+        "-73.9573433"
+      ],
+      "osm_id": "way/266927211",
+      "building_details": {
+        "building_type": "yes",
+        "floors": null,
+        "units": null,
+        "name": null,
+        "operator": null,
+        "height": "16.5",
+        "calculated_area": "2,090 sq ft",
+        "geometry_wkt": "POLYGON ((-73.9574373 40.7757864, -73.9575606 40.7758385, -73.9574666 40.7759672, -73.9573433 40.7759151, -73.9574373 40.7757864))"
+      },
+      "amenities_1000m": {
+        "transit": "168",
+        "parks": "7",
+        "retail": "516"
+      }
+    },
+    "open_meteo": {
+      "annual_precip_days": 184,
+      "annual_snowfall_cm": 37.8,
+      "annual_precipitation_mm": 1184.0,
+      "hottest_day_c": 36.1,
+      "coldest_day_c": -12.8
+    },
+    "crime": {
+      "error": null
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 90.6,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "renter_pct": 100.0,
+        "low_vacancy": 58.9,
+        "walk_score": 100.0,
+        "transit_score": 100.0,
+        "income": 87.9,
+        "nearby_amenities": 100.0,
+        "population": 100.0
+      }
+    },
+    "friction": {
+      "score": 81.0,
+      "available_weight": 0.65,
+      "max_weight": 1.0,
+      "components": {
+        "precip_days": 100.0,
+        "snowfall": 59.2,
+        "temp_range": 79.0
+      }
+    },
+    "scale": {
+      "score": 65.0,
+      "available_weight": 0.3,
+      "max_weight": 1.0,
+      "building_type": "Apartment / Shopping Complex",
+      "components": {
+        "building_type": 65.0
+      }
+    },
+    "opportunity": {
+      "score": 55.3,
+      "available_weight": 0.35,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {
+        "low_rating": 55.3
+      }
+    },
+    "lead_score": {
+      "score": 79.7,
+      "grade": "B",
+      "available_weight": 0.595,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 90.6,
+        "friction": 81.0,
+        "scale": 65.0,
+        "opportunity": 55.3
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "volume_overload",
+      "label": "High Lead Volume Overload",
+      "severity": "high",
+      "description": "High rental demand combined with a large property footprint likely floods property managers with inquiries. Manual handling causes slow response times and lost leases \u2014 precisely where EliseAI's automated engagement wins.",
+      "source": "rule"
+    },
+    {
+      "tag": "harsh_conditions",
+      "label": "Harsh Operating Conditions",
+      "severity": "high",
+      "description": "Challenging conditions (frequent precipitation (184 days/yr)) increase maintenance coordination load and incident management. Automated tenant communication keeps residents informed without burdening staff.",
+      "source": "rule"
+    },
+    {
+      "tag": "resident_experience",
+      "label": "Resident Experience Issues",
+      "severity": "medium",
+      "description": "A 3.0/5 Google rating across 120 reviews often reflects slow response times and unresolved maintenance requests \u2014 both directly solvable with EliseAI's automated tenant communication workflows.",
+      "source": "rule"
+    },
+    {
+      "tag": "high_mobility",
+      "label": "High Tenant Mobility",
+      "severity": "medium",
+      "description": "Excellent transit access (Transit Score 83) in a renter-majority area (67% renters) drives high turnover and a constant stream of new leads. Automating inquiry handling ensures none slip through.",
+      "source": "rule"
+    },
+    {
+      "tag": "complex_scheduling",
+      "label": "Tour Scheduling",
+      "severity": "high",
+      "description": "With a vacancy rate of 5.3%, efficient tour scheduling is crucial to fill vacant units, and EliseAI's tour scheduling feature can automate and streamline the process",
+      "source": "llm"
+    },
+    {
+      "tag": "weather_resilience",
+      "label": "Weather-Related Maintenance",
+      "severity": "medium",
+      "description": "In areas with high precipitation (184 days) and snowfall (37.8 cm), EliseAI's maintenance coordination feature can help manage weather-related work orders and minimize disruptions to residents",
+      "source": "llm"
+    }
+  ],
+  "outreach": {
+    "subject": "Reputation Gap",
+    "greeting": "Hi Anna,",
+    "message": "Your Google rating is 3 out of 5, which signals to prospective renters that your team may be slow to respond to maintenance requests before they ever call. This can deter potential tenants and harm your building's reputation. Your online reputation is the first thing people see when searching for a place to live.\n\nAt Kairoi Residential, a resident's frustrated review about an unaddressed emergency alarm at 2:00am highlights the breakdown in communication and slow maintenance response. EliseAI automates instant ticket acknowledgment and provides 24/7 automated tenant updates.\n\nWorth a call?",
+    "arc": "reputation_gap",
+    "generated_at": "2026-04-27T15:18:48.764517Z",
+    "provider": "groq"
+  }
+}

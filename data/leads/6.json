@@ -1,0 +1,352 @@
+{
+  "id": "6",
+  "created_at": "2026-04-27T15:19:42.730071Z",
+  "lead_info": {
+    "name": "Tyler Morales",
+    "email": "tyler.morales@li.com",
+    "company": "Scottsdale Property Group",
+    "address": "6839 E Montecito Ave",
+    "city": "Scottsdale",
+    "state": "AZ"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 33.499615,
+      "lon": -111.932881,
+      "source": "intellipins"
+    },
+    "census": {
+      "population": "238,685",
+      "median_income": "$97,409",
+      "renter_percentage": "33.4%"
+    },
+    "fred": {
+      "vacancy_rate": "8.4%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": null,
+      "city": {
+        "title": "Scottsdale, Arizona",
+        "extract": "Scottsdale is a city in eastern Maricopa County, Arizona, United States, and is part of the Phoenix metropolitan area. Named Scottsdale in 1894 after its founder Winfield Scott, a retired U.S. Army chaplain, the city was incorporated in 1951 with a population of 2,000. At the 2020 census, the population was 241,361, which had grown from 217,385 in 2010. Its slogan is \"The West's Most Western Town\". Over the past two decades, it has been one of the fastest growing cities and housing markets in the United States."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"Scottsdale Property Group\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 69,
+      "description": "Somewhat Walkable",
+      "transit_score": 46,
+      "transit_description": "Some Transit",
+      "bike_score": 76,
+      "bike_description": "Very Bikeable"
+    },
+    "intellipins": {
+      "lat": 33.499615,
+      "lon": -111.932881,
+      "ipins_id": "iUS00181035200",
+      "address_type": null,
+      "formatted_address": "6839 E Montecito Ave, Scottsdale AZ 85251, United States",
+      "geocode_score": 0.888,
+      "parcel": {
+        "area_sqm": 14347,
+        "area_sqft": "154,429 sq ft",
+        "elevation_m": 1278,
+        "parcel_owner": "KRIKORIAN PHILIP TR",
+        "apn": "17343023",
+        "iparcel_id": "iUSP000049057453",
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+            [
+              [
+                [
+                  -111.932692,
+                  33.499803
+                ],
+                [
+                  -111.932686,
+                  33.4998
+                ],
+                [
+                  -111.93268,
+                  33.499797
+                ],
+                [
+                  -111.932674,
+                  33.499793
+                ],
+                [
+                  -111.932669,
+                  33.49979
+                ],
+                [
+                  -111.932665,
+                  33.499785
+                ],
+                [
+                  -111.932661,
+                  33.499781
+                ],
+                [
+                  -111.932657,
+                  33.499776
+                ],
+                [
+                  -111.932655,
+                  33.49977
+                ],
+                [
+                  -111.932653,
+                  33.499764
+                ],
+                [
+                  -111.932651,
+                  33.499759
+                ],
+                [
+                  -111.932651,
+                  33.499756
+                ],
+                [
+                  -111.932651,
+                  33.499753
+                ],
+                [
+                  -111.932651,
+                  33.49975
+                ],
+                [
+                  -111.932651,
+                  33.499716
+                ],
+                [
+                  -111.932651,
+                  33.499607
+                ],
+                [
+                  -111.932651,
+                  33.499505
+                ],
+                [
+                  -111.932655,
+                  33.499505
+                ],
+                [
+                  -111.933079,
+                  33.4995
+                ],
+                [
+                  -111.933082,
+                  33.4995
+                ],
+                [
+                  -111.933081,
+                  33.499716
+                ],
+                [
+                  -111.933081,
+                  33.499802
+                ],
+                [
+                  -111.932716,
+                  33.499807
+                ],
+                [
+                  -111.932713,
+                  33.499807
+                ],
+                [
+                  -111.932706,
+                  33.499806
+                ],
+                [
+                  -111.932699,
+                  33.499804
+                ],
+                [
+                  -111.932692,
+                  33.499803
+                ]
+              ]
+            ]
+          ]
+        }
+      },
+      "building_type": "Single Family Housing"
+    },
+    "google": {
+      "place_name": "Property Management Real Estate Services",
+      "matched_via": "company",
+      "place_types": [
+        "establishment",
+        "finance",
+        "point_of_interest",
+        "real_estate_agency"
+      ],
+      "rating": 4.8,
+      "review_count": 100,
+      "editorial_summary": null,
+      "reviews": [
+        {
+          "author": "Sophia Pimentel",
+          "rating": 5,
+          "time": "2 months ago",
+          "text": "PMI has been excellent to work with. They made the process of renting out my property and moving out seamless and stress-free. The entire team is courteous, responsive, professional and efficient.\nI especially want to recognize the real estate broker, Hanan, and property maintenance coordinator, Han"
+        },
+        {
+          "author": "Cecilia Gonzalez",
+          "rating": 5,
+          "time": "3 months ago",
+          "text": "We had a great experience working with Ximena.  Everything went smoothly thanks to her professionalism, responsiveness, and attention to detail.\n\nIt was wonderful to see the dedication and care she brings to everything she does. She clearly explained each step, stayed on top of timelines, and made a"
+        },
+        {
+          "author": "Ernie Hauser",
+          "rating": 5,
+          "time": "2 months ago",
+          "text": "Hi Joe,\n\nI just wanted to take a moment to let you know how terrific Ximena and the entire PMI team have been in helping us get our home leased so quickly.\n\nXimena truly went above and beyond, and then some, to make sure everything was ready for the new tenants. Her attention to detail, responsivene"
+        },
+        {
+          "author": "kellan fluckiger",
+          "rating": 5,
+          "time": "2 months ago",
+          "text": "This is a great company for all your Real Estate service needs.  I can't think of a single interaction that we've had that wasn't absolutely amazing.  Whatever that we needed done was handled quickly and professionally while leaving you with that personal touch feeling.  I can't recommend them enoug"
+        },
+        {
+          "author": "Jenne Feigal",
+          "rating": 5,
+          "time": "6 months ago",
+          "text": "I had an absolutely fantastic experience working with Sarah & Joseph at PMI to sell my house! From start to finish, they were professional, knowledgeable, and incredibly dedicated. They took the time to understand my needs, provided expert guidance, and marketed my home beautifully, which led to mul"
+        }
+      ]
+    },
+    "osm": {
+      "osm_type": "house",
+      "osm_class": "building",
+      "display_name": "6839, East Montecito Avenue, 5th Avenue Shops & Boutiques, Scottsdale, Maricopa County, Arizona, 85251, United States",
+      "lat": "33.4996805",
+      "lon": "-111.9328516",
+      "boundingbox": [
+        "33.4995300",
+        "33.4997600",
+        "-111.9329310",
+        "-111.9327720"
+      ],
+      "osm_id": "way/1009527334",
+      "building_details": {
+        "building_type": "house",
+        "floors": null,
+        "units": null,
+        "name": null,
+        "operator": null,
+        "height": null,
+        "calculated_area": "3,686 sq ft",
+        "geometry_wkt": "POLYGON ((-111.932777 33.49953, -111.932772 33.499758, -111.932928 33.49976, -111.932931 33.499603, -111.932899 33.499603, -111.9329 33.499531, -111.932777 33.49953))"
+      },
+      "amenities_1000m": {
+        "transit": "95",
+        "parks": "3",
+        "retail": "156"
+      }
+    },
+    "open_meteo": {
+      "annual_precip_days": 49,
+      "annual_snowfall_cm": 0.3,
+      "annual_precipitation_mm": 226.0,
+      "hottest_day_c": 46.7,
+      "coldest_day_c": -0.6
+    },
+    "crime": {
+      "error": null
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 68.6,
+      "available_weight": 1.0,
+      "max_weight": 1.0,
+      "components": {
+        "renter_pct": 75.4,
+        "low_vacancy": 27.7,
+        "walk_score": 74.4,
+        "transit_score": 37.6,
+        "income": 100.0,
+        "nearby_amenities": 100.0,
+        "population": 91.2
+      }
+    },
+    "friction": {
+      "score": 39.1,
+      "available_weight": 0.75,
+      "max_weight": 1.0,
+      "components": {
+        "precip_days": 16.7,
+        "snowfall": 2.0,
+        "temp_range": 74.0,
+        "elevation": 100.0
+      }
+    },
+    "scale": {
+      "score": 34.9,
+      "available_weight": 0.75,
+      "max_weight": 1.0,
+      "building_type": "Single Family Housing",
+      "components": {
+        "building_type": 20.0,
+        "footprint": 0.8,
+        "lot_area": 100.0
+      }
+    },
+    "opportunity": {
+      "score": 0.0,
+      "available_weight": 0.35,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {
+        "low_rating": 0.0
+      }
+    },
+    "lead_score": {
+      "score": 44.9,
+      "grade": "D",
+      "available_weight": 0.705,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 68.6,
+        "friction": 39.1,
+        "scale": 34.9,
+        "opportunity": 0.0
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "vacancy_rate_concern",
+      "label": "Vacancy Rate Woes",
+      "severity": "medium",
+      "description": "With a vacancy rate of 8.4%, Scottsdale Property Group is likely experiencing cash flow challenges due to underoccupied properties, and EliseAI can help optimize leasing and retention to minimize this issue.",
+      "source": "llm"
+    },
+    {
+      "tag": "transportation_disadvantage",
+      "label": "Limited Public Transit Options",
+      "severity": "low",
+      "description": "Although bikeability (76) and walkability (69) scores are relatively strong, public transit (46) options are limited, presenting difficulties for residents without vehicles, which EliseAI can address by streamlining resident communication and scheduling needs.",
+      "source": "llm"
+    }
+  ],
+  "outreach": {
+    "subject": "Units sitting empty",
+    "greeting": "Hi Tyler,",
+    "message": "Your vacancy rate is around 8%, which means units are sitting empty. Prospects are shopping multiple properties at once and moving fast - they often make a decision in hours. Your team needs to respond quickly to win leases.\n\nAt Scottsdale Property Group, a prospect who submits at 9pm and doesn't hear back until the next morning often signs with another property. EliseAI responds instantly, 24/7, so no lead goes cold.\n\nWorth a call?",
+    "arc": "lead_speed",
+    "generated_at": "2026-04-27T15:19:42.730037Z",
+    "provider": "groq"
+  }
+}

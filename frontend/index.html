@@ -10,10 +10,18 @@
     <div class="container">
         <header>
             <div class="logo">ELISE AI // GTM</div>
-            <nav>
+            <nav style="display:flex;align-items:center;gap:1rem;">
+                <a href="./docs.html" style="text-decoration:none;color:var(--text-muted);font-size:0.85rem;padding:0.35rem 0.75rem;border:1px solid var(--glass-border);border-radius:6px;transition:all 0.2s;" onmouseover="this.style.color='var(--text-main)';this.style.borderColor='#f59e0b';" onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--glass-border)';">Docs & Project Plan</a>
                 <span id="system-status" class="status-badge">System Online</span>
             </nav>
         </header>
+
+        <!-- Dev tools disclosure bar -->
+        <div class="dev-disclosure-bar">
+            <button id="dev-main-toggle" onclick="window.toggleDevPanel()">DEV TOOLS ▾</button>
+            <span style="font-size:0.62rem;color:rgba(251,191,36,0.25);">API controls · LLM provider · Saved leads</span>
+        </div>
+        <div id="dev-panel-wrap" style="display:none;">
 
         <!-- Developer Panel -->
         <div class="dev-panel">
@@ -37,12 +45,25 @@
             <div class="api-toggles">
                 <button class="api-toggle on"  data-llm="anthropic" title="Anthropic Claude (Haiku for analysis, Sonnet for outreach)">Anthropic</button>
                 <button class="api-toggle off" data-llm="groq"      title="Groq Cloud — free tier, fast (Llama models)">Groq</button>
+                <button class="api-toggle off" data-llm="gemini"    title="Google Gemini (Flash for analysis, Pro for outreach)">Gemini</button>
             </div>
         </div>
 
+        <!-- Dev Tools: Saved Leads Re-runner -->
+        <div class="dev-panel dev-tools-panel">
+            <span class="dev-badge">DEV</span>
+            <span class="dev-label">Saved Leads</span>
+            <span class="dev-hint">Re-run scoring, pain points, or outreach on saved leads without re-enriching</span>
+            <button class="dev-tools-toggle api-toggle on" id="dev-tools-toggle">▼ Show</button>
+            <div class="dev-tools-body" id="dev-tools-body" style="display:none;width:100%;margin-top:0.5rem;">
+                <div id="dev-leads-list" style="font-size:0.75rem;color:var(--text-muted);font-style:italic;">Loading saved leads…</div>
+            </div>
+        </div>
+        </div><!-- end #dev-panel-wrap -->
+
         <section class="hero">
-            <h1>Lead Enrichment <span>Platform</span></h1>
-            <p>Automate the discovery of market potential. Enrich inbound leads with census, economic, and news data instantly.</p>
+            <h1>GTM <span>Lead Intelligence</span></h1>
+            <p>Enter a property address. Get a scored lead, identified pain points, and a personalized outreach email — in under 60 seconds.</p>
         </section>
 
         <main class="main-grid">

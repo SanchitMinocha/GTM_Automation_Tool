@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EliseAI GTM | Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap">
+  <style>
+    :root {
+      --primary: #f59e0b;
+      --bg: #f7f8fa;
+      --bg-card: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border: rgba(0,0,0,0.08);
+      --border-hover: rgba(245,158,11,0.35);
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); min-height: 100vh; }
+
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: #fff; border-bottom: 1px solid var(--border);
+      padding: 0 2rem; display: flex; align-items: center; gap: 2rem; height: 60px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .logo {
+      font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800;
+      color: #f59e0b; white-space: nowrap; letter-spacing: -0.02em;
+    }
+    .tab-nav { display: flex; gap: 0.25rem; flex: 1; }
+    .tab-btn {
+      padding: 0.4rem 1rem; border: none; border-radius: 6px;
+      background: transparent; color: var(--text-muted);
+      font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .tab-btn:hover { background: rgba(245,158,11,0.08); color: var(--text-main); }
+    .tab-btn.active { background: rgba(245,158,11,0.12); color: #d97706; font-weight: 600; }
+    .back-btn {
+      text-decoration: none; color: var(--text-muted); font-size: 0.85rem;
+      padding: 0.4rem 0.75rem; border: 1px solid var(--border);
+      border-radius: 6px; transition: all 0.2s; white-space: nowrap;
+    }
+    .back-btn:hover { color: var(--text-main); border-color: var(--primary); }
+
+    .doc-section { display: none; padding: 2.5rem 2rem 4rem; max-width: 1100px; margin: 0 auto; }
+    .doc-section.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem; box-shadow: var(--shadow);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { border-color: rgba(245,158,11,0.2); box-shadow: var(--shadow-md); }
+    .section-title { font-family: 'Outfit', sans-serif; font-size: 1.9rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .section-subtitle { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; }
+    h3 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.75rem; }
+    p { color: var(--text-muted); line-height: 1.7; font-size: 0.93rem; }
+
+    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.25rem; text-align: center; box-shadow: var(--shadow); transition: all 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .stat-num { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: #f59e0b; }
+    .stat-label { color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; align-items: start; }
+    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; align-items: start; }
+
+    .score-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 2rem; align-items: start; margin-bottom: 2rem; }
+    .donut-wrap { position: relative; width: 200px; height: 200px; margin: 0 auto; }
+    .donut-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; pointer-events: none; }
+    .donut-label-main { font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 700; }
+    .donut-label-sub { font-size: 0.7rem; color: var(--text-muted); }
+
+    .score-legend { display: flex; flex-direction: column; gap: 0.6rem; }
+    .legend-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.65rem 1rem; border-radius: 10px;
+      border: 1px solid var(--border); cursor: pointer; transition: all 0.2s;
+    }
+    .legend-item:hover { border-color: var(--border-hover); background: rgba(245,158,11,0.04); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .legend-name { font-weight: 600; font-size: 0.93rem; }
+    .legend-pct { margin-left: auto; font-size: 0.8rem; color: var(--text-muted); }
+    .legend-detail {
+      display: none; margin-top: 0.5rem; padding-top: 0.5rem;
+      border-top: 1px solid var(--border); font-size: 0.83rem; color: var(--text-muted); line-height: 1.6;
+    }
+    .legend-item.expanded .legend-detail { display: block; }
+
+    .grade-bar { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.6rem; }
+    .grade-letter { font-family: 'Outfit', sans-serif; font-size: 1.2rem; font-weight: 800; width: 28px; text-align: center; }
+    .grade-track { flex: 1; height: 8px; border-radius: 4px; background: rgba(0,0,0,0.06); overflow: hidden; }
+    .grade-fill { height: 100%; border-radius: 4px; transition: width 1.2s cubic-bezier(.22,1,.36,1); width: 0; }
+    .grade-range { font-size: 0.78rem; color: var(--text-muted); width: 70px; }
+    .grade-action { font-size: 0.78rem; color: var(--text-muted); flex: 1; }
+
+    .pipeline-flow { display: flex; flex-direction: column; gap: 0; margin-bottom: 2rem; }
+    .pipe-step {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1rem 1.25rem; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--bg-card);
+      cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow);
+    }
+    .pipe-step:hover, .pipe-step.open { border-color: var(--border-hover); }
+    .pipe-connector { width: 2px; height: 14px; background: linear-gradient(to bottom, #f59e0b, transparent); margin: 0 auto; opacity: 0.3; }
+    .pipe-num {
+      width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+      background: #f59e0b; color: #fff;
+      display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 700;
+    }
+    .pipe-body { flex: 1; }
+    .pipe-title { font-weight: 600; font-size: 0.93rem; margin-bottom: 0.15rem; }
+    .pipe-sub { font-size: 0.81rem; color: var(--text-muted); }
+    .pipe-detail { display: none; margin-top: 0.65rem; padding-top: 0.65rem; border-top: 1px solid var(--border); font-size: 0.83rem; color: var(--text-muted); line-height: 1.7; }
+    .pipe-step.open .pipe-detail { display: block; }
+    .pipe-arrow { color: var(--text-muted); font-size: 0.7rem; transition: transform 0.2s; align-self: center; }
+    .pipe-step.open .pipe-arrow { transform: rotate(180deg); }
+
+    .api-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 2rem; }
+    .api-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem; cursor: pointer;
+      transition: all 0.2s; position: relative; overflow: hidden; box-shadow: var(--shadow);
+    }
+    .api-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .api-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, #f59e0b, #c084fc);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+    }
+    .api-card:hover::before { transform: scaleX(1); }
+    .api-name { font-weight: 600; font-size: 0.91rem; margin-bottom: 0.3rem; }
+    .api-badge { display: inline-block; font-size: 0.65rem; padding: 0.15rem 0.4rem; border-radius: 4px; margin-bottom: 0.4rem; font-weight: 600; }
+    .badge-free { background: rgba(16,185,129,0.12); color: #059669; }
+    .badge-paid { background: rgba(245,158,11,0.12); color: #d97706; }
+    .badge-alt  { background: rgba(99,102,241,0.12); color: #6366f1; }
+    .api-desc { font-size: 0.81rem; color: var(--text-muted); line-height: 1.5; }
+    .api-detail { display: none; margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+    .api-card.open .api-detail { display: block; }
+
+    .batch-timeline { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: var(--shadow); }
+    .batch-row { display: flex; align-items: center; gap: 0; margin-bottom: 0.4rem; }
+    .batch-label { width: 120px; font-size: 0.75rem; color: var(--text-muted); flex-shrink: 0; text-align: right; padding-right: 0.75rem; }
+    .batch-track { flex: 1; height: 20px; border-radius: 4px; background: rgba(0,0,0,0.04); position: relative; overflow: hidden; }
+    .batch-block { position: absolute; height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 600; white-space: nowrap; transition: width 1.5s cubic-bezier(.22,1,.36,1); }
+    .block-pipeline { background: linear-gradient(90deg, #f59e0b, #fbbf24); color: #fff; }
+    .block-pause { background: rgba(245,158,11,0.12); color: #d97706; border: 1px solid rgba(245,158,11,0.2); }
+    .batch-day-stat { text-align: center; margin-top: 1.25rem; }
+    .batch-day-num { font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; color: #f59e0b; }
+
+    .outreach-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: var(--shadow); }
+    .hours-track { display: flex; gap: 0.25rem; margin-bottom: 0.5rem; }
+    .hour-block {
+      flex: 1; height: 40px; border-radius: 6px;
+      background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 0.62rem; color: #d97706; transition: all 0.2s;
+    }
+    .hour-block .hr-label { font-weight: 600; }
+    .hour-block .hr-sends { color: var(--text-muted); font-size: 0.58rem; }
+    .hour-block.off { background: rgba(0,0,0,0.03); border-color: var(--border); color: var(--text-muted); }
+
+    .steps-grid { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 2rem; }
+    .step-card { display: flex; gap: 1rem; padding: 1rem 1.25rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow); }
+    .step-card:hover { border-color: rgba(16,185,129,0.3); box-shadow: var(--shadow-md); }
+    .step-num { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; background: #10b981; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.82rem; }
+    .step-body { flex: 1; }
+    .step-title { font-weight: 600; font-size: 0.93rem; margin-bottom: 0.15rem; }
+    .step-sub { font-size: 0.81rem; color: var(--text-muted); }
+    .step-detail { display: none; margin-top: 0.65rem; padding-top: 0.65rem; border-top: 1px solid var(--border); font-size: 0.83rem; color: var(--text-muted); line-height: 1.7; }
+    .step-card.open .step-detail { display: block; }
+    .step-arrow { color: var(--text-muted); font-size: 0.7rem; align-self: center; transition: transform 0.2s; }
+    .step-card.open .step-arrow { transform: rotate(180deg); }
+
+    pre { background: #f1f5f9; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; font-family: 'Courier New', monospace; font-size: 0.78rem; color: #334155; overflow-x: auto; margin-top: 0.5rem; line-height: 1.6; }
+    code { font-family: 'Courier New', monospace; font-size: 0.82rem; color: #334155; }
+
+    .tag { display: inline-block; font-size: 0.68rem; padding: 0.15rem 0.45rem; border-radius: 4px; margin-right: 0.25rem; font-weight: 600; }
+    .tag-demand { background: rgba(59,130,246,0.12); color: #3b82f6; }
+    .tag-opp    { background: rgba(16,185,129,0.12); color: #10b981; }
+    .tag-scale  { background: rgba(251,146,60,0.12); color: #f97316; }
+    .tag-fric   { background: rgba(236,72,153,0.12); color: #ec4899; }
+
+    .trouble-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .trouble-table th { text-align: left; padding: 0.6rem 1rem; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .trouble-table td { padding: 0.7rem 1rem; border-bottom: 1px solid rgba(0,0,0,0.04); vertical-align: top; color: var(--text-muted); }
+    .trouble-table td:first-child { color: var(--text-main); font-weight: 500; }
+    .trouble-table tr:hover td { background: rgba(245,158,11,0.04); }
+
+    /* ── CASE CARDS — layered reveal ── */
+    .case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 2rem; align-items: start; }
+    .case-card { background: var(--bg-card); border-radius: 14px; overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow); transition: all 0.2s; }
+    .case-card.open { border-color: var(--border-hover); box-shadow: var(--shadow-md); }
+    .case-header { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid transparent; }
+    .case-card.open .case-header { border-bottom-color: var(--border); background: rgba(245,158,11,0.02); }
+    .case-header:hover { background: rgba(0,0,0,0.02); }
+    .case-grade { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; line-height: 1; flex-shrink: 0; }
+    .case-meta { flex: 1; min-width: 0; }
+    .case-score { font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 700; }
+    .case-company { font-size: 0.8rem; font-weight: 600; margin-top: 0.1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .case-location { font-size: 0.7rem; color: var(--text-muted); }
+    .case-action-badge { font-size: 0.65rem; font-weight: 700; padding: 0.25rem 0.55rem; border-radius: 20px; flex-shrink: 0; line-height: 1.3; text-align: center; }
+    .case-chevron { color: var(--text-muted); font-size: 0.7rem; transition: transform 0.2s; flex-shrink: 0; }
+    .case-card.open .case-chevron { transform: rotate(180deg); }
+
+    .case-layer-1 { display: none; padding: 1rem 1.25rem; }
+    .case-card.open .case-layer-1 { display: block; }
+    .case-layer-2 { display: none; padding: 1rem 1.25rem; border-top: 1px solid var(--border); }
+    .case-card.email-open .case-layer-2 { display: block; }
+
+    .pill-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.9rem; }
+    .pill { display: flex; align-items: center; padding: 0.18rem 0.5rem; border-radius: 20px; font-size: 0.68rem; font-weight: 600; border: 1px solid transparent; }
+    .pill-good  { background: rgba(16,185,129,0.1);  border-color: rgba(16,185,129,0.2);  color: #059669; }
+    .pill-warn  { background: rgba(245,158,11,0.1);  border-color: rgba(245,158,11,0.2);  color: #d97706; }
+    .pill-info  { background: rgba(59,130,246,0.1);  border-color: rgba(59,130,246,0.2);  color: #2563eb; }
+    .pill-muted { background: rgba(0,0,0,0.04);      border-color: rgba(0,0,0,0.08);       color: var(--text-muted); }
+    .pill-bad   { background: rgba(239,68,68,0.1);   border-color: rgba(239,68,68,0.2);   color: #dc2626; }
+
+    .subscore-row { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.85rem; }
+    .subscore-line { display: flex; align-items: center; gap: 0.6rem; }
+    .subscore-name { font-size: 0.68rem; color: var(--text-muted); width: 72px; flex-shrink: 0; }
+    .subscore-track { flex: 1; height: 5px; border-radius: 3px; background: rgba(0,0,0,0.06); overflow: hidden; }
+    .subscore-fill { height: 100%; border-radius: 3px; width: 0; transition: none; }
+    .subscore-val { font-size: 0.68rem; font-weight: 600; width: 28px; text-align: right; flex-shrink: 0; }
+
+    .case-summary { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.9rem; font-style: italic; }
+
+    .case-email-toggle {
+      width: 100%; padding: 0.5rem; background: rgba(245,158,11,0.06);
+      border: 1px solid rgba(245,158,11,0.15); border-radius: 8px;
+      color: #d97706; font-size: 0.75rem; font-weight: 600; cursor: pointer;
+      transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+      font-family: 'Inter', sans-serif;
+    }
+    .case-email-toggle:hover { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.3); }
+    .email-arrow { transition: transform 0.2s; display: inline-block; }
+    .case-card.email-open .email-arrow { transform: rotate(180deg); }
+
+    .pain-list { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.9rem; }
+    .pain-item { display: flex; gap: 0.4rem; align-items: flex-start; font-size: 0.75rem; line-height: 1.5; color: var(--text-muted); }
+    .pain-sev { font-size: 0.58rem; font-weight: 700; padding: 0.12rem 0.35rem; border-radius: 3px; flex-shrink: 0; margin-top: 0.15rem; }
+    .sev-high   { background: rgba(239,68,68,0.12); color: #dc2626; }
+    .sev-medium { background: rgba(245,158,11,0.12); color: #d97706; }
+
+    .email-preview { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .email-header-row { padding: 0.45rem 0.9rem; background: rgba(245,158,11,0.05); border-bottom: 1px solid var(--border); font-size: 0.7rem; color: var(--text-muted); }
+    .email-subject { font-weight: 700; color: var(--text-main); font-size: 0.78rem; }
+    .email-body { padding: 0.75rem 0.9rem; font-size: 0.73rem; color: var(--text-muted); line-height: 1.7; white-space: pre-wrap; }
+    .email-arc-tag { display: inline-block; font-size: 0.6rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 3px; margin-left: 0.4rem; background: rgba(245,158,11,0.12); color: #d97706; }
+
+    /* ── FLIP CARDS (Real Pipeline Runs) ── */
+    .lead-item { display: flex; flex-direction: column; }
+    .flip-container { height: 252px; perspective: 1000px; }
+    .flip-inner {
+      position: relative; width: 100%; height: 100%;
+      transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .flip-container:hover .flip-inner { transform: rotateY(180deg); }
+    .flip-front, .flip-back {
+      position: absolute; inset: 0;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      border-radius: 14px 14px 0 0; background: var(--bg-card);
+      border: 1px solid var(--border); border-bottom: none;
+      padding: 1.25rem; overflow: hidden;
+    }
+    .flip-back { transform: rotateY(180deg); overflow-y: auto; }
+    .flip-container:hover .subscore-fill {
+      width: var(--target-w);
+      transition: width 1.1s cubic-bezier(.22,1,.36,1) 0.38s;
+    }
+    .lead-expand-btn {
+      width: 100%; padding: 0.6rem 1rem;
+      background: rgba(245,158,11,0.05); border: 1px solid var(--border);
+      border-top: none; border-radius: 0 0 14px 14px;
+      color: #d97706; font-size: 0.83rem; font-weight: 600; cursor: pointer;
+      transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+      gap: 0.4rem; font-family: 'Inter', sans-serif;
+    }
+    .lead-expand-btn:hover, .lead-item.drawer-open .lead-expand-btn {
+      background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.25); color: #d97706;
+    }
+    .expand-arrow { transition: transform 0.25s; display: inline-block; }
+    .lead-item.drawer-open .expand-arrow { transform: rotate(180deg); }
+    .lead-drawer {
+      display: none; background: var(--bg-card);
+      border: 1px solid rgba(245,158,11,0.2); border-top: none;
+      border-radius: 0 0 14px 14px; padding: 1.1rem 1.25rem;
+      box-shadow: 0 4px 14px rgba(245,158,11,0.07);
+    }
+    .lead-item.drawer-open .lead-drawer { display: block; }
+    .subscore-val { font-size: 0.72rem; font-weight: 700; width: 38px; text-align: right; flex-shrink: 0; }
+
+    /* ── PROJECT PLAN ── */
+    .plan-timeline {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1rem; margin-bottom: 2rem; position: relative;
+    }
+    .plan-timeline::before {
+      content: ''; position: absolute; top: 22px; left: 12.5%; right: 12.5%;
+      height: 2px; background: linear-gradient(to right, #f59e0b, #10b981, #fb923c, #ec4899);
+      opacity: 0.35; z-index: 0;
+    }
+    .tl-phase { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; }
+    .tl-dot {
+      width: 44px; height: 44px; border-radius: 50%; margin-bottom: 0.75rem;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.1rem; color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15); flex-shrink: 0;
+    }
+    .tl-week { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.2rem; }
+    .tl-title { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; text-align: center; }
+    .tl-list { list-style: none; display: flex; flex-direction: column; gap: 0.3rem; }
+    .tl-list li { font-size: 0.75rem; color: var(--text-muted); text-align: center; line-height: 1.4; }
+    .tl-list li::before { content: '· '; color: var(--primary); }
+
+    .metrics-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+    .metric-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; text-align: center; box-shadow: var(--shadow); }
+    .metric-num { font-family: 'Outfit', sans-serif; font-size: 2.4rem; font-weight: 800; color: #f59e0b; line-height: 1.1; margin-bottom: 0.3rem; }
+    .metric-label { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+
+    .arc-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+    .arc-pill { padding: 0.4rem 0.85rem; border-radius: 20px; font-size: 0.78rem; font-weight: 600; border: 1px solid; }
+
+    @media (max-width: 768px) {
+      .case-grid, .two-col { grid-template-columns: 1fr; }
+      .stat-row, .metrics-row { grid-template-columns: repeat(2,1fr); }
+      .score-grid, .three-col, .api-grid, .plan-timeline { grid-template-columns: 1fr; }
+      .hours-track { flex-wrap: wrap; }
+      .hour-block { min-width: 40px; }
+      .plan-timeline::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">ELISE AI // GTM</div>
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="overview">Business Overview</button>
+    <button class="tab-btn"        data-tab="architecture">Pipeline & Architecture</button>
+    <button class="tab-btn"        data-tab="guide">SDR Guide</button>
+    <button class="tab-btn"        data-tab="rollout">Project Plan</button>
+  </nav>
+  <a href="./index.html" class="back-btn">← Back to Tool</a>
+</header>
+
+
+<!-- ══════════════════════════════════════
+     TAB 1 — BUSINESS OVERVIEW
+══════════════════════════════════════ -->
+<section id="tab-overview" class="doc-section active">
+
+  <div class="section-title">Business Overview</div>
+  <p class="section-subtitle">From a property address to a scored lead and a personalized cold email — in under 60 seconds.</p>
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-num">45<span style="font-size:1rem">min</span></div><div class="stat-label">Manual research per lead</div></div>
+    <div class="stat-card"><div class="stat-num">&lt;5<span style="font-size:1rem">min</span></div><div class="stat-label">Active SDR time with tool</div></div>
+    <div class="stat-card"><div class="stat-num">9</div><div class="stat-label">APIs fired in parallel</div></div>
+    <div class="stat-card"><div class="stat-num">1K</div><div class="stat-label">Leads scoreable per day</div></div>
+  </div>
+
+  <div class="two-col" style="margin-bottom:2rem;">
+    <div class="card">
+      <h3>The Problem</h3>
+      <p>SDRs prospecting property management companies spend 25–45 minutes per lead on research that should be automated — rental market health, company news, tenant reviews, property size. At 20 leads/day, most of the workday is gone before anyone picks up the phone.</p>
+    </div>
+    <div class="card">
+      <h3>What It Does</h3>
+      <p>Give it a name, company, and address. In 30–60 seconds it pulls 9 data sources, scores the lead across four dimensions, identifies specific pain points, and writes a cold email grounded in real data.</p>
+      <pre style="margin-top:0.75rem;">Score = (Demand×0.30) + (Opportunity×0.30)
+      + (Scale×0.20) + (Friction×0.20)</pre>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:2rem;">
+    <h3 style="margin-bottom:1.25rem;">Scoring Weights — click any dimension to expand</h3>
+    <div class="score-grid">
+      <div>
+        <div class="donut-wrap">
+          <canvas id="donutChart" width="200" height="200"></canvas>
+          <div class="donut-label">
+            <div class="donut-label-main">Lead Score</div>
+            <div class="donut-label-sub">0–100</div>
+          </div>
+        </div>
+      </div>
+      <div class="score-legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#10b981;"></div>
+          <div>
+            <div class="legend-name">Opportunity <span class="tag tag-opp">30%</span> <span style="font-weight:400;color:var(--text-muted);">— Is there a specific reason to act now?</span></div>
+          </div>
+          <div class="legend-pct">▾</div>
+          <div class="legend-detail">Driven by news signals (acquisition/growth = 0.95 floor), Google rating pain, and Wikipedia presence. Renter %, vacancy, and walkability are excluded here — they already appear in Demand — so Opportunity only fires when there's a behavioral or reputational signal unique to the company.</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#3b82f6;"></div>
+          <div>
+            <div class="legend-name">Demand <span class="tag tag-demand">30%</span> <span style="font-weight:400;color:var(--text-muted);">— How active is the rental market?</span></div>
+          </div>
+          <div class="legend-pct">▾</div>
+          <div class="legend-detail">A tight rental market with high walkability means constant inquiry volume — exactly when automation is most valuable. Walk Score ceiling is 80, not 100, so a "Very Walkable" property maxes this component without being penalized against an unreachable ceiling.</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#fb923c;"></div>
+          <div>
+            <div class="legend-name">Scale <span class="tag tag-scale">20%</span> <span style="font-weight:400;color:var(--text-muted);">— How big is the operational footprint?</span></div>
+          </div>
+          <div class="legend-pct">▾</div>
+          <div class="legend-detail">A 400-unit apartment complex and a single-family rental are not the same opportunity. Building type scores: Apartment Complex = 1.0, Hotel = 0.80, Commercial/Industrial = 0.75, Office = 0.70, Apt/Shopping Complex = 0.65, Shopping Complex = 0.55, Retail = 0.45, Single Family = 0.20.</div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#ec4899;"></div>
+          <div>
+            <div class="legend-name">Friction <span class="tag tag-fric">20%</span> <span style="font-weight:400;color:var(--text-muted);">— How hard is this property to operate?</span></div>
+          </div>
+          <div class="legend-pct">▾</div>
+          <div class="legend-detail">High friction = more maintenance calls, more tenant communication, more overhead. High friction is good for us — it means the manager needs automation. Signals: crime rate, precipitation days, snowfall, temperature range, elevation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:2rem;">
+    <h3 style="margin-bottom:1.25rem;">Grade System</h3>
+    <div id="grade-bars"></div>
+  </div>
+
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem;">
+    <h3 style="margin-bottom:0;">Real Pipeline Runs</h3>
+    <span style="font-size:0.72rem;color:var(--text-muted);">Hover a card to flip — enriched data &amp; grade-colored sub-scores · click button below for pain points &amp; email</span>
+  </div>
+  <div class="case-grid" id="caseGrid"></div>
+
+</section>
+
+
+<!-- ══════════════════════════════════════
+     TAB 2 — PIPELINE & ARCHITECTURE
+══════════════════════════════════════ -->
+<section id="tab-architecture" class="doc-section">
+
+  <div class="section-title">Pipeline & Architecture</div>
+  <p class="section-subtitle">How 9 API calls become a scored lead and a cold email — and how to run 1,000 of them a day without hitting rate limits.</p>
+
+  <div class="card" style="margin-bottom:2rem;">
+    <h3 style="margin-bottom:1.25rem;">Data Flow — click any step for details</h3>
+    <div class="pipeline-flow" id="pipelineFlow"></div>
+  </div>
+
+  <h3 style="margin-bottom:1rem;">External APIs — 12 services, all with graceful fallbacks</h3>
+  <div class="api-grid" id="apiGrid"></div>
+
+  <div class="batch-timeline">
+    <h3 style="margin-bottom:0.25rem;">Batch Throughput</h3>
+    <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:1.25rem;">Each lead: 10–15s pipeline + 5–7s random pause to stay within rate limits</p>
+    <div id="batchViz"></div>
+    <div class="batch-day-stat">
+      <div class="batch-day-num">~1,000</div>
+      <div style="font-size:0.8rem;color:var(--text-muted);">leads scoreable per day in a 4-hour batch run</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:1.5rem;margin-bottom:1.5rem;">
+    <h3 style="margin-bottom:0.75rem;">Output Record</h3>
+    <pre>{
+  "lead_score": { "score": 83.2, "grade": "A", "available_weight": 0.92 },
+  "scores": {
+    "demand":      { "score": 79, "components": { "walk_score": 0.88, ... } },
+    "opportunity": { "score": 88, "news_sentiment": "growth", ... },
+    "scale":       { "score": 88, ... },
+    "friction":    { "score": 78, ... }
+  },
+  "pain_points": [...],
+  "outreach": { "arc": "reputation_gap", "subject": "...", "message": "..." }
+}</pre>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:0.75rem;">5 Story Arcs</h3>
+    <p style="margin-bottom:0.9rem;">Arc is selected deterministically from scores and pain points — no LLM decides this. Proposed outreach schedule and A/B tracking are in the <strong>Project Plan</strong> tab.</p>
+    <div style="display:flex;flex-direction:column;gap:0.45rem;">
+      <div style="padding:0.5rem 0.75rem;border-radius:8px;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);font-size:0.8rem;"><strong style="color:#059669;">reputation_gap</strong> — low Google rating</div>
+      <div style="padding:0.5rem 0.75rem;border-radius:8px;background:rgba(236,72,153,0.06);border:1px solid rgba(236,72,153,0.15);font-size:0.8rem;"><strong style="color:#ec4899;">operational_friction</strong> — climate + crime load</div>
+      <div style="padding:0.5rem 0.75rem;border-radius:8px;background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.15);font-size:0.8rem;"><strong style="color:#2563eb;">growth_strain</strong> — acquisition / expansion news</div>
+      <div style="padding:0.5rem 0.75rem;border-radius:8px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);font-size:0.8rem;"><strong style="color:#d97706;">premium_expectations</strong> — premium market</div>
+      <div style="padding:0.5rem 0.75rem;border-radius:8px;background:rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.07);font-size:0.8rem;"><strong style="color:var(--text-muted);">lead_speed</strong> — vacancy urgency (default)</div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ══════════════════════════════════════
+     TAB 3 — SDR GUIDE
+══════════════════════════════════════ -->
+<section id="tab-guide" class="doc-section">
+
+  <div class="section-title">SDR Guide</div>
+  <p class="section-subtitle">Step-by-step setup. No Python experience needed. Click each step to expand.</p>
+
+  <div class="steps-grid" id="setupSteps"></div>
+
+  <div class="card" style="margin-bottom:2rem;">
+    <h3 style="margin-bottom:1rem;">Input Format</h3>
+    <table class="trouble-table">
+      <thead><tr><th>Field</th><th>Format</th><th>Example</th><th>Common mistake</th></tr></thead>
+      <tbody>
+        <tr><td>Contact Name</td><td>Full name</td><td>Jordan Lee</td><td>—</td></tr>
+        <tr><td>Company</td><td>Public company name</td><td>Greystar</td><td>Abbreviations that break news search</td></tr>
+        <tr><td>Property Address</td><td>Street number + name only</td><td>1600 Vine St</td><td>Including Suite/Unit — breaks geocoding</td></tr>
+        <tr><td>City</td><td>City name</td><td>Los Angeles</td><td>"Hollywood" instead of "Los Angeles"</td></tr>
+        <tr><td>State</td><td>2-letter, uppercase</td><td>CA</td><td>Full state name — Census and FRED fail</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card" style="margin-bottom:2rem;">
+    <h3 style="margin-bottom:1rem;">Reading the Output</h3>
+    <div class="three-col">
+      <div style="padding:1rem;background:rgba(245,158,11,0.05);border-radius:10px;border:1px solid rgba(245,158,11,0.12);">
+        <div style="font-weight:700;font-size:0.85rem;margin-bottom:0.4rem;color:#d97706;">Score Dashboard</div>
+        <p>Five cards: Lead Score + four sub-scores. Each shows available_weight — below 0.5 means fewer than half the signals returned. Still valid; scored on what it knows.</p>
+      </div>
+      <div style="padding:1rem;background:rgba(16,185,129,0.05);border-radius:10px;border:1px solid rgba(16,185,129,0.12);">
+        <div style="font-weight:700;font-size:0.85rem;margin-bottom:0.4rem;color:#059669;">Pain Points</div>
+        <p>Specific operational problems ordered by severity. Each is backed by a real data point. Source tagged as <em>rule</em> (deterministic) or <em>llm</em> (AI-inferred).</p>
+      </div>
+      <div style="padding:1rem;background:rgba(59,130,246,0.05);border-radius:10px;border:1px solid rgba(59,130,246,0.12);">
+        <div style="font-weight:700;font-size:0.85rem;margin-bottom:0.4rem;color:#2563eb;">Outreach Email</div>
+        <p>Always read before sending. Verify numbers match the score dashboard. Update the sender name — default is Alex Chen, AE.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-bottom:1rem;">Troubleshooting</h3>
+    <table class="trouble-table">
+      <thead><tr><th>What you see</th><th>Why</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td>Loading forever</td><td>Backend crashed or key missing</td><td>Check terminal; look for "Key required" messages</td></tr>
+        <tr><td>"Connection refused"</td><td>Backend not running</td><td>Run <code>uvicorn backend.main:app --reload</code></td></tr>
+        <tr><td>Score seems too low</td><td>Low available_weight — few signals returned</td><td>Re-enter address without suite/unit numbers</td></tr>
+        <tr><td>Email mentions wrong numbers</td><td>Enrichment returned unexpected data</td><td>Check raw enrichment at bottom of results; re-run</td></tr>
+        <tr><td>Walk Score unavailable</td><td>Geocoding failed → no lat/lon</td><td>Spell out street name; remove apartment/suite numbers</td></tr>
+        <tr><td>Crime data missing</td><td>Small town has no FBI agency record</td><td>Normal — friction runs on weather only.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+
+<!-- ══════════════════════════════════════
+     TAB 4 — PROJECT PLAN
+══════════════════════════════════════ -->
+<section id="tab-rollout" class="doc-section">
+
+  <div class="section-title">Project Plan</div>
+  <p class="section-subtitle">Seven weeks from internal testing to automated sending — each phase has a clear gate before moving forward.</p>
+
+  <!-- Timeline -->
+  <div class="card" style="margin-bottom:2rem;">
+    <h3 style="margin-bottom:1.75rem;">Rollout Timeline</h3>
+    <div class="plan-timeline">
+      <div class="tl-phase">
+        <div class="tl-dot" style="background:#f59e0b;">1</div>
+        <div class="tl-week">Week 1</div>
+        <div class="tl-title">Internal Test</div>
+        <ul class="tl-list">
+          <li>30 historical leads</li>
+          <li>Audit email accuracy</li>
+          <li>VP sign-off required</li>
+        </ul>
+      </div>
+      <div class="tl-phase">
+        <div class="tl-dot" style="background:#10b981;">2</div>
+        <div class="tl-week">Weeks 2–4</div>
+        <div class="tl-title">Pilot — 2–3 SDRs</div>
+        <ul class="tl-list">
+          <li>Tool writes, SDR reviews</li>
+          <li>Manual send, track edits</li>
+          <li>Weekly feedback loop</li>
+        </ul>
+      </div>
+      <div class="tl-phase">
+        <div class="tl-dot" style="background:#fb923c;">3</div>
+        <div class="tl-week">Weeks 5–6</div>
+        <div class="tl-title">Full Team</div>
+        <ul class="tl-list">
+          <li>Onboard all SDRs</li>
+          <li>Lock in send schedule</li>
+          <li>Track reply rates by arc</li>
+        </ul>
+      </div>
+      <div class="tl-phase">
+        <div class="tl-dot" style="background:#ec4899;">4</div>
+        <div class="tl-week">Week 7+</div>
+        <div class="tl-title">Automated Sending</div>
+        <ul class="tl-list">
+          <li>Wire to CRM webhook</li>
+          <li>Daily 7am batch cron</li>
+          <li>SDRs manage replies only</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:1.5rem;padding:0.75rem 1rem;background:rgba(0,0,0,0.03);border-radius:8px;border:1px solid var(--border);font-size:0.78rem;color:var(--text-muted);line-height:1.8;">
+      <strong style="color:var(--text-main);">Gates</strong> &nbsp;·&nbsp;
+      Week 1 → VP sign-off on score accuracy &nbsp;·&nbsp;
+      Week 4 → ≥60% emails sent unedited &nbsp;·&nbsp;
+      Week 7 → ≥70% unedited + bounce rate &lt;2% for 2 consecutive weeks
+    </div>
+  </div>
+
+  <!-- Success metrics -->
+  <div class="metrics-row">
+    <div class="metric-card">
+      <div class="metric-num">&lt;5<span style="font-size:1.2rem">min</span></div>
+      <div class="metric-label">SDR time per lead<br><span style="font-size:0.72rem;color:var(--text-muted);">down from 45 min of manual research</span></div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-num">70<span style="font-size:1.2rem">%</span></div>
+      <div class="metric-label">Emails sent without edits<br><span style="font-size:0.72rem;color:var(--text-muted);">target by end of Week 6</span></div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-num">↑</div>
+      <div class="metric-label">Reply rate beats manual baseline<br><span style="font-size:0.72rem;color:var(--text-muted);">measured at Week 8</span></div>
+    </div>
+  </div>
+
+  <!-- Proposed: Outreach Schedule -->
+  <div class="outreach-box">
+    <h3 style="margin-bottom:0.2rem;">Proposed: Daily Outreach Schedule</h3>
+    <p style="font-size:0.78rem;margin-bottom:1.25rem;">Top 60 leads by score · 9am–3pm window · 10 emails/hour · random 2–8 min spacing to avoid spam filters</p>
+    <div class="hours-track" id="hoursTrack"></div>
+    <div style="display:flex;gap:2rem;margin-top:0.75rem;flex-wrap:wrap;">
+      <div style="font-size:0.75rem;color:var(--text-muted);">
+        <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(245,158,11,0.2);margin-right:0.3rem;border:1px solid rgba(245,158,11,0.3);"></span>Active (10/hr)
+      </div>
+      <div style="font-size:0.75rem;color:var(--text-muted);">
+        <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:rgba(0,0,0,0.04);margin-right:0.3rem;border:1px solid var(--border);"></span>Outside window
+      </div>
+      <div style="font-size:0.75rem;color:var(--text-muted);">Random spacing mimics human send patterns</div>
+    </div>
+  </div>
+
+  <!-- Proposed: A/B Testing -->
+  <div class="card">
+    <h3 style="margin-bottom:0.75rem;">Proposed: A/B Testing by Story Arc</h3>
+    <p style="margin-bottom:1rem;">Every email is tagged with its arc. After 200–300 sends, compare reply rates and feed signal back into the selection logic. Since arc selection is deterministic (no LLM), this is straightforward to track and tune.</p>
+    <div class="arc-pills">
+      <div class="arc-pill" style="background:rgba(16,185,129,0.08);border-color:rgba(16,185,129,0.2);color:#059669;">reputation_gap</div>
+      <div class="arc-pill" style="background:rgba(236,72,153,0.08);border-color:rgba(236,72,153,0.2);color:#ec4899;">operational_friction</div>
+      <div class="arc-pill" style="background:rgba(59,130,246,0.08);border-color:rgba(59,130,246,0.2);color:#2563eb;">growth_strain</div>
+      <div class="arc-pill" style="background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2);color:#d97706;">premium_expectations</div>
+      <div class="arc-pill" style="background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.08);color:var(--text-muted);">lead_speed</div>
+    </div>
+  </div>
+
+</section>
+
+
+<script>
+// ── TABS ──────────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.doc-section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'overview') { setTimeout(animateGrades, 100); setTimeout(drawDonut, 100); }
+    if (btn.dataset.tab === 'architecture') { setTimeout(animateBatch, 200); }
+  });
+});
+
+// ── DONUT CHART ───────────────────────────────────────────────────
+function drawDonut() {
+  const canvas = document.getElementById('donutChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = 100, cy = 100, r = 75, ri = 50;
+  const segments = [
+    { pct: 0.30, color: '#10b981', label: '30%' },
+    { pct: 0.30, color: '#3b82f6', label: '30%' },
+    { pct: 0.20, color: '#fb923c', label: '20%' },
+    { pct: 0.20, color: '#ec4899', label: '20%' },
+  ];
+  ctx.clearRect(0, 0, 200, 200);
+  let start = -Math.PI / 2;
+  segments.forEach(seg => {
+    const end = start + seg.pct * 2 * Math.PI;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, start, end);
+    ctx.arc(cx, cy, ri, end, start, true);
+    ctx.closePath();
+    ctx.fillStyle = seg.color;
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r + 2, start, start + 0.015);
+    ctx.strokeStyle = '#f7f8fa';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    start = end;
+  });
+  ctx.beginPath();
+  ctx.arc(cx, cy, ri - 2, 0, 2 * Math.PI);
+  ctx.fillStyle = '#ffffff';
+  ctx.fill();
+  let ls = -Math.PI / 2;
+  segments.forEach(seg => {
+    const le = ls + seg.pct * 2 * Math.PI;
+    const mid = (ls + le) / 2;
+    const tr = (r + ri) / 2;
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 10px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(seg.label, cx + tr * Math.cos(mid), cy + tr * Math.sin(mid));
+    ls = le;
+  });
+}
+drawDonut();
+
+// ── LEGEND EXPAND ─────────────────────────────────────────────────
+document.querySelectorAll('.legend-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const was = item.classList.contains('expanded');
+    document.querySelectorAll('.legend-item').forEach(i => i.classList.remove('expanded'));
+    if (!was) item.classList.add('expanded');
+  });
+});
+
+// ── GRADE BARS ────────────────────────────────────────────────────
+const grades = [
+  { letter: 'A', range: '80–100', fill: '#10b981', pct: '100%', action: 'Strong ICP match — route to AE immediately' },
+  { letter: 'B', range: '65–79',  fill: '#84cc16', pct: '79%',  action: 'Good fit — high-priority sequence' },
+  { letter: 'C', range: '50–64',  fill: '#f59e0b', pct: '64%',  action: 'Qualified — standard sequence' },
+  { letter: 'D', range: '35–49',  fill: '#f97316', pct: '49%',  action: 'Weak fit — low touch or hold' },
+  { letter: 'F', range: '0–34',   fill: '#94a3b8', pct: '34%',  action: 'Not ICP — skip' },
+];
+const gradeBarsEl = document.getElementById('grade-bars');
+grades.forEach(g => {
+  gradeBarsEl.innerHTML += `
+    <div class="grade-bar">
+      <div class="grade-letter" style="color:${g.fill};">${g.letter}</div>
+      <div class="grade-track"><div class="grade-fill" data-pct="${g.pct}" style="background:${g.fill};"></div></div>
+      <div class="grade-range">${g.range}</div>
+      <div class="grade-action">${g.action}</div>
+    </div>`;
+});
+function animateGrades() {
+  document.querySelectorAll('.grade-fill').forEach(el => { el.style.width = el.dataset.pct; });
+}
+setTimeout(animateGrades, 300);
+
+// ── PIPELINE FLOW ─────────────────────────────────────────────────
+const pipelineSteps = [
+  { num: '1', title: 'Geocoding', sub: 'Address → lat/lon via 4-level fallback chain', detail: 'Tries Intellipins first. Falls back to Nominatim structured → Nominatim freeform → US Census Geocoder. If all fail, coordinate-dependent APIs (WalkScore, OSM, Open-Meteo, Intellipins parcel) are skipped — the other 5 still run.' },
+  { num: '2', title: 'Phase 1 Enrichment (9 APIs parallel)', sub: 'asyncio.gather() fires all 9 calls simultaneously', detail: 'Census ACS, FRED vacancy, Wikipedia, NewsAPI, WalkScore, Intellipins parcel, OpenStreetMap/Overpass, Open-Meteo climate, FBI crime — all concurrent. Total time is bounded by the slowest API (typically OSM at 5–15 seconds).' },
+  { num: '3', title: 'Building Type Classification', sub: 'Derived from OSM tags + Intellipins address_type', detail: 'Priority: OSM type → Intellipins address_type → Default: Single Family Housing (score 0.20). Full lookup: Apartment Complex = 1.0; Hotel = 0.80; Commercial/Industrial = 0.75; Office = 0.70; Apt/Shopping Complex = 0.65; Shopping Complex = 0.55; Retail = 0.45; Single Family = 0.20.' },
+  { num: '4', title: 'Phase 2 Enrichment (Google Places)', sub: 'Search strategy depends on building type', detail: 'Apartment Complex → search by address (finds the complex\'s own listing). All other types → search by company name + 50km location bias. Google finishes in 1–2s, well before OSM.' },
+  { num: '5', title: 'Scoring Engine', sub: '4 sub-scores run in parallel — no LLM involved', detail: 'compute_all_scores() calls Demand, Friction, Scale, and Opportunity scorers. Each uses partial-weight formula: missing signals shrink the denominator rather than penalizing the score. available_weight is logged per sub-score.' },
+  { num: '6', title: 'Pain Point Inference', sub: 'Rule engine + LLM augmentation', detail: 'Step 1: ~10 deterministic if-conditions fire on score thresholds and enrichment values. Step 2: Claude Haiku (or Groq llama-3.1-8b) appends ≤2 additional nuanced insights grounded in specific data values.' },
+  { num: '7', title: 'Outreach Generation', sub: 'Arc selected deterministically; email written by LLM', detail: 'Arc selection (reputation_gap, operational_friction, growth_strain, premium_expectations, lead_speed) is pure if-logic — no LLM. Claude Sonnet then writes the email from an arc-specific context block containing only the relevant data points.' },
+  { num: '8', title: 'Save', sub: 'Full JSON to data/leads/{uuid}.json; summary to data/index.json', detail: 'Every run is persisted. index.json stores only {id, name, company, city, score, grade} for fast history-panel loading. Full enrichment, scores, pain points, and email are in the per-lead file.' },
+];
+const flowEl = document.getElementById('pipelineFlow');
+pipelineSteps.forEach((s, i) => {
+  if (i > 0) flowEl.innerHTML += `<div class="pipe-connector"></div>`;
+  flowEl.innerHTML += `
+    <div class="pipe-step">
+      <div class="pipe-num">${s.num}</div>
+      <div class="pipe-body">
+        <div class="pipe-title">${s.title}</div>
+        <div class="pipe-sub">${s.sub}</div>
+        <div class="pipe-detail">${s.detail}</div>
+      </div>
+      <div class="pipe-arrow">▾</div>
+    </div>`;
+});
+document.querySelectorAll('.pipe-step').forEach(el => {
+  el.addEventListener('click', () => el.classList.toggle('open'));
+});
+
+// ── API CARDS ─────────────────────────────────────────────────────
+const apis = [
+  { name: 'US Census ACS',          badge: 'free', cls: 'badge-free', desc: 'Population, median income, renter % by city',          detail: 'Free, no enforced quota. Optional API key (500 req/day). City-level data from 5-year ACS estimates.' },
+  { name: 'FRED (St. Louis Fed)',   badge: 'free', cls: 'badge-free', desc: 'State-level rental vacancy rate',                       detail: '1,000 req/day. API key required. State-level only — not city-specific.' },
+  { name: 'WalkScore',              badge: 'free', cls: 'badge-free', desc: 'Walk, transit, bike scores for address',                 detail: '5,000 req/day free; $0.0025/req above. Requires lat/lon from geocoding.' },
+  { name: 'Google Places',          badge: 'paid', cls: 'badge-paid', desc: 'Tenant reviews and star ratings',                       detail: '$200/month free credit (~11,700 text searches). Each lead = 2 calls. Search strategy depends on building type.' },
+  { name: 'Intellipins',            badge: 'paid', cls: 'badge-paid', desc: 'Geocoding, parcel data, building type, elevation',      detail: 'No free tier. ~1 req/sec limit. Primary geocoder and parcel data source. Falls back to Nominatim on 429.' },
+  { name: 'OpenStreetMap / Overpass',badge: 'free', cls: 'badge-free', desc: 'Building geometry, nearby amenity counts',             detail: 'Free public instance. Nominatim: 1 req/sec hard limit. Overpass: soft-throttled, 3–5s between heavy queries.' },
+  { name: 'Open-Meteo Archive',     badge: 'free', cls: 'badge-free', desc: 'Historical climate for 2024',                          detail: '10,000 req/day. No API key. Returns full-year precipitation days, snowfall totals, temperature extremes.' },
+  { name: 'FBI Crime Data',         badge: 'free', cls: 'badge-free', desc: 'City-level crime rates per 100k',                       detail: 'Free, no documented rate limit. API key required. Small towns without their own police dept may return no data.' },
+  { name: 'NewsAPI',                badge: 'paid', cls: 'badge-paid', desc: 'Company news and press releases',                       detail: '100 req/day free tier. 1,000/day developer plan ($449/mo). Hard cap at 100 leads/day on free tier.' },
+  { name: 'Wikipedia REST',         badge: 'free', cls: 'badge-free', desc: 'Company and city summary text',                         detail: 'Free, practically unlimited. No API key. Used for Wikipedia presence signal and LLM context.' },
+  { name: 'Anthropic (Haiku+Sonnet)',badge: 'paid', cls: 'badge-paid', desc: 'Pain points (Haiku) + outreach email (Sonnet)',        detail: '~$0.003/lead for Haiku, ~$0.015/lead for Sonnet. 50 req/min on Tier 1.' },
+  { name: 'Groq (free alternative)',badge: 'alt',  cls: 'badge-alt',  desc: 'Both LLM steps via open-source models',                detail: '30 req/min free tier. llama-3.1-8b for pain points, llama-3.3-70b for email. Set llm_provider=groq.' },
+];
+const apiGridEl = document.getElementById('apiGrid');
+apis.forEach(a => {
+  apiGridEl.innerHTML += `
+    <div class="api-card">
+      <div class="api-name">${a.name}</div>
+      <span class="api-badge ${a.cls}">${a.badge}</span>
+      <div class="api-desc">${a.desc}</div>
+      <div class="api-detail">${a.detail}</div>
+    </div>`;
+});
+document.querySelectorAll('.api-card').forEach(el => {
+  el.addEventListener('click', () => el.classList.toggle('open'));
+});
+
+// ── BATCH VIZ ─────────────────────────────────────────────────────
+function animateBatch() {
+  const el = document.getElementById('batchViz');
+  if (!el) return;
+  const scenarios = [
+    { label: 'Fast (~13s/lead)',    pipeW: 62, pauseW: 38 },
+    { label: 'Typical (~18s/lead)', pipeW: 67, pauseW: 33 },
+    { label: 'Slow (~25s/lead)',    pipeW: 72, pauseW: 28 },
+  ];
+  el.innerHTML = scenarios.map(s => `
+    <div class="batch-row">
+      <div class="batch-label">${s.label}</div>
+      <div class="batch-track">
+        <div class="batch-block block-pipeline" style="left:0;width:0;" data-w="${s.pipeW}">Pipeline</div>
+        <div class="batch-block block-pause"    style="right:0;width:0;transition-delay:0.3s;" data-w="${s.pauseW}">Pause</div>
+      </div>
+    </div>`).join('');
+  setTimeout(() => {
+    el.querySelectorAll('.block-pipeline').forEach(b => { b.style.transition='width 1.4s cubic-bezier(.22,1,.36,1)'; b.style.width = b.dataset.w + '%'; });
+    el.querySelectorAll('.block-pause').forEach(b => { b.style.transition='width 1.2s cubic-bezier(.22,1,.36,1) 0.3s'; b.style.width = b.dataset.w + '%'; });
+  }, 100);
+}
+document.querySelector('[data-tab="architecture"]').addEventListener('click', () => setTimeout(animateBatch, 300));
+
+// ── HOURS TRACK ───────────────────────────────────────────────────
+const hoursEl = document.getElementById('hoursTrack');
+for (let h = 8; h <= 17; h++) {
+  const active = h >= 9 && h <= 14;
+  const label = h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h-12}pm`;
+  hoursEl.innerHTML += `
+    <div class="hour-block ${active ? '' : 'off'}">
+      <span class="hr-label">${label}</span>
+      <span class="hr-sends">${active ? '10/hr' : '—'}</span>
+    </div>`;
+}
+
+// ── SETUP STEPS ───────────────────────────────────────────────────
+const setupSteps = [
+  { title: 'Check Python is installed', sub: 'You need Python 3.9+ on your machine', detail: 'Open Terminal (Mac) or Command Prompt (Windows): <code>python3 --version</code><br>If you see Python 3.x.x, you\'re good. If not, download from python.org/downloads.' },
+  { title: 'Copy and fill in your API keys', sub: 'Rename .env.example → .env and add your keys', detail: 'You need: WalkScore, Intellipins, Google Places, NewsAPI, FRED, FBI API, Census Bureau (optional).<br>For the LLM: Anthropic (~$0.01–0.05/lead) or Groq (free). You only need one.' },
+  { title: 'Install dependencies', sub: 'pip install -r requirements.txt', detail: '<code>cd GTM_Automation_Tool</code><br><code>python3 -m venv venv</code><br><code>source venv/bin/activate</code> (Mac) or <code>venv\\Scripts\\activate</code> (Windows)<br><code>pip install -r requirements.txt</code>' },
+  { title: 'Start the backend server', sub: 'uvicorn backend.main:app --reload', detail: 'With your virtual environment active: <code>uvicorn backend.main:app --reload</code><br>Leave this terminal open. You should see: INFO: Uvicorn running on http://127.0.0.1:8000' },
+  { title: 'Open the frontend', sub: 'Open frontend/index.html in your browser', detail: 'Double-click index.html in the frontend/ folder. No web server needed — it talks directly to the backend you just started.' },
+  { title: 'Run your first lead', sub: 'Fill in the form and click "Run Full Pipeline"', detail: 'Enter: Contact Name, Company, Property Address (no suite/unit numbers), City, State (2-letter). Click "Run Full Pipeline". Wait 20–60 seconds for results.' },
+];
+const stepsEl = document.getElementById('setupSteps');
+setupSteps.forEach((s, i) => {
+  stepsEl.innerHTML += `
+    <div class="step-card">
+      <div class="step-num">${i+1}</div>
+      <div class="step-body">
+        <div class="step-title">${s.title}</div>
+        <div class="step-sub">${s.sub}</div>
+        <div class="step-detail">${s.detail}</div>
+      </div>
+      <div class="step-arrow">▾</div>
+    </div>`;
+});
+document.querySelectorAll('.step-card').forEach(el => {
+  el.addEventListener('click', () => el.classList.toggle('open'));
+});
+
+// ── REAL LEAD CASE STUDIES ────────────────────────────────────────
+function subGradeColor(v) {
+  return v >= 80 ? '#10b981' : v >= 65 ? '#84cc16' : v >= 50 ? '#f59e0b' : v >= 35 ? '#f97316' : '#94a3b8';
+}
+function subGradeLetter(v) {
+  return v >= 80 ? 'A' : v >= 65 ? 'B' : v >= 50 ? 'C' : v >= 35 ? 'D' : 'F';
+}
+
+const realCases = [
+  {
+    grade: 'A', gradeColor: '#10b981', score: '81.1',
+    company: 'Inland American Real Estate', contact: 'Christopher Gonzalez',
+    location: '40 E Oak St · Chicago, IL', action: 'Route to AE',
+    actionBg: 'rgba(16,185,129,0.12)', actionColor: '#059669', cardBorder: 'rgba(16,185,129,0.25)',
+    pills: [
+      { label: 'Walk Score 99', cls: 'pill-good' }, { label: 'Transit 92', cls: 'pill-good' },
+      { label: '54.4% renters', cls: 'pill-info' }, { label: '62.7cm snow/yr', cls: 'pill-warn' },
+      { label: '178 rain days', cls: 'pill-warn' }, { label: '5.7% vacancy', cls: 'pill-good' },
+    ],
+    subscores: [
+      { name: 'Demand',      val: 89, color: '#3b82f6' }, { name: 'Friction', val: 90, color: '#ec4899' },
+      { name: 'Scale',       val: 100, color: '#fb923c' }, { name: 'Opportunity', val: 22, color: '#10b981' },
+    ],
+    summary: "Top of ICP — massive multifamily property, relentless Chicago winters, and a renter-majority Walker's Paradise.",
+    pains: [
+      { sev: 'HIGH',   text: "Core ICP: 20-floor apartment complex — EliseAI's primary target" },
+      { sev: 'HIGH',   text: 'Walk Score 99 drives constant inquiry — manual handling loses leases' },
+      { sev: 'HIGH',   text: '62.7cm snow + 178 rain days = continuous maintenance burden' },
+      { sev: 'MEDIUM', text: 'Transit 92 in 54% renter market = high churn + full leasing pipeline' },
+    ],
+    emailArc: 'operational_friction', emailSubject: 'Midnight Maintenance Calls',
+    emailBody: `Hi Christopher,
+
+Your team deals with around 2 feet of snow and ~178 rainy days per year, which means constant maintenance issues. This creates a reactive environment where your team is always on call.
+
+At Inland American Real Estate, a burst pipe during a cold snap can lead to a flooded lobby and numerous resident calls — taking your team away from the actual fix. EliseAI keeps residents informed automatically so your team can focus on the fix, not the calls.
+
+Worth a call?`,
+  },
+  {
+    grade: 'B', gradeColor: '#84cc16', score: '79.7',
+    company: 'Kairoi Residential', contact: 'Anna Miller',
+    location: '152 E 81st St · New York, NY', action: 'High Priority',
+    actionBg: 'rgba(132,204,22,0.12)', actionColor: '#65a30d', cardBorder: 'rgba(132,204,22,0.25)',
+    pills: [
+      { label: 'Walk Score 84', cls: 'pill-good' }, { label: '66.8% renters', cls: 'pill-good' },
+      { label: 'Google 3.0★ / 120', cls: 'pill-bad' }, { label: '184 rain days', cls: 'pill-warn' },
+      { label: '5.3% vacancy', cls: 'pill-good' },
+    ],
+    subscores: [
+      { name: 'Demand',      val: 91, color: '#3b82f6' }, { name: 'Friction', val: 81, color: '#ec4899' },
+      { name: 'Scale',       val: 65, color: '#fb923c' }, { name: 'Opportunity', val: 55, color: '#10b981' },
+    ],
+    summary: 'NYC density + 3-star Google reviews across 120 tenants = documented service failures to pitch directly.',
+    pains: [
+      { sev: 'HIGH',   text: 'Resident experience: 3.0★ / 120 reviews — "called at 2am, told to wait until morning"' },
+      { sev: 'HIGH',   text: 'NYC density + Transit 83 = relentless inquiry volume' },
+      { sev: 'HIGH',   text: '184 rain days/yr — highest in this dataset' },
+      { sev: 'MEDIUM', text: 'Transit 83 in 67%-renter city = constant churn + full leasing pipeline' },
+    ],
+    emailArc: 'reputation_gap', emailSubject: 'Your Google Rating',
+    emailBody: `Hi Anna,
+
+Your Google rating is 3 out of 5, which signals to a prospective renter that your team may have slow maintenance response before they ever call.
+
+At Kairoi Residential, a maintenance request like the one from a resident who called at 2:00am can go unacknowledged for days, leading to a frustrated review. EliseAI provides instant ticket acknowledgment and 24/7 automated tenant updates.
+
+Worth a call?`,
+  },
+  {
+    grade: 'C', gradeColor: '#f59e0b', score: '57.5',
+    company: 'MAA', contact: 'Joyce Reyes',
+    location: '1633 S Main St · Orem, UT', action: 'Standard Seq.',
+    actionBg: 'rgba(245,158,11,0.12)', actionColor: '#d97706', cardBorder: 'rgba(245,158,11,0.25)',
+    pills: [
+      { label: 'Walk Score 45', cls: 'pill-bad' }, { label: '39.5% renters', cls: 'pill-muted' },
+      { label: '251cm snow/yr', cls: 'pill-warn' }, { label: '149 rain days', cls: 'pill-warn' },
+      { label: 'Pop. 96,734', cls: 'pill-muted' },
+    ],
+    subscores: [
+      { name: 'Demand',      val: 59, color: '#3b82f6' }, { name: 'Friction', val: 73, color: '#ec4899' },
+      { name: 'Scale',       val: 35, color: '#fb923c' }, { name: 'Opportunity', val: 0, color: '#94a3b8' },
+    ],
+    summary: "Small city + wrong building type caps the ceiling. 8 feet of snow is real friction but there's no market depth to sell into.",
+    pains: [
+      { sev: 'HIGH',   text: '251cm snow (8+ feet) + 149 rain days — strongest signal in this lead' },
+      { sev: 'MEDIUM', text: 'Wide temp swings add maintenance burden year-round' },
+      { sev: 'MEDIUM', text: 'Transit 43 limits tenant pool and signals lower-demand rental environment' },
+    ],
+    emailArc: 'operational_friction', emailSubject: 'Rainy Days and Repair Calls',
+    emailBody: `Hi Joyce,
+
+Your team deals with around 149 rainy days and 8 feet of snow each year, which keeps your maintenance crew on their toes. They're always reacting to something — a leaky roof or a frozen pipe.
+
+At MAA, a burst pipe during a cold snap can turn into a flooded lobby and a barrage of resident calls. EliseAI keeps residents informed automatically so the team can focus on the fix, not the calls.
+
+Worth a call?`,
+  },
+  {
+    grade: 'D', gradeColor: '#f97316', score: '44.9',
+    company: 'Scottsdale Property Group', contact: 'Tyler Morales',
+    location: '6839 E Montecito Ave · Scottsdale, AZ', action: 'Low Touch / Skip',
+    actionBg: 'rgba(148,163,184,0.08)', actionColor: '#94a3b8', cardBorder: 'rgba(148,163,184,0.2)',
+    pills: [
+      { label: 'Walk Score 69', cls: 'pill-muted' }, { label: '33.4% renters', cls: 'pill-bad' },
+      { label: 'SFH building', cls: 'pill-bad' }, { label: 'Google 4.8★ / 100', cls: 'pill-good' },
+      { label: '0.3cm snow/yr', cls: 'pill-muted' },
+    ],
+    subscores: [
+      { name: 'Demand',      val: 69, color: '#3b82f6' }, { name: 'Friction', val: 39, color: '#ec4899' },
+      { name: 'Scale',       val: 35, color: '#fb923c' }, { name: 'Opportunity', val: 0, color: '#94a3b8' },
+    ],
+    summary: 'Owner-majority market, SFH building type (score 0.20), 4.8★ rating = no clear pain to sell into.',
+    pains: [
+      { sev: 'MEDIUM', text: 'Owner-majority market (33% renters) — thin leasing pipeline' },
+      { sev: 'MEDIUM', text: 'Single Family Housing — outside core ICP' },
+    ],
+    emailArc: 'lead_speed', emailSubject: 'Keeping Up With Inquiries',
+    emailBody: `Hi Tyler,
+
+Even in a low-vacancy market like Scottsdale, managing inquiries across a portfolio takes time. EliseAI can automate the initial response so no lead sits unanswered while you're handling something else.
+
+Worth a quick call?`,
+  },
+];
+
+const caseGridEl = document.getElementById('caseGrid');
+realCases.forEach((c) => {
+  const pillsHTML = c.pills.map(p => `<span class="pill ${p.cls}">${p.label}</span>`).join('');
+  const subscoresHTML = c.subscores.map(s => {
+    const gc = subGradeColor(s.val);
+    const gl = subGradeLetter(s.val);
+    return `
+      <div class="subscore-line">
+        <div class="subscore-name">${s.name}</div>
+        <div class="subscore-track"><div class="subscore-fill" style="--target-w:${s.val}%;background:${gc};"></div></div>
+        <div class="subscore-val" style="color:${gc};">${s.val}<span style="font-size:0.62rem;font-weight:800;margin-left:2px;">${gl}</span></div>
+      </div>`;
+  }).join('');
+  const painsHTML = c.pains.map(p => `
+    <div class="pain-item">
+      <span class="pain-sev ${p.sev === 'HIGH' ? 'sev-high' : 'sev-medium'}">${p.sev}</span>
+      ${p.text}
+    </div>`).join('');
+
+  const item = document.createElement('div');
+  item.className = 'lead-item';
+  item.innerHTML = `
+    <div class="flip-container">
+      <div class="flip-inner">
+        <div class="flip-front" style="border-color:${c.cardBorder};">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.55rem;">
+            <div style="font-family:'Outfit',sans-serif;font-size:3.6rem;font-weight:800;color:${c.gradeColor};line-height:1;">${c.grade}</div>
+            <div class="case-action-badge" style="background:${c.actionBg};color:${c.actionColor};font-size:0.71rem;margin-top:0.2rem;">${c.action}</div>
+          </div>
+          <div style="font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;color:var(--text-main);margin-bottom:0.2rem;">${c.score} <span style="font-size:0.83rem;font-weight:500;color:var(--text-muted);">pts</span></div>
+          <div style="font-size:0.93rem;font-weight:600;color:var(--text-main);margin-bottom:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.company}</div>
+          <div style="font-size:0.84rem;color:var(--text-muted);margin-bottom:0.15rem;">${c.contact}</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">${c.location}</div>
+          <div style="position:absolute;bottom:0.85rem;right:1rem;font-size:0.65rem;color:var(--text-muted);opacity:0.45;letter-spacing:0.02em;">hover for data ↻</div>
+        </div>
+        <div class="flip-back" style="border-color:${c.cardBorder};">
+          <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:0.45rem;">Enriched Signals</div>
+          <div class="pill-row" style="margin-bottom:0.7rem;">${pillsHTML}</div>
+          <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:0.35rem;">Sub-Scores</div>
+          <div class="subscore-row" style="margin-bottom:0;">${subscoresHTML}</div>
+        </div>
+      </div>
+    </div>
+    <button class="lead-expand-btn">Pain Points &amp; Email <span class="expand-arrow">▾</span></button>
+    <div class="lead-drawer">
+      <div style="font-size:0.73rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.55rem;">Pain Points</div>
+      <div class="pain-list">${painsHTML}</div>
+      <div class="email-preview">
+        <div class="email-header-row">Arc: <strong>${c.emailArc}</strong><span class="email-arc-tag">${c.emailArc}</span> &nbsp;·&nbsp; To: ${c.contact}</div>
+        <div class="email-header-row"><span class="email-subject">Subject: ${c.emailSubject}</span></div>
+        <div class="email-body">${c.emailBody}</div>
+      </div>
+    </div>`;
+
+  caseGridEl.appendChild(item);
+  item.querySelector('.lead-expand-btn').addEventListener('click', () => {
+    item.classList.toggle('drawer-open');
+  });
+});
+</script>
+</body>
+</html>

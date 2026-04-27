@@ -1,0 +1,236 @@
+{
+  "id": "76",
+  "created_at": "2026-04-27T15:19:54.534055Z",
+  "lead_info": {
+    "name": "William Kim",
+    "email": "william.kim@elmington.com",
+    "company": "Elmington Property Management",
+    "address": "100 Elm Ridge Center Dr",
+    "city": "Greece",
+    "state": "NY"
+  },
+  "enrichment": {
+    "geocoords": {
+      "lat": 43.2153588,
+      "lon": -77.7307291,
+      "source": "nominatim_structured"
+    },
+    "census": {
+      "population": "14,628",
+      "median_income": "$68,821",
+      "renter_percentage": "29.9%"
+    },
+    "fred": {
+      "vacancy_rate": "5.3%",
+      "rent_trend": "Stable"
+    },
+    "wikipedia": {
+      "company": null,
+      "city": {
+        "title": "Greece, New York",
+        "extract": "Greece is a town in Monroe County, New York, United States. A contiguous suburb of Rochester, it is the largest town by population in Monroe County and the second-largest municipality by population in the county, behind only the city of Rochester. As of the 2020 census, the town had a population of 96,926."
+      }
+    },
+    "news": {
+      "latest_news": "No relevant news found for \"Elmington Property Management\" in real estate or property management."
+    },
+    "walkscore": {
+      "walk_score": 36,
+      "description": "Car-Dependent",
+      "bike_score": 34,
+      "bike_description": "Somewhat Bikeable"
+    },
+    "intellipins": {
+      "error": "Geocode unavailable \u2014 check address"
+    },
+    "google": {
+      "place_name": "Elm Ridge Center",
+      "matched_via": "address",
+      "place_types": [
+        "establishment",
+        "point_of_interest",
+        "shopping_mall"
+      ],
+      "rating": 4.1,
+      "review_count": 106,
+      "editorial_summary": null,
+      "reviews": [
+        {
+          "author": "Ian Scheil",
+          "rating": 4,
+          "time": "3 years ago",
+          "text": "Much better with newer owners, however the Walmart lot has no working parking lot lights except for portable lights currently.  I will say though I'm happy to see more businesses entering the plaza now and there's even a pasta factory coming in soon! That's the most progress we've seen here in forev"
+        },
+        {
+          "author": "Carolyn Austin",
+          "rating": 5,
+          "time": "4 years ago",
+          "text": "Shopped at Goods Galore. Excellent buys on office supplies and masks. Found a nice small Mr. Coffee pot for $15. Great prices on kitchen items, furniture, rugs...anything to furnish your home."
+        },
+        {
+          "author": "Joan Coffey",
+          "rating": 3,
+          "time": "8 years ago",
+          "text": "Went to kohl's. Found things I wanted for Christmas gifts.  . Women's slippers, toddler size 5 character underwear, pajamas size 5 two piece warm ones..   Found not one of these items in the sizes I needed. Will have to shop at the Webster kohl's another day.  Disappointed."
+        },
+        {
+          "author": "Nina Kelly",
+          "rating": 5,
+          "time": "2 years ago",
+          "text": "I went into Kohl's for a couple things, stopped at Sephora got a couple products from there. The store was very clean, the employees were very friendly."
+        },
+        {
+          "author": "Annette B.",
+          "rating": 4,
+          "time": "3 years ago",
+          "text": "Good prices. If your looking for a quick go to shop I suggest target. Its a little dirty though so just watch what you touch."
+        }
+      ]
+    },
+    "osm": {
+      "osm_type": "house",
+      "osm_class": "place",
+      "display_name": "100, Elm Ridge Center Drive, Elm Ridge Center, Town of Greece, Monroe County, New York, 14626, United States",
+      "lat": "43.2153588",
+      "lon": "-77.7307291",
+      "boundingbox": [
+        "43.2153088",
+        "43.2154088",
+        "-77.7307791",
+        "-77.7306791"
+      ],
+      "osm_id": "way/544672999",
+      "building_details": {
+        "building_type": null,
+        "floors": null,
+        "units": null,
+        "name": "Elm Ridge Center Drive",
+        "operator": null,
+        "height": null,
+        "calculated_area": "63,101 sq ft",
+        "geometry_wkt": "POLYGON ((-77.730956 43.2155732, -77.7308486 43.2155217, -77.730747 43.2154813, -77.7305992 43.2154336, -77.7304736 43.2153926, -77.7303536 43.2153633, -77.7301657 43.2153521, -77.7301139 43.2153503, -77.7299778 43.2153454, -77.7298915 43.2153495, -77.7298699 43.2153525, -77.7298237 43.2153589, -77.7296727 43.2153993, -77.7296262 43.215411, -77.7294848 43.2154464, -77.7293702 43.2154727, -77.7293184 43.2154846, -77.7291983 43.2155003, -77.7291307 43.2155042, -77.7290442 43.2155093, -77.7288901 43.2154958, -77.7288563 43.2154917, -77.7287423 43.2154779, -77.7286151 43.2154587, -77.7285636 43.2154509, -77.728367 43.2154175, -77.7282277 43.2153791, -77.728136 43.2153473, -77.7281045 43.2153364, -77.7279504 43.2152533, -77.7279082 43.2152219, -77.7277964 43.2151388, -77.72773 43.2150784, -77.7276978 43.215049, -77.7275961 43.2149524, -77.727479 43.2148694, -77.7274534 43.214856, -77.7273764 43.2148157, -77.7273373 43.2147953, -77.7273044 43.214785, -77.7271155 43.2147256, -77.7270442 43.2147111, -77.730956 43.2155732))"
+      },
+      "amenities_1000m": {
+        "transit": "0",
+        "parks": "1",
+        "retail": "10"
+      }
+    },
+    "open_meteo": {
+      "annual_precip_days": 252,
+      "annual_snowfall_cm": 85.3,
+      "annual_precipitation_mm": 1126.0,
+      "hottest_day_c": 35.0,
+      "coldest_day_c": -17.9
+    },
+    "crime": {
+      "city": "Greece",
+      "state": "NY",
+      "ori": "NY0275400",
+      "violent_crime_rate_per_100k": 166.7,
+      "national_avg_violent_per_100k": 380,
+      "above_national_avg_violent": false,
+      "crime_score": 3.1,
+      "data_year": 2025,
+      "source": "FBI CDE",
+      "violent_crime_score": 2.8,
+      "property_crime_rate_per_100k": 1422.0,
+      "national_avg_property_per_100k": 2110,
+      "above_national_avg_property": false,
+      "property_data_year": 2025,
+      "property_crime_score": 3.7
+    }
+  },
+  "scores": {
+    "demand": {
+      "score": 50.9,
+      "available_weight": 0.9,
+      "max_weight": 1.0,
+      "components": {
+        "renter_pct": 69.8,
+        "low_vacancy": 58.9,
+        "walk_score": 20.2,
+        "income": 86.3,
+        "nearby_amenities": 40.5,
+        "population": 0.3
+      }
+    },
+    "friction": {
+      "score": 71.2,
+      "available_weight": 0.9,
+      "max_weight": 1.0,
+      "components": {
+        "crime": 2.2,
+        "precip_days": 100.0,
+        "snowfall": 100.0,
+        "temp_range": 92.5
+      }
+    },
+    "scale": {
+      "score": 100.0,
+      "available_weight": 0.25,
+      "max_weight": 1.0,
+      "building_type": null,
+      "components": {
+        "footprint": 100.0
+      }
+    },
+    "opportunity": {
+      "score": 21.9,
+      "available_weight": 0.35,
+      "max_weight": 1.0,
+      "news_sentiment": "none",
+      "components": {
+        "low_rating": 21.9
+      }
+    },
+    "lead_score": {
+      "score": 56.0,
+      "grade": "C",
+      "available_weight": 0.605,
+      "weights": {
+        "demand": 0.3,
+        "friction": 0.2,
+        "scale": 0.2,
+        "opportunity": 0.3
+      },
+      "components": {
+        "demand": 50.9,
+        "friction": 71.2,
+        "scale": 100.0,
+        "opportunity": 21.9
+      }
+    }
+  },
+  "pain_points": [
+    {
+      "tag": "harsh_conditions",
+      "label": "Harsh Operating Conditions",
+      "severity": "medium",
+      "description": "Challenging conditions (heavy snowfall (85 cm/yr), frequent precipitation (252 days/yr)) increase maintenance coordination load and incident management. Automated tenant communication keeps residents informed without burdening staff.",
+      "source": "rule"
+    },
+    {
+      "tag": "limited_lease_options",
+      "label": "Limited lease options",
+      "severity": "medium",
+      "description": "The vacancy rate is relatively low (5.3%), indicating a competitive rental market. EliseAI's lease optimization features could help Elmington Property Management maximize lead conversion rates and offer more flexible lease options to prospective tenants.",
+      "source": "llm"
+    },
+    {
+      "tag": "inadequate_communications",
+      "label": "Inadequate communications",
+      "severity": "high",
+      "description": "As mentioned in the Google reviews, the community has experienced issues with communication (e.g., unmaintained parking lot lights). EliseAI's tenant communication tools could help Elmington Property Management improve resident satisfaction and address these concerns proactively.",
+      "source": "llm"
+    }
+  ],
+  "outreach": {
+    "subject": "Maintenance Calls",
+    "greeting": "Hi William,",
+    "message": "Your team deals with around 3 feet of snow and ~252 rainy days per year, which means maintenance issues are a constant concern. This leads to a reactive approach, where your team is focused on putting out fires rather than proactive planning. Your maintenance team's day-to-day is filled with addressing urgent issues.\n\nAt Elmington Property Management, a burst pipe during a cold snap can lead to a flooded lobby, and residents calling repeatedly because they haven't heard back on a work order. EliseAI keeps residents informed automatically so your team can focus on the fix, not the calls.\n\nWorth a call?",
+    "arc": "operational_friction",
+    "generated_at": "2026-04-27T15:19:54.534028Z",
+    "provider": "groq"
+  }
+}

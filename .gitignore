@@ -16,9 +16,10 @@ build/
 *.egg
 
 # ── Lead data (PII — generated at runtime, not for source control) ───
-data/leads/*
-!data/leads/.gitkeep
-data/index.json
+# Pushing to github for test cases.
+# data/leads/*
+# !data/leads/.gitkeep
+# data/index.json
 
 # ── Frontend dependencies & build output ─────────────────────────────
 frontend/node_modules/
@@ -28,8 +29,11 @@ frontend/*.local
 
 # ── Dev scratch & generated artifacts ────────────────────────────────
 scratch.py
+scratch_outreach_test.py
 swagger.json
 walkscore_tile.html
+CLAUDE.md
+assignment.txt
 
 # ── OS & editor ───────────────────────────────────────────────────────
 .DS_Store
